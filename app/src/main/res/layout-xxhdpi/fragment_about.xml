@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".Fragment.AboutFragment">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="188dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="103dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="102dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:gravity="center"
+        android:text="About"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/imageView23"
+        android:layout_width="wrap_content"
+        android:layout_height="219dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="131dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/newsbox">
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="165dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="45dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Sneak pass anti-cheats with DeadEye. While there are many random hacks which can easily get you banned from the game, DeadEye provides you with virtually undetectable cheat features. DeadEye is not just an ESP Application but a Gold Standard Cheat Tool. Here we Focus on providing Finest Quality at a very Low and Sustainable Price to suit every pockets."
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="84dp"
+            android:layout_marginBottom="-5dp"
+            android:text="In Associated with Gcc-org.com"
+            android:textStyle="bold|italic" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/imageView26"
+        android:layout_width="wrap_content"
+        android:layout_height="237dp"
+        android:layout_below="@+id/imageView23"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/newsbox">
+
+
+        <TextView
+            android:layout_width="270dp"
+            android:layout_height="51dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="39dp"
+            android:layout_marginTop="9dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center"
+            android:layout_marginEnd="49dp"
+            android:text="Our Social Handle" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/youtube"
+            android:layout_width="118dp"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="74dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_fileName="youtubelogo.json" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/website"
+            android:layout_width="129dp"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="118dp"
+            android:layout_marginTop="38dp"
+            android:layout_marginBottom="74dp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="website.json"
+            app:lottie_loop="true" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/telegram"
+            android:layout_width="118dp"
+            android:layout_height="62dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="226dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="75dp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="telegram.json"
+            app:lottie_loop="true" />
+    </RelativeLayout>
+
+</RelativeLayout>
+
+</FrameLayout>

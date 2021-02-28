@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/dimen_25dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="55dp"
+    android:clipChildren="false"
+    android:layout_marginEnd="55dp"
+    android:clipToPadding="false">
+
+    <com.ramotion.foldingcell.FoldingCell
+        android:id="@+id/folding_cell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        ​
+
+        <FrameLayout
+            android:id="@+id/cell_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:background="@drawable/newsbox"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="400dp">
+
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="23dp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textSize="@dimen/dimen_20dp" />
+
+                <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="250dp"
+                    android:layout_height="284dp"
+                    android:layout_below="@+id/title"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/white"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="63dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/app_name" />
+
+                <ImageView
+                    android:id="@+id/downloadinside"
+                    android:layout_width="190dp"
+                    android:layout_height="33dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="38dp"
+                    android:layout_marginBottom="16dp"
+                    app:srcCompat="@drawable/download" />
+            </RelativeLayout>
+
+        </FrameLayout>
+        ​
+
+        <FrameLayout
+            android:id="@+id/cell_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="154dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/downloadback"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="78dp"
+                android:layout_height="186.86px"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="107dp"
+                app:srcCompat="@drawable/mtmanagericon" />
+
+            <ImageView
+                android:id="@+id/download"
+                android:layout_width="144dp"
+                android:layout_height="26dp"
+                android:layout_below="@+id/imageView21"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/dimen_70dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="76dp"
+                android:layout_marginBottom="19dp"
+                app:srcCompat="@drawable/download" />
+        </FrameLayout>
+        ​
+    </com.ramotion.foldingcell.FoldingCell>
+
+
+</RelativeLayout>

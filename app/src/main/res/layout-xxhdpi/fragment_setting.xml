@@ -1,0 +1,207 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.Gcc.Deadeye.Fragment.SettingFragment"
+    android:background="@color/blue">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="111dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="151dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="151dp"
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/settings"
+            app:layout_constraintBottom_toTopOf="@+id/imageView6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="296dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="49dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/choosegamversionback"
+            app:layout_constraintBottom_toTopOf="@+id/relativeLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.459"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/updateCheat">
+
+            <ImageView
+                android:layout_width="412px"
+                android:layout_height="44px"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="75dp"
+                android:src="@drawable/choosegameversion" />
+
+            <Button
+                android:id="@+id/playstore32version"
+                android:layout_width="136dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_toStartOf="@+id/playstore64version"
+                android:background="@drawable/version32bitback"
+                android:text="playstore 32 "
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="378.55px"
+                tools:layout_editor_absoluteY="73.57px" />
+
+            <Button
+                android:id="@+id/playstore64version"
+                android:layout_width="145dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/playstore64back"
+                android:text="playstore 64 "
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="295dp"
+            android:layout_height="154dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/settingsclearingmodeback"
+            app:layout_constraintBottom_toTopOf="@+id/logoutbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+            <ImageView
+                android:layout_width="276px"
+                android:layout_height="46px"
+
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="42dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginEnd="45dp"
+                android:src="@drawable/cleaningmood" />
+
+            <TextView
+                android:id="@+id/everymin"
+                android:layout_width="81dp"
+                android:layout_height="12dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="102dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="39dp"
+                android:layout_marginEnd="105dp"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center"
+                android:text="Every 1 minutes "
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+            <com.ramotion.fluidslider.FluidSlider
+                android:id="@+id/seekBar"
+                android:layout_width="284dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="6dp"
+                android:elevation="2dp"
+                app:bar_color="@color/orange"
+                app:bubble_color="@color/white"
+                app:bubble_text_color="@color/blue"
+                app:duration="@android:integer/config_mediumAnimTime"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:size="small" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center"
+                android:text="slide the dot according to your device"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/logoutbtn"
+            android:layout_width="295dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="50dp"
+
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="281dp"
+            android:background="@drawable/website"
+            android:fontFamily="@font/montserrat"
+            android:textAlignment="viewStart"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/updateCheat"
+            android:layout_width="295dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="49dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="49dp"
+            android:layout_marginBottom="1dp"
+            android:src="@drawable/updateservers"
+            app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

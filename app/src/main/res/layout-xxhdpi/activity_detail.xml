@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailActivity"
+    android:background="@drawable/background">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card1"
+        android:layout_width="382dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        app:cardBackgroundColor="#2F3844"
+        app:cardCornerRadius="@dimen/dimen_25dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="titlle"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="205dp"
+                android:layout_marginRight="16dp"
+                android:drawablePadding="10dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/montserrat_bold"
+                android:maxLines="10"
+                android:text="$"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_25dp" />
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:drawablePadding="10dp"
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/montserrat"
+                android:maxLines="10"
+                android:text="Description"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:layout_below="@id/title"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="42dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="-36dp"
+                android:layout_marginRight="16dp"
+                android:drawablePadding="10dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center"
+                android:maxLines="10"
+                android:text="500"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_25dp" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card1"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginEnd="11dp"
+        app:cardBackgroundColor="#2F3844"
+        app:cardCornerRadius="@dimen/dimen_25dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="106dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="100dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center"
+                android:text="Select Your Plan"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_20dp" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="false"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="@dimen/dimen_25dp">
+
+                <RadioButton
+                    android:id="@+id/oneday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_30dp"
+                    android:layout_marginTop="61dp"
+                    android:checked="true"
+                    android:buttonTint="@color/white"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="One Day"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/fday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="30dp"
+
+                    android:layout_marginTop="@dimen/dimen_20dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:checked="false"
+
+                    android:buttonTint="@color/white"
+                    android:text="Two Weeks"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/tday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="@dimen/dimen_20dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="One Month"
+                    android:checked="false"
+                    android:buttonTint="@color/white"
+                    android:textColor="@color/white" />
+                <RadioButton
+                    android:id="@+id/customupgrade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="@dimen/dimen_20dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Custom Upgrade"
+                    android:visibility="gone"
+                    android:checked="false"
+                    android:buttonTint="@color/white"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/cusomtxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat"
+                android:maxLines="10"
+                android:visibility="gone"
+                android:layout_marginTop="90dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:text="Custom Upgrade is A Feature in Which You can Upgrade Your Existing Key By Giving A Small Charge of amount and Using Our GateWay Your Time Will Be Same as You Have But You Are Then Eligible To Use Upgraded feature" />
+
+            <Button
+                android:id="@+id/ordernow"
+                android:layout_width="314dp"
+                android:layout_height="58dp"
+                android:layout_below="@+id/select"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/dimen_20dp"
+                android:layout_marginTop="200dp"
+                android:layout_marginEnd="@dimen/dimen_20dp"
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:background="@drawable/activatebtnbacki"
+                android:fontFamily="@font/montserrat_bold"
+                android:visibility="visible"
+                android:text="Order Now"
+                android:textColor="@color/white" />
+            <Button
+                android:id="@+id/Upgraded"
+                android:layout_width="314dp"
+                android:layout_height="58dp"
+                android:layout_below="@+id/select"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/dimen_20dp"
+                android:layout_marginTop="200dp"
+                android:layout_marginEnd="@dimen/dimen_20dp"
+                android:layout_marginBottom="@dimen/dimen_20dp"
+                android:background="@drawable/activatebtnbacki"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Already Upgraded"
+                android:visibility="gone"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

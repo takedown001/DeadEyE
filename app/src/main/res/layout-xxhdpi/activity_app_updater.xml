@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/noStatsLL"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="@color/blue"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="376dp"
+                android:layout_height="361dp"
+                android:layout_marginLeft="30dp"
+                app:cardCornerRadius="20dp"
+                android:layout_marginRight="30dp">
+
+                <LinearLayout
+                    android:layout_width="363dp"
+                    android:layout_height="349dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/newsbox"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="327dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0dip"
+                        android:layout_marginRight="10.0dip"
+                        android:orientation="horizontal">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/animationView"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:lottie_autoPlay="true"
+                            app:lottie_fileName="downloadic.json"
+                            app:lottie_loop="true" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="New Update is Available"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dimen_25dp"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/version"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="New Version: v1.5"
+                                android:fontFamily="@font/montserrat"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:textColor="#ffffffff" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15.0dip"
+                        android:layout_marginTop="20.0dip"
+                        android:gravity="center"
+                        android:text="What's New?"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/whatsnew"
+                        android:layout_width="315dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25.0dip"
+                        android:layout_marginTop="15.0dip"
+                        android:fontFamily="@font/montserrat"
+                        android:layout_marginRight="15.0dip"
+                        android:text="• Bug Fixed\n• New Layout\n• Improved User Interface\n• Reduced App Size\n• Added More Ways to Earn"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textColor="#ffffffff" />
+
+                    <TextView
+                        android:id="@+id/forceUpdateNote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20.0dip"
+                        android:layout_marginTop="15.0dip"
+                        android:layout_marginRight="15.0dip"
+                        android:layout_marginBottom="30.0dip"
+
+
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="#ffffffff"
+                        android:textSize="17.0sp"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/updateButton"
+                        android:layout_width="328dp"
+                        android:layout_height="63dp"
+                        android:layout_marginLeft="15.0dip"
+                        android:layout_marginTop="10.0dip"
+                        android:layout_marginRight="15.0dip"
+                        android:layout_marginBottom="2.0dip"
+                        android:background="@drawable/activatebtnbacki"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="UPDATE"
+                        android:textSize="@dimen/dimen_15dp"
+                        android:textColor="#ffffffff"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
