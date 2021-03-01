@@ -17,6 +17,7 @@ import com.Gcc.Deadeye.GccConfig.urlref;
 import com.hitomi.cmlibrary.CircleMenu;
 import com.hitomi.cmlibrary.OnMenuSelectedListener;
 import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
+import com.ramotion.circlemenu.CircleMenuView;
 
 public class SafeService extends Service {
 
@@ -32,7 +33,7 @@ public class SafeService extends Service {
         return null;
     }
     private String myDaemon = "./"+ urlref.pathoflib+ urlref.nameoflib;
-        private boolean less=true,head=true,cross=true,aim=true,magic=true;
+    private boolean less=true,head=true,cross=true,aim=true,magic=true;
     private String Arrayname[] = {"Less Recoil","AimBot","CrossHair","Magic Bullet","HeadShot"};
     @Override
     public void onCreate() {
@@ -45,7 +46,7 @@ public class SafeService extends Service {
 
         CircleMenu circleMenu = mFloatingView.findViewById(R.id.circle_menu);
 
-        circleMenu.setMainMenu(Color.parseColor("#CDCDCD"), R.drawable.shield, R.drawable.closeij)
+        circleMenu.setMainMenu(Color.parseColor("#ee4f08"), R.drawable.safeicon, R.drawable.closeij)
                 .addSubMenu(Color.parseColor("#258CFF"), R.drawable.gun)
                 .addSubMenu(Color.parseColor("#30A400"), R.drawable.aimbot)
                 .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.crosshair)
@@ -57,55 +58,55 @@ public class SafeService extends Service {
                     public void onMenuSelected(int index) {
                         if(index==0) {
                             if (less) {
-                                ShellUtils.SU(myDaemon + " 1");
+                                ShellUtils.SU(myDaemon + " LESSCHALU");
                                 Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 less=false;
                             } else {
-                               ShellUtils.SU(myDaemon + " 2");
+                                ShellUtils.SU(myDaemon + " LESSBAND");
                                 Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 less=true;
                             }
                         }
-                           else if (index == 1) {
-                                if (aim) {
-                                    ShellUtils.SU(myDaemon + " 3");
-                                    Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
-                                    aim=false;
-                                } else {
-                                    ShellUtils.SU(myDaemon + " 4");
-                                    Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
-                                    aim=true;
-                                }
+                        else if (index == 1) {
+                            if (aim) {
+                                ShellUtils.SU(myDaemon + " AIMCHALU");
+                                Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                aim=false;
+                            } else {
+                                ShellUtils.SU(myDaemon + " AIMBAND");
+                                Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                aim=true;
                             }
+                        }
                         else if (index == 2) {
                             if (cross) {
-                                ShellUtils.SU(myDaemon + " 5");
+                                ShellUtils.SU(myDaemon + " CROSSCHALU");
                                 Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 cross=false;
                             } else {
-                                ShellUtils.SU(myDaemon + " 6");
+                                ShellUtils.SU(myDaemon + " CROSSBAND");
                                 Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 cross=true;
                             }
                         }
                         else if (index == 3) {
                             if (magic) {
-                                ShellUtils.SU(myDaemon + " 7");
+                                ShellUtils.SU(myDaemon + " BULLETCHALU");
                                 Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 magic=false;
                             } else {
-                                ShellUtils.SU(myDaemon + " 8");
+                                ShellUtils.SU(myDaemon + " BULLETBAND");
                                 Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 magic=true;
                             }
                         }
                         else if (index == 4) {
                             if (head) {
-                               ShellUtils.SU(myDaemon + " 8");
+                                ShellUtils.SU(myDaemon + " HEADCHALU");
                                 Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 head=false;
                             } else {
-                               ShellUtils.SU(myDaemon + " 9");
+                                ShellUtils.SU(myDaemon + " HEADBAND");
                                 Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 head=true;
                             }
