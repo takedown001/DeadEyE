@@ -2,6 +2,8 @@ package com.Gcc.Deadeye;
 
 import android.util.Base64;
 
+import com.Gcc.Deadeye.GccConfig.urlref;
+
 import java.security.Key;
 
 import javax.crypto.Cipher;
@@ -13,7 +15,7 @@ public class AESUtils
 
     public static class DarKnight {
         private static final String ALGORITHM = "AES";
-        private static final byte[] SALT = "tAeKpEcDe6410111".getBytes();// THE KEY MUST BE SAME
+        private static final byte[] SALT = urlref.enckey.getBytes();// THE KEY MUST BE SAME
         private static final String X = DarKnight.class.getSimpleName();
         public static String getEncrypted(String plainText) {
             if (plainText == null) {

@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
                 stopService(new Intent(ctx, SafeService.class));
                 stopService(new Intent(ctx, ESPView.class));
                 stopService(new Intent(ctx, FloatLogo.class));
+                isDisplay = false;
+                //startDaemon();
+                isDaemon = false;
                 //		stopService(new Intent(ctx, BrutalService.class));
                 finish();			}
         });
@@ -118,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             bitMod = true;
         }
 //			Log.d("bit",version);
-		Log.d("game",game);
+	//	Log.d("game",game);
         ExecuteElf("su -c");
 
         loadAssets();

@@ -6,23 +6,29 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.util.Log;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.topjohnwu.superuser.Shell;
 
 import static com.Gcc.Deadeye.FloatLogo.SettingValue;
-
 
 public class Overlay extends Service {
     public static boolean isRunning = false;
@@ -30,8 +36,9 @@ public class Overlay extends Service {
     private WindowManager windowManager;
     private View mFloatingView;
     private LinearLayout patches;
+    private TextView initText;
     private ESPView overlayView;
-    static Context ctx;
+    Context ctx;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -66,7 +73,6 @@ public class Overlay extends Service {
         }
         windowManager = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
         overlayView = new ESPView(ctx);
-        //  mFloatingView = LayoutInflater.from(ctx).inflate(R.layout.float_view, null);
         DrawCanvas();
 
     }
@@ -129,8 +135,9 @@ public class Overlay extends Service {
                     });
                 } else {
                     isRunning = true;
-                    SettingValue(0,true);
+
                     startService(new Intent(this, FloatLogo.class));
+                    SettingValue(0,true);
                 }
             }
         }).start();
@@ -140,7 +147,7 @@ public class Overlay extends Service {
     private void startDaemon(int mode){
         new Thread(() -> {
             String cmd = getFilesDir() + "/xcode " + mode;
-    //        Log.d("log",cmd);
+            //        Log.d("log",cmd);
             if(Shell.rootAccess()){
                 Shell.su(cmd).submit();
             } else {
@@ -148,6 +155,7 @@ public class Overlay extends Service {
             }
         }).start();
     }
+
 
 //    private int getProcessID(String pkg) {
 //        int pid = -1;
@@ -192,18 +200,87 @@ public class Overlay extends Service {
 
     public static native void DrawOn(ESPView espView, Canvas canvas);
 
+
     public static native void Size(int num, float size);
 
     public static native void Stop();
 
+    //UI Elements
+    private void addSpace(int space) {
+        View separator = new View(this);
+        LinearLayout.LayoutParams params = setParams();
+        params.height = space;
+        separator.setLayoutParams(params);
+        separator.setBackgroundColor(Color.TRANSPARENT);
+        patches.addView(separator);
+    }
 
+    private void addSwitch(String name, CompoundButton.OnCheckedChangeListener listener) {
+        final Switch sw = new Switch(this);
+        sw.setText(name);
+        sw.setTextSize(dipToPixels());
+        sw.setTextColor(Color.WHITE);
+        sw.getThumbDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+        sw.setOnClickListener(view -> {
+            if (sw.isChecked()) {
+                sw.getThumbDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
+            } else {
+                sw.getThumbDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+            }
+        });
+        sw.setOnCheckedChangeListener(listener);
+        sw.setLayoutParams(setParams());
+        patches.addView(sw);
+        addSpace(12);
+    }
 
+    private void addSeekbar(int max, int def, final SeekBar.OnSeekBarChangeListener listener) {
+        SeekBar sb = new SeekBar(this);
+        sb.setMax(max);
+        sb.setProgress(def);
+        sb.setLayoutParams(setParams());
+        sb.setOnSeekBarChangeListener(listener);
+        patches.addView(sb);
+        addSpace(12);
+    }
+
+    private TextView addText(String text) {
+        TextView tv = new TextView(this);
+        tv.setText(text);
+        tv.setTextSize(getBestTextSize());
+        tv.setTextColor(Color.WHITE);
+        tv.setLayoutParams(setParams());
+        patches.addView(tv);
+        addSpace(12);
+        return tv;
+    }
 
     private LinearLayout.LayoutParams setParams() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         params.gravity = Gravity.CENTER_VERTICAL;
         return params;
+    }
+
+    private boolean isTablet() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        float yInches = metrics.heightPixels / metrics.ydpi;
+        float xInches = metrics.widthPixels / metrics.xdpi;
+        double diagonalInches = Math.sqrt(xInches * xInches + yInches * yInches);
+        return diagonalInches >= 6.5;
+    }
+
+    private float getBestTextSize() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        float d = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, metrics);
+        if (isTablet())
+            d += 7.f;
+        return (d > 20 && !isTablet()) ? 20 : d;
+    }
+
+    private float dipToPixels() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, metrics);
     }
 
     private int getLayoutType() {
@@ -220,7 +297,13 @@ public class Overlay extends Service {
         return LAYOUT_FLAG;
     }
 
+    private int getResID(String name, String type) {
+        return getResources().getIdentifier(name, type, getPackageName());
+    }
 
+    private int getID(String name) {
+        return getResID(name, "id");
+    }
 
     @Override
     public IBinder onBind(Intent intent) {

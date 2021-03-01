@@ -1,8 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+    id 'com.chrisney.enigma'
 }
-
+// Set Enigma options:
+enigma.enabled = false
+enigma.injectFakeKeys = false
+enigma.classes  = ["com.Gcc.Deadeye.GccConfig.urlref.java","com.Gcc.Deadeye.DownloadFile.java","com.Gcc.Deadeye.Overlay.java","com.Gcc.Deadeye.Helper.java","com.Gcc.Deadeye.ESPView.java","com.Gcc.Deadeye.SafeService.java","com.Gcc.Deadeye.PluginActivity.java"]
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -23,7 +27,6 @@ android {
 
     buildTypes {
         release {
-
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             multiDexEnabled true

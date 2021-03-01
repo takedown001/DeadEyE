@@ -79,7 +79,6 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="6dp"
-            android:layout_toStartOf="@+id/lottie2"
             app:srcCompat="@drawable/safefeatures" />
 
         <com.airbnb.lottie.LottieAnimationView

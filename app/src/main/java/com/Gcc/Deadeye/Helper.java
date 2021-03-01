@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.util.Log;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -47,7 +48,7 @@ public class Helper {
      * @param context The application context
      * @return The Xposed version or {@code null} if Xposed isn't installed.
      */
-    public static Integer getXposedVersion(Context context) {
+    public static boolean getXposedVersion(Context context) {
         try {
             File xposedBridge = new File("/system/framework/XposedBridge.jar");
             if (xposedBridge.exists()) {
@@ -57,10 +58,12 @@ public class Helper {
                 Class<?> XposedBridge = dexClassLoader.loadClass("de.robv.android.xposed.XposedBridge");
                 Method getXposedVersion = XposedBridge.getDeclaredMethod("getXposedVersion");
                 if (!getXposedVersion.isAccessible()) getXposedVersion.setAccessible(true);
-                return (Integer) getXposedVersion.invoke(null);
+                Log.d("loooooooooooo", String.valueOf((boolean) getXposedVersion.invoke(null)));
+                return (boolean) getXposedVersion.invoke(null);
             }
         } catch (Exception ignored) {
         }
-        return null;
+
+        return false;
     }
 }

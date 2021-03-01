@@ -477,27 +477,26 @@ public class FloatLogo extends Service implements View.OnClickListener {
     }
 
     void Init(){
-
-        final Switch isEnemyWeapon = mFloatingView.findViewById(R.id.isEnemyWeapon);
-        isEnemyWeapon.setChecked(getConfig((String) isEnemyWeapon.getText()));
-        SettingValue(10,getConfig((String) isEnemyWeapon.getText()));
-        isEnemyWeapon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setValue(String.valueOf(isEnemyWeapon.getText()), isEnemyWeapon.isChecked());
-                SettingValue(10,isEnemyWeapon.isChecked());
-            }
-        });
-        final Switch isGrenadeWarning = mFloatingView.findViewById(R.id.isGrenadeWarning);
-        isGrenadeWarning.setChecked(getConfig((String) isGrenadeWarning.getText()));
-        SettingValue(0,getConfig((String) isGrenadeWarning.getText()));
-        isGrenadeWarning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setValue(String.valueOf(isGrenadeWarning.getText()), isGrenadeWarning.isChecked());
-                SettingValue(0,isGrenadeWarning.isChecked());
-            }
-        });
+//        final Switch isEnemyWeapon = mFloatingView.findViewById(R.id.isEnemyWeapon);
+//        isEnemyWeapon.setChecked(getConfig((String) isEnemyWeapon.getText()));
+//        SettingValue(10,getConfig((String) isEnemyWeapon.getText()));
+//        isEnemyWeapon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                setValue(String.valueOf(isEnemyWeapon.getText()), isEnemyWeapon.isChecked());
+//                SettingValue(10,isEnemyWeapon.isChecked());
+//            }
+//        });
+//        final Switch isGrenadeWarning = mFloatingView.findViewById(R.id.isGrenadeWarning);
+//        isGrenadeWarning.setChecked(getConfig((String) isGrenadeWarning.getText()));
+//        SettingValue(0,getConfig((String) isGrenadeWarning.getText()));
+//        isGrenadeWarning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                setValue(String.valueOf(isGrenadeWarning.getText()), isGrenadeWarning.isChecked());
+//                SettingValue(0,isGrenadeWarning.isChecked());
+//            }
+//        });
         final Switch isSkelton = mFloatingView.findViewById(R.id.isSkelton);
         isSkelton.setChecked(getConfig((String) isSkelton.getText()));
         SettingValue(14,getConfig((String) isSkelton.getText()));

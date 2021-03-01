@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="31dp"
+        android:layout_width="75dp"
+        android:layout_height="18dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -57,15 +57,15 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/safelay"
-        android:layout_width="wrap_content"
-        android:layout_height="97dp"
+        android:layout_width="296dp"
+        android:layout_height="83dp"
         android:layout_below="@+id/imageView2"
         android:layout_alignParentStart="true"
+        android:id="@+id/safelay"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="@dimen/dimen_50dp"
-        android:layout_marginTop="39dp"
-        android:layout_marginEnd="@dimen/dimen_50dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="58dp"
         android:background="@drawable/rectcopy">
 
         <ImageView
@@ -79,7 +79,6 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="6dp"
-            android:layout_toStartOf="@+id/lottie2"
             app:srcCompat="@drawable/safefeatures" />
 
         <com.airbnb.lottie.LottieAnimationView
@@ -107,23 +106,23 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="3dp"
+            android:visibility="gone"
             android:layout_marginEnd="9dp"
             android:layout_marginBottom="0dp"
-            android:visibility="gone"
             app:lottie_fileName="switch.json" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/brutallay"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_width="296dp"
+        android:layout_height="83dp"
         android:layout_below="@+id/safelay"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="@dimen/dimen_50dp"
+        android:layout_marginStart="42dp"
         android:layout_marginTop="@dimen/dimen_30dp"
-        android:layout_marginEnd="@dimen/dimen_50dp"
+        android:layout_marginEnd="55dp"
         android:background="@drawable/redrect">
 
         <com.airbnb.lottie.LottieAnimationView

@@ -5,7 +5,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := xcode
 
 LOCAL_SRC_FILES := Socket/SocketServer.cpp \
-				   Server/kmods.cpp \
+				   Server/error.cpp \
 
 LOCAL_CPP_INCLUDES += $(LOCAL_PATH)
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/Socket
@@ -20,7 +20,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := error
 
 LOCAL_SRC_FILES := Socket/SocketClient.cpp \
-                   Client/kmods.cpp \
+                   Client/error.cpp \
 
 LOCAL_C_INCLUDES += $(LOCAL_PATH)
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/Socket

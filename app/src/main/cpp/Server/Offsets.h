@@ -4,8 +4,8 @@
 namespace Offsets {
     enum Offsets {
 		//Global
-		GWorld = 0x6333120,
-		GNames = 0x65C1D64,
+		GWorld = 0x6BC94E8,
+		GNames = 0x6BC03CC,
 		PointerSize = 0x4,
 
 		//Struct Size
@@ -33,18 +33,18 @@ namespace Offsets {
 		//Class: SceneComponent
 		SceneComponentToComponentToWorld = 0x140,
 		//Class: SkeletalMeshComponent
-		SkeletalMeshComponentToCachedComponentSpaceTransforms = 0x6B8,
+		SkeletalMeshComponentToCachedComponentSpaceTransforms = 0x6E0,
 		//Class: Actor
 		ActorToRootComponent = 0x138,
 		//Class: Character
 		CharacterToMesh = 0x308,
 		//Class: UAECharacter
-		UAECharacterToPlayerName = 0x5E8,
-		UAECharacterToPlayerKey = 0x600,
-		UAECharacterToTeamID = 0x610,
-		UAECharacterTobIsAI = 0x680,
+		UAECharacterToPlayerName = 0x5F8,
+		UAECharacterToPlayerKey = 0x610,
+		UAECharacterToTeamID = 0x620,
+		UAECharacterTobIsAI = 0x694,
 		//Class: STExtraCharacter
-		STExtraCharacterToHealth = 0x788,
+		STExtraCharacterToHealth = 0x830,
     };
 }
 

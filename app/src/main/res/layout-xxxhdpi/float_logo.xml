@@ -548,6 +548,7 @@
 							android:layout_height="@dimen/dimen_40dp"
 							android:layout_marginStart="@dimen/dimen_5dp"
 							android:checked="true"
+							android:visibility="gone"
 							android:fontFamily="@font/montserrat"
 							android:text="Grenade Warning"
 							android:textColor="@color/white"
@@ -560,6 +561,7 @@
 							android:layout_height="41dp"
 							android:layout_marginStart="@dimen/dimen_5dp"
 							android:checked="true"
+							android:visibility="gone"
 							android:fontFamily="@font/montserrat"
 							android:text="Enemy Weapon"
 							android:textColor="@color/white"
@@ -2121,7 +2123,7 @@
 				android:id="@+id/floatLogo"
 				android:layout_width="40dp"
 				android:layout_height="40dp"
-				android:src="@drawable/logo"
+				android:src="@mipmap/ic_launcher"
 				tools:ignore="ContentDescription" />
 
 		</RelativeLayout>

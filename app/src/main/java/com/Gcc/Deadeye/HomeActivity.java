@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -42,7 +43,7 @@ import java.util.HashMap;
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_KEY;
 
 
-public class HomeActivity extends BaseActivity  {
+public class HomeActivity extends AppCompatActivity {
 
     ChipNavigationBar chipNavigationBar;
     private  boolean error;

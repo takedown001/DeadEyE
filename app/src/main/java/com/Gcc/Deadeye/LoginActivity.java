@@ -84,6 +84,18 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
             public void idsAvailable(String userId, String registrationId) {
            //     String text = "OneSignal UserID:\n" + userId + "\n\n";
                UUID = userId;
+                if(UUID.isEmpty()){
+                    new AlertDialog.Builder(LoginActivity.this)
+                            .setTitle("Warning")
+                            .setMessage("Something is Wrong, Restart Your App")
+                            .setCancelable(false)
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            }).show();
+                }
                 UUID = AESUtils.DarKnight.getEncrypted(UUID);
             }
         });
@@ -105,11 +117,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
             }
         });
 
-        try {
-            Process p = Runtime.getRuntime().exec("su");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         findViewById(R.id.GetkeyButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,8 +145,11 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
                             finish();
                         }
                     }).show();
-        }
 
+        }
+        else{
+            ShellUtils.SU("su");
+        }
 
         EmulatorDetector.with(this)
                 .setCheckTelephony(false)
@@ -162,8 +173,8 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
 
                     }
                 });
-    }
 
+    }
 
     @SuppressLint("HardwareIds")
     public static String getDeviceId(Context context) {

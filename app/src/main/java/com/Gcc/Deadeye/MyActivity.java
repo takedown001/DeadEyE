@@ -55,9 +55,9 @@ public class MyActivity extends AppCompatActivity {
         txnid = getIntent().getExtras().getString("taxid");
         amount = getIntent().getExtras().getString("amount");
         prodname = getIntent().getExtras().getString("product");
-        key = getIntent().getExtras().getString("key","null");
-        time = getIntent().getExtras().getString("time","1");
-        dollar = getIntent().getExtras().getString("dollar","75");
+        key = getIntent().getExtras().getString("key",urlref.defalkey);
+        time = getIntent().getExtras().getString("time",urlref.time);
+        dollar = getIntent().getExtras().getString("dollar",urlref.dollar);
         amount = String.valueOf( Float.parseFloat(amount) *Float.parseFloat(dollar));
       //  Log.d("test",UUID);
     //    Log.d("doll",amount);

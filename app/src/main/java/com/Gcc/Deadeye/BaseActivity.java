@@ -18,7 +18,7 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private AlertDialog dialog;
+    public AlertDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

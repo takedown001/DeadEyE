@@ -58,4 +58,11 @@ public class urlref {
     @SuppressLint("SdCardPath")
     public static final String pathoflib = "/data/data/com.Gcc.Deadeye/files/";
     public static final String downloadpath = "https://gcc-org.com/Downloads/libtakedown.so";
+    public static final String dollar = "75";
+    public static final String time = "1";
+    public static final String defalkey = "null";
+
+    //encr
+    public static final String enckey = "tAeKpEcDe6410111";
+
 }
