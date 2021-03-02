@@ -15,14 +15,14 @@ import android.app.AlertDialog;
 
 import com.Gcc.Deadeye.GccConfig.urlref;
 
-public class DownloadFile extends AsyncTask<String, Integer, String>
+public class LoadBeta extends AsyncTask<String, Integer, String>
 {
-    
+
     private Context instance;
     private PowerManager.WakeLock mWakeLock;
     ProgressDialog mProgressDialog;
 
-    public DownloadFile(Context context) {
+    public LoadBeta(Context context) {
         this.instance = context;
         mProgressDialog = new ProgressDialog(instance);
         mProgressDialog.setMessage("Downloading Requirements...");
@@ -42,13 +42,13 @@ public class DownloadFile extends AsyncTask<String, Integer, String>
             connection.connect();
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 return "Server returned HTTP " + connection.getResponseCode()
-					+ " " + connection.getResponseMessage();
+                        + " " + connection.getResponseMessage();
             }
             int fileLength = connection.getContentLength();
 
             // download the file
             input = connection.getInputStream();
-            output = new FileOutputStream(instance.getFilesDir().toString()+ urlref.livelib);
+            output = new FileOutputStream(instance.getFilesDir().toString()+ urlref.Betalib);
             byte data[] = new byte[4096];
             long total = 0;
             int count;
@@ -84,7 +84,7 @@ public class DownloadFile extends AsyncTask<String, Integer, String>
         super.onPreExecute();
         PowerManager pm = (PowerManager) instance.getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-								   getClass().getName());
+                getClass().getName());
         mWakeLock.acquire();
         mProgressDialog.show();
     }
@@ -103,10 +103,10 @@ public class DownloadFile extends AsyncTask<String, Integer, String>
         mProgressDialog.dismiss();
         if (result != null) {
             new AlertDialog.Builder(instance)
-			.setMessage("Download file is failed, please try again!")
-			.setPositiveButton("OK", null)
-			.show();
-        } 
+                    .setMessage("Download file is failed, please try again!")
+                    .setPositiveButton("OK", null)
+                    .show();
+        }
     }
 
 }

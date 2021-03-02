@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 isDisplay = false;
                 //startDaemon();
                 isDaemon = false;
+                Overlay.isRunning=false;
                 //		stopService(new Intent(ctx, BrutalService.class));
                 finish();			}
         });

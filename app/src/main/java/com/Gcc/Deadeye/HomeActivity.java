@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -158,14 +157,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         if(Helper.checkVPN(HomeActivity.this)){
-
-                Toast.makeText(HomeActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+            Toast.makeText(HomeActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
             finish();
         }else {
-            File f = new File(urlref.pathoflib + urlref.nameoflib);
-
-            if (!f.exists() && safe) {
-                new DownloadFile(HomeActivity.this).execute(urlref.downloadpath);
+            File l = new File(getFilesDir().toString() + urlref.livelib);
+            File b = new File(getFilesDir().toString() + urlref.Betalib);
+            if (!l.exists() && safe && !b.exists()) {
+                new DownloadFile(HomeActivity.this).execute(urlref.downloadpathLive);
+                new LoadBeta(HomeActivity.this).execute(urlref.downloadpathBeta);
             }
             new OneLoadAllProducts().execute();
         }

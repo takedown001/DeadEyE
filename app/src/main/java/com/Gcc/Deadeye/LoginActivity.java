@@ -253,7 +253,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
                 HashMap<String,String> params = new HashMap<>();
                 params.put(TAG_DEVICEID,AESUtils.DarKnight.getEncrypted(deviceid));
                 params.put(TAG_KEY,AESUtils.DarKnight.getEncrypted(key));
-                params.put(TAG_ONESIGNALID,AESUtils.DarKnight.getEncrypted(UUID));
+                params.put(TAG_ONESIGNALID,UUID);
 //                Log.d("test",AESUtils.DarKnight.getEncrypted(deviceid));
 //                Log.d("test",AESUtils.DarKnight.getEncrypted(key));
 //                Log.d("test",AESUtils.DarKnight.getEncrypted(UUID));
@@ -262,6 +262,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
 
                 try {
                     rq = jsonParserString.makeHttpRequest(url, params);
+
                 } catch (KeyStoreException | IOException e) {
                     e.printStackTrace();
                 }
@@ -280,7 +281,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
                         try {
 
                             JSONObject obj = new JSONObject(s);
-                            //    Log.d("login", obj.toString());
+                           //  Log.d("login", obj.toString());
                             //checking for error to authenticate
                             error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
                        //    Log.d("test", String.valueOf(error));

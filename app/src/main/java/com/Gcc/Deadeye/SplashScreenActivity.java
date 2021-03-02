@@ -38,7 +38,7 @@ public class SplashScreenActivity extends Activity {
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String url = urlref.Main + "login.php";
     private static final String TAG_DURATION = urlref.TAG_DURATION;
-    private  boolean error;
+    private  boolean error,safe,brutal;
     //Prefrance
     String UUID;
 
@@ -62,17 +62,7 @@ public class SplashScreenActivity extends Activity {
 
         deviceid = AESUtils.DarKnight.getEncrypted(getDeviceId(SplashScreenActivity.this));
 
-        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
-            @Override
-            public void idsAvailable(String userId, String registrationId) {
-                //     String text = "OneSignal UserID:\n" + userId + "\n\n";
-                UUID = userId;
-             //   Log.d("test",UUID);
-                UUID = AESUtils.DarKnight.getEncrypted(UUID);
-          //      Log.d("test",UUID);
 
-            }
-        });
         if(Helper.checkVPN(SplashScreenActivity.this)) {
             Toast.makeText(SplashScreenActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
             finish();
@@ -139,6 +129,7 @@ public class SplashScreenActivity extends Activity {
             String rq = null;
             try {
                 rq = jsonParserString.makeHttpRequest(url, params);
+              //  Log.d("json",rq.toString());
             } catch (KeyStoreException | IOException e) {
                 e.printStackTrace();
             }
@@ -164,6 +155,8 @@ public class SplashScreenActivity extends Activity {
                             // Log.d("test", String.valueOf(error));
                             if (!error) {
                                 getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
+                                safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
+                                brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
                                 editor.putLong(TAG_DURATION, getduration);
                                 editor.apply();
 
@@ -194,6 +187,8 @@ public class SplashScreenActivity extends Activity {
 
                                         //user signedin
                                         Intent i = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                                        i.putExtra("safe", safe);
+                                        i.putExtra("brutal", brutal);
                                         startActivity(i);
                                     } else {
                                         //   Log.d("duration", String.valueOf(getduration));

@@ -2,37 +2,30 @@ package com.Gcc.Deadeye.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.StrictMode;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.Gcc.Deadeye.DownloadFile;
-import com.Gcc.Deadeye.ESPView;
 import com.Gcc.Deadeye.GccConfig.urlref;
-import com.Gcc.Deadeye.LoginActivity;
+import com.Gcc.Deadeye.LoadBeta;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.ShellUtils;
 import com.ramotion.fluidslider.FluidSlider;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -40,6 +33,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.Gcc.Deadeye.HomeActivity.safe;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -326,9 +320,20 @@ public class SettingFragment extends Fragment {
         i.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShellUtils.SU("rm -rf "+urlref.pathoflib+urlref.nameoflib);
-                new DownloadFile(getActivity()).execute(urlref.downloadpath);
-                ShellUtils.SU("chmod 777 "+urlref.pathoflib+urlref.nameoflib);
+                if(safe){
+
+
+                ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+urlref.livelib);
+                ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+ urlref.Betalib);
+                //Log.d("check","rm -rf "+ getActivity().getFilesDir().toString()+urlref.livelib);
+                new DownloadFile(getActivity()).execute(urlref.downloadpathLive);
+                new LoadBeta(getActivity()).execute(urlref.downloadpathBeta);
+                ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.livelib);
+                ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.Betalib);
+                }else{
+                    Toast.makeText(getContext(),"You are A Basic Plan User",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -337,7 +342,8 @@ public class SettingFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://Deadeye.Gcc-org.com"));
+                startActivity(browserIntent);
             }
         });
 

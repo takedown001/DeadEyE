@@ -1,6 +1,8 @@
 package com.Gcc.Deadeye;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -93,13 +95,24 @@ public class PluginActivity extends AppCompatActivity {
                     switchsafe.setMinAndMaxProgress(0.5f,1.0f);
                     switchsafe.playAnimation();
                     safecheck=false;
-
                     editor.putBoolean("safecheck",safecheck).apply();
+
                 }else{
                     switchsafe.setMinAndMaxProgress(0.0f,0.5f);
                     switchsafe.playAnimation();
                     safecheck=true;
                     editor.putBoolean("safecheck",safecheck).apply();
+                    new AlertDialog.Builder(PluginActivity.this)
+                            .setTitle("Refresh")
+                            .setMessage("Settings Changes, App Needs To restart")
+                            .setCancelable(false)
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent i = new Intent(PluginActivity.this, LoginActivity.class);
+                                    startActivity(i);
+                                }
+                            }).show();
                 }
             }
         });

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,7 +18,6 @@ import com.Gcc.Deadeye.GccConfig.urlref;
 import com.hitomi.cmlibrary.CircleMenu;
 import com.hitomi.cmlibrary.OnMenuSelectedListener;
 import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
-import com.ramotion.circlemenu.CircleMenuView;
 
 public class SafeService extends Service {
 
@@ -32,7 +32,7 @@ public class SafeService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-    private String myDaemon = "./"+ urlref.pathoflib+ urlref.nameoflib;
+    private String myDaemon;
     private boolean less=true,head=true,cross=true,aim=true,magic=true;
     private String Arrayname[] = {"Less Recoil","AimBot","CrossHair","Magic Bullet","HeadShot"};
     @Override
@@ -43,10 +43,15 @@ public class SafeService extends Service {
         //Inflate the floating view layout we created
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null);
 
-
+        if(HomeActivity.beta) {
+            myDaemon = "." + urlref.pathoflib + urlref.Betalib;
+        }else {
+            myDaemon = "." + urlref.pathoflib + urlref.livelib;
+        }
+      //  Log.d("lol",myDaemon);
         CircleMenu circleMenu = mFloatingView.findViewById(R.id.circle_menu);
 
-        circleMenu.setMainMenu(Color.parseColor("#ee4f08"), R.drawable.safeicon, R.drawable.closeij)
+        circleMenu.setMainMenu(Color.parseColor("#ee4f08"), R.mipmap.safeicon, R.drawable.closeij)
                 .addSubMenu(Color.parseColor("#258CFF"), R.drawable.gun)
                 .addSubMenu(Color.parseColor("#30A400"), R.drawable.aimbot)
                 .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.crosshair)

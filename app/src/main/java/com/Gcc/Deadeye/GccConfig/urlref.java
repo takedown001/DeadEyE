@@ -54,10 +54,13 @@ public class urlref {
     public static final String MerchantKey = "RiXMGDGv";
 
     //libs
-    public static final String nameoflib = "/libtakedown.so";
+    public static final String livelib = "/libtakedown.so";
+    public static final String Betalib = "/liberror.so";
     @SuppressLint("SdCardPath")
-    public static final String pathoflib = "/data/data/com.Gcc.Deadeye/files/";
-    public static final String downloadpath = "https://gcc-org.com/Downloads/libtakedown.so";
+    public static final String pathoflib = "/data/data/com.Gcc.Deadeye/files";
+    public static final String downloadpathLive = "https://gcc-org.com/deadeyeesp/live/Downloads/libtakedown.so";
+    public static final String downloadpathBeta = "https://gcc-org.com/deadeyeesp/beta/Downloads/liberror.so";
+
     public static final String dollar = "75";
     public static final String time = "1";
     public static final String defalkey = "null";

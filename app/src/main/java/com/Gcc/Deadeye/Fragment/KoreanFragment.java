@@ -2,6 +2,7 @@ package com.Gcc.Deadeye.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -9,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +20,15 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.Gcc.Deadeye.AESUtils;
+import com.Gcc.Deadeye.ESPView;
+import com.Gcc.Deadeye.FloatLogo;
 import com.Gcc.Deadeye.GccConfig.urlref;
 import com.Gcc.Deadeye.Helper;
 import com.Gcc.Deadeye.HomeActivity;
 import com.Gcc.Deadeye.JavaUrlConnectionReader;
 import com.Gcc.Deadeye.LoginActivity;
 import com.Gcc.Deadeye.MainActivity;
+import com.Gcc.Deadeye.Overlay;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.SafeService;
 import com.Gcc.Deadeye.ShellUtils;
@@ -82,8 +85,8 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
         g.putString("game", "Korea").apply();
         version = shred.getString("version", "32");
         version = AESUtils.DarKnight.getEncrypted(version);
-        final File daemon = new File(urlref.pathoflib+urlref.nameoflib);
-
+        final File daemon = new File(urlref.pathoflib+urlref.livelib);
+        Context ctx = getActivity();
         deviceid = LoginActivity.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
 
@@ -174,8 +177,15 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
 
 
                                 if (safecheck) {
-                                    getActivity().startService(new Intent(getContext(), SafeService.class));
-                                    ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/liberror.so");
+                                    getActivity().stopService(new Intent(getActivity(), SafeService.class));
+                                    getActivity().stopService(new Intent(ctx, Overlay.class));
+                                    getActivity().stopService(new Intent(ctx, SafeService.class));
+                                    ctx.stopService(new Intent(ctx, ESPView.class));
+                                    ctx.stopService(new Intent(ctx, FloatLogo.class));
+                                    MainActivity.isDisplay = false;
+                                    //startDaemon();
+                                    MainActivity.isDaemon = false;
+                                    Overlay.isRunning=false;
                                 }
                                 if (brutalcheck) {
 
@@ -185,8 +195,15 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
 
 
                                 if (safecheck) {
-                                    getActivity().startService(new Intent(getContext(), SafeService.class));
-                                    ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/libtakedown.so");
+                                    getActivity().stopService(new Intent(getActivity(), SafeService.class));
+                                    getActivity().stopService(new Intent(ctx, Overlay.class));
+                                    getActivity().stopService(new Intent(ctx, SafeService.class));
+                                    ctx.stopService(new Intent(ctx, ESPView.class));
+                                    ctx.stopService(new Intent(ctx, FloatLogo.class));
+                                    MainActivity.isDisplay = false;
+                                    //startDaemon();
+                                    MainActivity.isDaemon = false;
+                                    Overlay.isRunning=false;
                                 }
                                 if (brutalcheck) {
 

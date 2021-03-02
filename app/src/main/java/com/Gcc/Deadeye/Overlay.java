@@ -124,7 +124,7 @@ public class Overlay extends Service {
                  */
                 startDaemon(game);
                 try {
-                    Thread.sleep(1300);
+                    Thread.sleep(3500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -135,9 +135,9 @@ public class Overlay extends Service {
                     });
                 } else {
                     isRunning = true;
-
                     startService(new Intent(this, FloatLogo.class));
                     SettingValue(0,true);
+                    SettingValue(8,true);
                 }
             }
         }).start();
