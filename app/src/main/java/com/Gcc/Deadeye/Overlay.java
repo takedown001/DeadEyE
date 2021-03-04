@@ -29,14 +29,15 @@ import android.widget.Toast;
 import com.topjohnwu.superuser.Shell;
 
 import static com.Gcc.Deadeye.FloatLogo.SettingValue;
+import static com.Gcc.Deadeye.GccConfig.urlref.canary;
+import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
+import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
 
 public class Overlay extends Service {
     public static boolean isRunning = false;
 
     private WindowManager windowManager;
     private View mFloatingView;
-    private LinearLayout patches;
-    private TextView initText;
     private ESPView overlayView;
     Context ctx;
     @Override
@@ -50,32 +51,33 @@ public class Overlay extends Service {
             Start(ctx,1,1);
 
         }
-        else if (MainActivity.gameType == 1 && MainActivity.is64) {
-            Start(ctx,1,2);
-        }
+//        else if (MainActivity.gameType == 1 && MainActivity.is64) {
+//            Start(ctx,1,2);
+//        }
         else if (MainActivity.gameType == 2 && MainActivity.is32) {
             Start(ctx,2,1);
         }
-        else if (MainActivity.gameType == 2 && MainActivity.is64) {
-            Start(ctx,2,2);
-        }
+//        else if (MainActivity.gameType == 2 && MainActivity.is64) {
+//            Start(ctx,2,2);
+//        }
         else if (MainActivity.gameType == 3 && MainActivity.is32) {
             Start(ctx,3,1);
         }
-        else if (MainActivity.gameType == 3 && MainActivity.is64) {
-            Start(ctx,3,2);
-        }
+//        else if (MainActivity.gameType == 3 && MainActivity.is64) {
+//            Start(ctx,3,2);
+//        }
         else if (MainActivity.gameType == 4 && MainActivity.is32) {
             Start(ctx,4,1);
         }
-        else if (MainActivity.gameType == 4 && MainActivity.is64) {
-            Start(ctx,4,2);
-        }
+//        else if (MainActivity.gameType == 4 && MainActivity.is64) {
+//            Start(ctx,4,2);
+//        }
         windowManager = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
         overlayView = new ESPView(ctx);
         DrawCanvas();
 
     }
+
 
     @Override
     public void onDestroy() {
@@ -124,7 +126,7 @@ public class Overlay extends Service {
                  */
                 startDaemon(game);
                 try {
-                    Thread.sleep(3500);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -205,62 +207,6 @@ public class Overlay extends Service {
 
     public static native void Stop();
 
-    //UI Elements
-    private void addSpace(int space) {
-        View separator = new View(this);
-        LinearLayout.LayoutParams params = setParams();
-        params.height = space;
-        separator.setLayoutParams(params);
-        separator.setBackgroundColor(Color.TRANSPARENT);
-        patches.addView(separator);
-    }
-
-    private void addSwitch(String name, CompoundButton.OnCheckedChangeListener listener) {
-        final Switch sw = new Switch(this);
-        sw.setText(name);
-        sw.setTextSize(dipToPixels());
-        sw.setTextColor(Color.WHITE);
-        sw.getThumbDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-        sw.setOnClickListener(view -> {
-            if (sw.isChecked()) {
-                sw.getThumbDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
-            } else {
-                sw.getThumbDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-            }
-        });
-        sw.setOnCheckedChangeListener(listener);
-        sw.setLayoutParams(setParams());
-        patches.addView(sw);
-        addSpace(12);
-    }
-
-    private void addSeekbar(int max, int def, final SeekBar.OnSeekBarChangeListener listener) {
-        SeekBar sb = new SeekBar(this);
-        sb.setMax(max);
-        sb.setProgress(def);
-        sb.setLayoutParams(setParams());
-        sb.setOnSeekBarChangeListener(listener);
-        patches.addView(sb);
-        addSpace(12);
-    }
-
-    private TextView addText(String text) {
-        TextView tv = new TextView(this);
-        tv.setText(text);
-        tv.setTextSize(getBestTextSize());
-        tv.setTextColor(Color.WHITE);
-        tv.setLayoutParams(setParams());
-        patches.addView(tv);
-        addSpace(12);
-        return tv;
-    }
-
-    private LinearLayout.LayoutParams setParams() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        params.gravity = Gravity.CENTER_VERTICAL;
-        return params;
-    }
 
     private boolean isTablet() {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -270,18 +216,6 @@ public class Overlay extends Service {
         return diagonalInches >= 6.5;
     }
 
-    private float getBestTextSize() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float d = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, metrics);
-        if (isTablet())
-            d += 7.f;
-        return (d > 20 && !isTablet()) ? 20 : d;
-    }
-
-    private float dipToPixels() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, metrics);
-    }
 
     private int getLayoutType() {
         int LAYOUT_FLAG;

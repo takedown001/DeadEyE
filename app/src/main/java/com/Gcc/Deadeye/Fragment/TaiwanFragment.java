@@ -41,6 +41,9 @@ import java.util.HashMap;
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.Gcc.Deadeye.GccConfig.urlref.canary;
+import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
+import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
 
 
 public class TaiwanFragment extends Fragment implements View.OnClickListener {
@@ -64,7 +67,29 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Check();
+    }
 
+    private void Check(){
+        if(Helper.checkVPN(getActivity())) {
+            Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+            getActivity().finish();
+        }
+        if(Helper.isXposedActive()){
+            getActivity().finish();
+        }
+        if(Helper.isXposedInstallerAvailable(getActivity())){
+            getActivity().finish();
+        }
+        if (Helper.isAppRunning(getActivity(),netgaurd)){
+            getActivity().finish();
+        }
+        if (Helper.isAppRunning(getActivity(),canary)){
+            getActivity().finish();
+        }
+        if (Helper.isAppRunning(getActivity(),pcanary)){
+            getActivity().finish();
+        }
     }
     final DialogFragment lottieDialog = new LottieDialogFragment().newInstance("loadingdone.json", true);
     @Override
@@ -239,24 +264,16 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                             try {
                                 Process su = Runtime.getRuntime().exec("su");
                                 DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                outputStream.writeBytes("Target=\"/data/data/com.rekoo.pubgm/shared_prefs/device_id.xml\"\n" +
-                                        "if [ \"$(pidof com.rekoo.pubgm)\" != \"\" ]\n" +
-                                        "then\n" +
-                                        "su -c killall com.rekoo.pubgm\n" +
-                                        "fi\n" +
-                                        " rm -rf $Target\n" +
-                                        " touch $Target\n" +
-                                        " chmod 777 $Target\n" +
-                                        "echo \"\"\n" +
+                                outputStream.writeBytes("GUEST=\"/data/data/com.rekoo.pubgm/shared_prefs/device_id.xml\"\n" +
+                                        "kill com.rekoo.pubgm\n" +
+                                        "rm -rf $GUEST\n" +
                                         "echo \"<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n" +
                                         "<map>\n" +
                                         "    <string name=\\\"random\\\"></string>\n" +
                                         "    <string name=\\\"install\\\"></string>\n" +
-                                        "    <string name=\\\"uuid\\\">$(tr -dc a-z0-9 </dev/urandom | head -c 32)</string>\n" +
-                                        "</map> \" >> $Target\n" +
-                                        "rm -rf /data/data/com.rekoo.pubgm/databases\n" +
-                                        "rm -rf /data/media/0/Android/data/com.rekoo.pubgm/files/login-identifier.txt\n" +
-                                        "chmod 644 $Target\n");
+                                        "    <string name=\\\"uuid\\\">$RANDOM$RANDOM-$RANDOM-$RANDOM-$RANDOM-$RANDOM$RANDOM$RANDOM</string>\n" +
+                                        "</map>\" > $GUEST\n" +
+                                        "rm -rf /data/media/0/Android/data/com.rekoo.pubgm/files/login-identifier.txt\n");
                                 outputStream.flush();
                                 outputStream.writeBytes("exit\n");
                                 outputStream.flush();

@@ -597,13 +597,12 @@ public class FloatLogo extends Service implements View.OnClickListener {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        addText("Item ESP");
-        addSwitch("Name", (buttonView, isChecked) -> SettingValue(9, isChecked));
-        addSwitch("Distance", (buttonView, isChecked) -> SettingValue(10, isChecked));
+        addSwitch("Item Name", (buttonView, isChecked) -> SettingValue(9, isChecked));
+        addSwitch("Item Distance", (buttonView, isChecked) -> SettingValue(10, isChecked));
         addSwitch("Vehicles", (buttonView, isChecked) -> SettingValue(11, isChecked));
         addSwitch("LootBox", (buttonView, isChecked) -> SettingValue(12, isChecked));
         addSwitch("Airdrop", (buttonView, isChecked) -> SettingValue(15, isChecked));
-        addSwitch("Important Items", (buttonView, isChecked) -> SettingValue(13, isChecked));
+        addSwitch("Special Items", (buttonView, isChecked) -> SettingValue(13, isChecked));
 
         addSeekbar(30, 10, new SeekBar.OnSeekBarChangeListener() {
             TextView sizetext = addText("ItemsESP Size: 15");
@@ -725,7 +724,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
     private TextView addText(String text) {
         TextView tv = new TextView(this);
         tv.setText(text);
-        tv.setTextSize(getBestTextSize());
+        tv.setTextSize(15);
         tv.setTextColor(Color.WHITE);
         tv.setLayoutParams(setParams());
         player.addView(tv);
@@ -741,20 +740,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
         return diagonalInches >= 6.5;
     }
 
-    private float getBestTextSize() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float d = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, metrics);
-        if (isTablet())
-            d += 7.f;
-        return (d > 20 && !isTablet()) ? 20 : d;
-    }
 
-}
-class SingleTapConfirm extends GestureDetector.SimpleOnGestureListener {
 
-    @Override
-    public boolean onSingleTapUp(MotionEvent event) {
-        return true;
-    }
 }
 

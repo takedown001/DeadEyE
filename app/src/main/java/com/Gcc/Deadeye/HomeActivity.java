@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,6 +41,9 @@ import java.io.File;
 import java.util.HashMap;
 
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_KEY;
+import static com.Gcc.Deadeye.GccConfig.urlref.canary;
+import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
+import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -166,10 +170,33 @@ public class HomeActivity extends AppCompatActivity {
                 new DownloadFile(HomeActivity.this).execute(urlref.downloadpathLive);
                 new LoadBeta(HomeActivity.this).execute(urlref.downloadpathBeta);
             }
-            new OneLoadAllProducts().execute();
+
+        }
+    Log.d("prooff", String.valueOf(Helper.isAppRunning(HomeActivity.this,"eu.faircode.netguard")));
+        Check();
+       new OneLoadAllProducts().execute();
+    }
+    private  void Check(){
+        if(Helper.checkVPN(HomeActivity.this)) {
+            Toast.makeText(HomeActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        if(Helper.isXposedActive()){
+            finish();
+        }
+        if(Helper.isXposedInstallerAvailable(HomeActivity.this)){
+            finish();
+        }
+        if (Helper.isAppRunning(HomeActivity.this,netgaurd)){
+            finish();
+        }
+        if (Helper.isAppRunning(HomeActivity.this,canary)){
+            finish();
+        }
+        if (Helper.isAppRunning(HomeActivity.this,pcanary)){
+            finish();
         }
     }
-
 
     private void InitRICObverlays() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

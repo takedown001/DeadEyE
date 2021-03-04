@@ -53,8 +53,8 @@ public class RDetailActivity extends AppCompatActivity {
     private String hash,link;
     Button ordernow;
     Handler handler = new Handler();
-    private String key,Title,OneDay,FDay,TDay,deviceid,descrip,am,Dollar;
-    RadioButton oneday, fday,tday;
+    private String key,Title,OneDay,FDay,TDay,deviceid,descrip,POneDay,PFDay,PTDay;
+    RadioButton oneday, fday,tday,basic,premium;
     ImageView Img ;
 
     private TextView price,title,description;
@@ -73,7 +73,8 @@ public class RDetailActivity extends AppCompatActivity {
         Glide.with(RDetailActivity.this).load(urlref.Image + img).placeholder(R.drawable.logo).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(Img);
         Title = getIntent().getExtras().getString(TAG_RNAME);
         ordernow = findViewById(R.id.ordernow);
-
+        basic =findViewById(R.id.basic);
+        premium = findViewById(R.id.premium);
 
         tday = findViewById(R.id.tday);
         oneday = findViewById(R.id.oneday);
@@ -81,14 +82,38 @@ public class RDetailActivity extends AppCompatActivity {
         description = findViewById(R.id.desc);
         title = findViewById(R.id.title);
         title.setText(Title);
+
+        basic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                premium.setChecked(false);
+                basic.setChecked(true);
+            }
+        });
+        premium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                basic.setChecked(false);
+                premium.setChecked(true);
+            }
+        });
+
+
         tday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tday.setChecked(true);
-                oneday.setChecked(false);
-                fday.setChecked(false);
-                price.setText(TDay);
-
+                if(basic.isChecked()) {
+                    tday.setChecked(true);
+                    oneday.setChecked(false);
+                    fday.setChecked(false);
+                    price.setText(TDay);
+                }
+                else{
+                    tday.setChecked(true);
+                    oneday.setChecked(false);
+                    fday.setChecked(false);
+                    price.setText(PTDay);
+                }
 
             }
         });
@@ -96,20 +121,35 @@ public class RDetailActivity extends AppCompatActivity {
         fday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fday.setChecked(true);
-                oneday.setChecked(false);
-                tday.setChecked(false);
-                price.setText(FDay);
+                if(basic.isChecked()) {
+                    fday.setChecked(true);
+                    oneday.setChecked(false);
+                    tday.setChecked(false);
+                    price.setText(FDay);
+                }else{
+                    fday.setChecked(true);
+                    oneday.setChecked(false);
+                    tday.setChecked(false);
+                    price.setText(PFDay);
+                }
             }
         });
+
 
         oneday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                price.setText(OneDay);
-                oneday.setChecked(true);
-                fday.setChecked(false);
-                tday.setChecked(false);
+                if(basic.isChecked()) {
+                    price.setText(OneDay);
+                    oneday.setChecked(true);
+                    fday.setChecked(false);
+                    tday.setChecked(false);
+                }else{
+                    price.setText(POneDay);
+                    oneday.setChecked(true);
+                    fday.setChecked(false);
+                    tday.setChecked(false);
+                }
             }
         });
         ordernow.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +169,7 @@ public class RDetailActivity extends AppCompatActivity {
         }
     }
 
-        class Oneload extends AsyncTask<Void, Void, String> {
+    class Oneload extends AsyncTask<Void, Void, String> {
         final DialogFragment lottieDialog = new LottieDialogFragment().newInstance("loading_state_done.json", true);
 
 
@@ -184,19 +224,20 @@ public class RDetailActivity extends AppCompatActivity {
                         //    Log.d("login", obj.toString());
                         //checking for error to authenticate
                         boolean error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-                            //  Log.d("asa", Boolean.toString(error));
-                           // Log.d("asa",AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)));
+                        //  Log.d("asa", Boolean.toString(error));
+                        // Log.d("asa",AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)));
                         if(Helper.checkVPN(RDetailActivity.this)){
                             Toast.makeText(RDetailActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                             finish();
                         }else {
                             if (!error) {
-
+                                POneDay = AESUtils.DarKnight.getDecrypted(obj.getString("701"));
+                                PFDay = AESUtils.DarKnight.getDecrypted(obj.getString("702"));
+                                PTDay = AESUtils.DarKnight.getDecrypted(obj.getString("703"));
                                 FDay = AESUtils.DarKnight.getDecrypted(obj.getString("102"));
                                 TDay = AESUtils.DarKnight.getDecrypted(obj.getString("103"));
                                 descrip = AESUtils.DarKnight.getDecrypted(obj.getString("104"));
                                 OneDay = AESUtils.DarKnight.getDecrypted(obj.getString("105"));
-                                Dollar = AESUtils.DarKnight.getDecrypted(obj.getString("106"));
                                 link = AESUtils.DarKnight.getDecrypted(obj.getString("200"));
                                 price.setText(OneDay);
                                 description.setText(descrip);

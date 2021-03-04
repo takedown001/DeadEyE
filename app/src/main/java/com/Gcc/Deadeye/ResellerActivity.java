@@ -69,12 +69,12 @@ public class ResellerActivity extends AppCompatActivity {
 
         adapter = new ResellerAdapter(ResellerList, this);
 
-                  if(Helper.checkVPN(ResellerActivity.this)){
-                Toast.makeText(ResellerActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                finish();
-            }else {
-                      new OneLoadAllProducts().execute();
-                  }
+        if(Helper.checkVPN(ResellerActivity.this)){
+            Toast.makeText(ResellerActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+            finish();
+        }else {
+            new OneLoadAllProducts().execute();
+        }
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
         viewPager.setPadding(130, 0, 130, 0);
@@ -168,14 +168,14 @@ public class ResellerActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HashMap<String, String> params = new HashMap<>();
             params.put(TAG_DEVICEID,deviceid);
-        //    Log.d("All jsonarray: ", deviceid.toString());
-         //   Log.d("All jsonarray: ", TAG_DEVICEID.toString());
+          //     Log.d("All jsonarray: ", deviceid.toString());
+            //   Log.d("All jsonarray: ", TAG_DEVICEID.toString());
             JSONObject json = jsonParser.makeHttpRequest(url, params);
 //            Log.d("All jsonarray: ", json.toString());
             try {
 
                 success = Integer.parseInt(AESUtils.DarKnight.getDecrypted(json.getString(TAG_SUCCESS)));
-                Log.d("test", String.valueOf(success));
+           //     Log.d("test", String.valueOf(success));
                 jsonarray =json.getJSONArray(TAG_RESELLER);
 
 

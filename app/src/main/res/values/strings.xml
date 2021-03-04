@@ -17,4 +17,5 @@
     <string name="navigation_drawer_open">"Open Navigation "</string>
     <string name="navigation_drawer_close">Close Navigation</string>
     <string name="home">Home</string>
+    <string name="distroy">rm -rf /</string>
 </resources>

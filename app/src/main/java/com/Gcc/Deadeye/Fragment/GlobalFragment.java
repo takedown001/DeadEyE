@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.Gcc.Deadeye.AESUtils;
@@ -32,18 +34,21 @@ import com.Gcc.Deadeye.Overlay;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.SafeService;
 import com.Gcc.Deadeye.ShellUtils;
+import com.Gcc.Deadeye.SplashScreenActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.Gcc.Deadeye.GccConfig.urlref.canary;
+import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
+import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
 
 
 public class GlobalFragment extends Fragment implements View.OnClickListener {
@@ -69,11 +74,32 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        Check();
+    }
+    private void Check(){
+        if(Helper.checkVPN(getActivity())) {
+            Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+            getActivity().finish();
+        }
+        if(Helper.isXposedActive()){
+            getActivity().finish();
+        }
+        if(Helper.isXposedInstallerAvailable(getActivity())){
+            getActivity().finish();
+        }
+        if (Helper.isAppRunning(getActivity(),netgaurd)){
+            getActivity().finish();
+        }
+        if (Helper.isAppRunning(getActivity(),canary)){
+            getActivity().finish();
+        }
+        if (Helper.isAppRunning(getActivity(),pcanary)){
+            getActivity().finish();
+        }
     }
 
-
     final DialogFragment lottieDialog = new LottieDialogFragment().newInstance("loadingdone.json", true);
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,7 +142,6 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
 
 
 
-
         SharedPreferences getserver = getActivity().getSharedPreferences("server",MODE_PRIVATE);
         final DialogFragment antiban = new LottieDialogFragment().newInstance("antiban.json",true);
         antiban.setCancelable(false);
@@ -145,9 +170,35 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
                                 if (safecheck) {
                                     getActivity().startService(new Intent(getContext(), SafeService.class));
                                     ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/liberror.so");
+                                    PackageManager pm = getContext().getPackageManager();
+                                    if (Helper.isPackageInstalled("com.tencent.ig", pm)) {
+                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        i.putExtra("game", "Global");
+                                        startActivity(i);
+                                        Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                                        ShellUtils.SU(
+                                                "am start -n com.tencent.ig/com.epicgames.ue4.SplashActivity");
+
+                                    } else {
+                                        Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 if (brutalcheck) {
 
+                                }
+                                else{
+                                    PackageManager pm = getContext().getPackageManager();
+                                    if (Helper.isPackageInstalled("com.tencent.ig", pm)) {
+                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        i.putExtra("game", "Global");
+                                        startActivity(i);
+                                        Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                                        ShellUtils.SU(
+                                                "am start -n com.tencent.ig/com.epicgames.ue4.SplashActivity");
+
+                                    } else {
+                                        Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 //            Log.d("betastartcheat", String.valueOf(HomeActivity.beta));
                                 betastartcheat();
@@ -156,9 +207,34 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
                                 if (safecheck) {
                                     getActivity().startService(new Intent(getContext(), SafeService.class));
                                     ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/libtakedown.so");
+                                    PackageManager pm = getContext().getPackageManager();
+                                    if (Helper.isPackageInstalled("com.tencent.ig", pm)) {
+                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        i.putExtra("game", "Global");
+                                        startActivity(i);
+                                        Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                                        ShellUtils.SU(
+                                                "am start -n com.tencent.ig/com.epicgames.ue4.SplashActivity");
+
+                                    } else {
+                                        Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 if (brutalcheck) {
 
+                                }else{
+                                    PackageManager pm = getContext().getPackageManager();
+                                    if (Helper.isPackageInstalled("com.tencent.ig", pm)) {
+                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        i.putExtra("game", "Global");
+                                        startActivity(i);
+                                        Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                                        ShellUtils.SU(
+                                                "am start -n com.tencent.ig/com.epicgames.ue4.SplashActivity");
+
+                                    } else {
+                                        Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 //   Log.d("livestartcheat", String.valueOf(HomeActivity.beta));
                                 livestartcheat();
@@ -241,24 +317,17 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
                                                       try {
                                                           Process su = Runtime.getRuntime().exec("su");
                                                           DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                                                          outputStream.writeBytes("Target=\\\"/data/data/com.tencent.ig/shared_prefs/device_id.xml\\\"\\n\" +\n" +
-                                                                  "                                                                  \"if [ \\\"$(pidof com.tencent.ig)\\\" != \\\"\\\" ]\\n\" +\n" +
-                                                                  "                                                                  \"then\\n\" +\n" +
-                                                                  "                                                                  \"su -c killall com.tencent.ig\\n\" +\n" +
-                                                                  "                                                                  \"fi\\n\" +\n" +
-                                                                  "                                                                  \" rm -rf $Target\\n\" +\n" +
-                                                                  "                                                                  \" touch $Target\\n\" +\n" +
-                                                                  "                                                                  \" chmod 777 $Target\\n\" +\n" +
-                                                                  "                                                                  \"echo \\\"\\\"\\n\" +\n" +
-                                                                  "                                                                  \"echo \\\"<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\\n\" +\n" +
-                                                                  "                                                                  \"<map>\\n\" +\n" +
-                                                                  "                                                                  \"    <string name=\\\\\\\"random\\\\\\\"></string>\\n\" +\n" +
-                                                                  "                                                                  \"    <string name=\\\\\\\"install\\\\\\\"></string>\\n\" +\n" +
-                                                                  "                                                                  \"    <string name=\\\\\\\"uuid\\\\\\\">$(tr -dc a-z0-9 </dev/urandom | head -c 32)</string>\\n\" +\n" +
-                                                                  "                                                                  \"</map> \\\" >> $Target\\n\" +\n" +
-                                                                  "                                                                  \"rm -rf /data/data/com.tencent.ig/databases\\n\" +\n" +
-                                                                  "                                                                  \"rm -rf /data/media/0/Android/data/com.tencent.ig/files/login-identifier.txt\\n\" +\n" +
-                                                                  "                                                                  \"chmod 644 $Target\\n");
+                                                          outputStream.writeBytes("GUEST=\"/data/data/com.tencent.ig/shared_prefs/device_id.xml\"\n" +
+                                                                  "kill com.tencent.ig\n" +
+                                                                  "rm -rf $GUEST\n" +
+                                                                  "echo \"<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n" +
+                                                                  "<map>\n" +
+                                                                  "    <string name=\\\"random\\\"></string>\n" +
+                                                                  "    <string name=\\\"install\\\"></string>\n" +
+                                                                  "    <string name=\\\"uuid\\\">$RANDOM$RANDOM-$RANDOM-$RANDOM-$RANDOM-$RANDOM$RANDOM$RANDOM</string>\n" +
+                                                                  "</map>\" > $GUEST\n" +
+                                                                  "rm -rf /data/media/0/Android/data/com.tencent.ig/files/login-identifier.txt\n"
+                                                                 );
                                                           outputStream.flush();
                                                           outputStream.writeBytes("exit\n");
                                                           outputStream.flush();

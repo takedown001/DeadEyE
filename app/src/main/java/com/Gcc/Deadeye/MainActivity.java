@@ -16,11 +16,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.topjohnwu.superuser.Shell;
+
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static com.Gcc.Deadeye.GccConfig.urlref.canary;
+import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
+import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
 
 //import android.support.v7.app.*;
 
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CheckFloatViewPermission();
-
+        Check();
         ctx = this;
         SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
         if (!isConfigExist()) {
@@ -72,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
         back = findViewById(R.id.stopesp);
 
-        game = getIntent().getExtras().getString("game");
+        game = getIntent().getExtras().getString("game","Global");
         version = shred.getString("version", "32");
 
         switch (game) {
@@ -124,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
 //			Log.d("bit",version);
 	//	Log.d("game",game);
         ExecuteElf("su -c");
+        ShellUtils.SU("setenforce 0");
+
 
         loadAssets();
     //    loadAssets64();
@@ -132,6 +140,30 @@ public class MainActivity extends AppCompatActivity {
         cheat();
 
         //Log.d("1","herer");
+    }
+
+
+    private  void Check(){
+        if(Helper.checkVPN(MainActivity.this)) {
+            Toast.makeText(MainActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        if(Helper.isXposedActive()){
+            finish();
+        }
+        if(Helper.isXposedInstallerAvailable(MainActivity.this)){
+            finish();
+        }
+        if (Helper.isAppRunning(MainActivity.this,netgaurd)){
+            finish();
+        }
+        if (Helper.isAppRunning(MainActivity.this,canary)){
+            finish();
+        }
+        if (Helper.isAppRunning(MainActivity.this,pcanary)){
+            finish();
+        }
+
     }
 
     public void cheat() {

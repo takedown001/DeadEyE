@@ -64,55 +64,55 @@ public class SafeService extends Service {
                         if(index==0) {
                             if (less) {
                                 ShellUtils.SU(myDaemon + " LESSCHALU");
-                                Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Recoil Compensation Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 less=false;
                             } else {
                                 ShellUtils.SU(myDaemon + " LESSBAND");
-                                Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Recoil Compensation Deactivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 less=true;
                             }
                         }
                         else if (index == 1) {
                             if (aim) {
                                 ShellUtils.SU(myDaemon + " AIMCHALU");
-                                Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Smooth Aimbot Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 aim=false;
                             } else {
                                 ShellUtils.SU(myDaemon + " AIMBAND");
-                                Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Smooth Aimbot Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 aim=true;
                             }
                         }
                         else if (index == 2) {
                             if (cross) {
                                 ShellUtils.SU(myDaemon + " CROSSCHALU");
-                                Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Anti Bullet Spread Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 cross=false;
                             } else {
                                 ShellUtils.SU(myDaemon + " CROSSBAND");
-                                Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Anti Bullet Spread Deactivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 cross=true;
                             }
                         }
                         else if (index == 3) {
                             if (magic) {
                                 ShellUtils.SU(myDaemon + " BULLETCHALU");
-                                Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Bullet Tracking Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 magic=false;
                             } else {
                                 ShellUtils.SU(myDaemon + " BULLETBAND");
-                                Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Bullet Tracking Deactivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 magic=true;
                             }
                         }
                         else if (index == 4) {
                             if (head) {
                                 ShellUtils.SU(myDaemon + " HEADCHALU");
-                                Toast.makeText(getApplicationContext(), "Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Headbot Activated " + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 head=false;
                             } else {
                                 ShellUtils.SU(myDaemon + " HEADBAND");
-                                Toast.makeText(getApplicationContext(), "Dectivated " + Arrayname[index], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Headbot Deactivated" + Arrayname[index], Toast.LENGTH_SHORT).show();
                                 head=true;
                             }
                         }

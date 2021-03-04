@@ -51,7 +51,7 @@ public class AppUpdaterActivity extends AppCompatActivity {
             forceUpdateNote.setVisibility(View.VISIBLE);
         }
         update.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlref.apkupdateurl));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://deadeye.gcc-org.com"));
             startActivity(browserIntent);
         });
     }

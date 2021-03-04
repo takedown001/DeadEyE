@@ -28,6 +28,10 @@ import java.security.KeyStoreException;
 import java.util.HashMap;
 
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
+import static com.Gcc.Deadeye.GccConfig.urlref.canary;
+import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
+import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.LoginActivity.getDeviceId;
 
 
 public class SplashScreenActivity extends Activity {
@@ -62,37 +66,34 @@ public class SplashScreenActivity extends Activity {
 
         deviceid = AESUtils.DarKnight.getEncrypted(getDeviceId(SplashScreenActivity.this));
 
+          Check();
+        new BackgroundSplashTask().execute();
 
+    }
+
+    private  void Check(){
         if(Helper.checkVPN(SplashScreenActivity.this)) {
             Toast.makeText(SplashScreenActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
             finish();
-        }else {
-            new BackgroundSplashTask().execute();
+        }
+       if(Helper.isXposedActive()){
+            finish();
+        }
+          if(Helper.isXposedInstallerAvailable(SplashScreenActivity.this)){
+            finish();
+        }
+          if (Helper.isAppRunning(SplashScreenActivity.this,netgaurd)){
+        finish();
+        }
+         if (Helper.isAppRunning(SplashScreenActivity.this,canary)){
+            finish();
+        }
+         if (Helper.isAppRunning(SplashScreenActivity.this,pcanary)){
+            finish();
         }
     }
 
-    @SuppressLint("HardwareIds")
-    public  String getDeviceId(Context context) {
 
-        String deviceId;
-
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            deviceId = Settings.Secure.getString(
-                    context.getContentResolver(),
-                    Settings.Secure.ANDROID_ID);
-        } else {
-            final TelephonyManager mTelephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            if (mTelephony.getDeviceId() != null) {
-                deviceId = mTelephony.getDeviceId();
-            } else {
-                deviceId = Settings.Secure.getString(
-                        context.getContentResolver(),
-                        Settings.Secure.ANDROID_ID);
-            }
-        }
-
-        return deviceId;
-    }
     private boolean checkVPN() {
         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getNetworkInfo(ConnectivityManager.TYPE_VPN).isConnectedOrConnecting();

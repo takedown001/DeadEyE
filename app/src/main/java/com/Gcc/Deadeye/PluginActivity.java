@@ -30,6 +30,10 @@ import java.util.HashMap;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
+import static com.Gcc.Deadeye.GccConfig.urlref.canary;
+import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
+import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+
 public class PluginActivity extends AppCompatActivity {
 
 
@@ -133,7 +137,7 @@ public class PluginActivity extends AppCompatActivity {
                 }
             }
         });
-
+        Check();
        setvisibilty();
     }
 
@@ -153,12 +157,31 @@ public class PluginActivity extends AppCompatActivity {
             brutalupgrade.setVisibility(View.VISIBLE);
         }
 
+
+
     }
 
-
-
-
-
+    private  void Check(){
+        if(Helper.checkVPN(PluginActivity.this)) {
+            Toast.makeText(PluginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        if(Helper.isXposedActive()){
+            finish();
+        }
+        if(Helper.isXposedInstallerAvailable(PluginActivity.this)){
+            finish();
+        }
+        if (Helper.isAppRunning(PluginActivity.this,netgaurd)){
+            finish();
+        }
+        if (Helper.isAppRunning(PluginActivity.this,canary)){
+            finish();
+        }
+        if (Helper.isAppRunning(PluginActivity.this,pcanary)){
+            finish();
+        }
+    }
 
     }
 
