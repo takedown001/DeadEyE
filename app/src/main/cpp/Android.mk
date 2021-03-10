@@ -2,14 +2,14 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := xcode
+LOCAL_MODULE := xvpn
 
-LOCAL_SRC_FILES := Socket/SocketServer.cpp \
-				   Server/error.cpp \
+LOCAL_SRC_FILES := PMSocket/PMSocketServer.cpp \
+				   PMServer/PMerror.cpp \
 
 LOCAL_CPP_INCLUDES += $(LOCAL_PATH)
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/Socket
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/Server
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/PMSocket
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/PMServer
 
 LOCAL_LDLIBS += -llog
 
@@ -17,14 +17,14 @@ include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := error
+LOCAL_MODULE := vxposed
 
-LOCAL_SRC_FILES := Socket/SocketClient.cpp \
-                   Client/error.cpp \
+LOCAL_SRC_FILES := PMSocket/PMSocketClient.cpp \
+                   PMClient/PMerror.cpp \
 
 LOCAL_C_INCLUDES += $(LOCAL_PATH)
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/Socket
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/Client
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/PMSocket
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/PMClient
 
 LOCAL_LDFLAGS += -llog
 

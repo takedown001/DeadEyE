@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -45,6 +47,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
 import static com.Gcc.Deadeye.GccConfig.urlref.canary;
 import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
 import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 public class MyActivity extends AppCompatActivity {
 
@@ -56,12 +59,19 @@ public class MyActivity extends AppCompatActivity {
     Handler handler = new Handler();
     JSONParserString jsonParserString = new JSONParserString();
     Context ctx;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payments);
         ctx=this;
-        Check();
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         UUID = OneSignal.getPermissionSubscriptionState().getSubscriptionStatus().getUserId();
         txnid = getIntent().getExtras().getString("taxid");
         amount = getIntent().getExtras().getString("amount");
@@ -78,28 +88,11 @@ public class MyActivity extends AppCompatActivity {
         txnid = "txn"+ time +random;
         startpay();
     }
-
-    private  void Check(){
-        if(Helper.checkVPN(MyActivity.this)) {
-            Toast.makeText(MyActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(MyActivity.this).equals(time)){
             finish();
         }
-        if(Helper.isXposedActive()){
-            finish();
-        }
-        if(Helper.isXposedInstallerAvailable(MyActivity.this)){
-            finish();
-        }
-        if (Helper.isAppRunning(MyActivity.this,netgaurd)){
-            finish();
-        }
-        if (Helper.isAppRunning(MyActivity.this,canary)){
-            finish();
-        }
-        if (Helper.isAppRunning(MyActivity.this,pcanary)){
-            finish();
-        }
-
     }
     PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
     //declare paymentParam object

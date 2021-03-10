@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,12 +39,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_KEY;
 import static com.Gcc.Deadeye.GccConfig.urlref.canary;
 import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
 import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -67,6 +70,7 @@ public class HomeActivity extends AppCompatActivity {
     public static boolean beta = false;
     ImageView rightico,leftico;
     String videourl;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -172,29 +176,20 @@ public class HomeActivity extends AppCompatActivity {
             }
 
         }
-    Log.d("prooff", String.valueOf(Helper.isAppRunning(HomeActivity.this,"eu.faircode.netguard")));
-        Check();
-       new OneLoadAllProducts().execute();
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
     }
-    private  void Check(){
-        if(Helper.checkVPN(HomeActivity.this)) {
-            Toast.makeText(HomeActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(HomeActivity.this).equals(time)){
             finish();
-        }
-        if(Helper.isXposedActive()){
-            finish();
-        }
-        if(Helper.isXposedInstallerAvailable(HomeActivity.this)){
-            finish();
-        }
-        if (Helper.isAppRunning(HomeActivity.this,netgaurd)){
-            finish();
-        }
-        if (Helper.isAppRunning(HomeActivity.this,canary)){
-            finish();
-        }
-        if (Helper.isAppRunning(HomeActivity.this,pcanary)){
-            finish();
+        }else{
+            new OneLoadAllProducts().execute();
         }
     }
 
@@ -333,6 +328,7 @@ public class HomeActivity extends AppCompatActivity {
                         whatsNewData = obj.getString(data);
                         ismaintaince = obj.getBoolean("ismain");
                         videourl = obj.getString("videourl");
+                     //   String url = obj.getString("updateurl");
                        // Log.d("main",videourl);
                         PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                         String version = pInfo.versionName;
@@ -342,7 +338,8 @@ public class HomeActivity extends AppCompatActivity {
                         if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
                        Intent intent = new Intent(HomeActivity.this, AppUpdaterActivity.class);
                        intent.putExtra(TAG_APP_NEWVERSION, newversion);
-                      intent.putExtra(data,whatsNewData);
+                        intent.putExtra(data,whatsNewData);
+                        //intent.putExtra("updateurl",url);
                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         }

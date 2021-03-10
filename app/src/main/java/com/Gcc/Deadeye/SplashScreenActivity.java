@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -17,6 +18,8 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.Gcc.Deadeye.GccConfig.urlref;
 import com.onesignal.OneSignal;
 
@@ -25,9 +28,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.HashMap;
 
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
+import static com.Gcc.Deadeye.GccConfig.urlref.TAG_TIME;
 import static com.Gcc.Deadeye.GccConfig.urlref.canary;
 import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
 import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
@@ -40,24 +46,26 @@ public class SplashScreenActivity extends Activity {
     private static final String TAG_KEY = urlref.TAG_KEY;
     private static final String TAG_ERROR = urlref.TAG_ERROR;
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
-    private static final String url = urlref.Main + "login.php";
+    private static final String url = urlref.Main + "p.php";
     private static final String TAG_DURATION = urlref.TAG_DURATION;
     private  boolean error,safe,brutal;
     //Prefrance
     String UUID;
-
+    long reqtime, restime,diff;
     Handler handler = new Handler();
     JSONParserString jsonParserString = new JSONParserString();
     private String key, deviceid;
     private long getduration;
+    Date time;
     private boolean isFirstStart;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
         setContentView(R.layout.activity_splash_screen);
         key = shred.getString(TAG_KEY, "null");
-
+        time = new Date();
         // OneSignal Initialization
         OneSignal.startInit(this)
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
@@ -66,30 +74,21 @@ public class SplashScreenActivity extends Activity {
 
         deviceid = AESUtils.DarKnight.getEncrypted(getDeviceId(SplashScreenActivity.this));
 
-          Check();
-        new BackgroundSplashTask().execute();
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
-    private  void Check(){
-        if(Helper.checkVPN(SplashScreenActivity.this)) {
-            Toast.makeText(SplashScreenActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(SplashScreenActivity.this).equals("1")){
             finish();
-        }
-       if(Helper.isXposedActive()){
-            finish();
-        }
-          if(Helper.isXposedInstallerAvailable(SplashScreenActivity.this)){
-            finish();
-        }
-          if (Helper.isAppRunning(SplashScreenActivity.this,netgaurd)){
-        finish();
-        }
-         if (Helper.isAppRunning(SplashScreenActivity.this,canary)){
-            finish();
-        }
-         if (Helper.isAppRunning(SplashScreenActivity.this,pcanary)){
-            finish();
+        }else{
+            new BackgroundSplashTask().execute();
         }
     }
 
@@ -120,17 +119,20 @@ public class SplashScreenActivity extends Activity {
         @Override
         protected String doInBackground(Void... arg0) {
             //creating request parameters
+            time.setTime(System.currentTimeMillis());
+            reqtime = time.getTime();
             HashMap<String, String> params = new HashMap<>();
             params.put(TAG_KEY,AESUtils.DarKnight.getEncrypted(key));
             params.put(TAG_DEVICEID, deviceid);
             params.put(TAG_ONESIGNALID, "null");
+            params.put(TAG_TIME,AESUtils.DarKnight.getEncrypted(String.valueOf(reqtime)));
       //      Log.d("test", AESUtils.DarKnight.getEncrypted(UUID));
          // Log.d("test",deviceid);
        //     Log.d("test",AESUtils.DarKnight.getEncrypted(key));
             String rq = null;
             try {
                 rq = jsonParserString.makeHttpRequest(url, params);
-              //  Log.d("json",rq.toString());
+        //       Log.d("json",rq.toString());
             } catch (KeyStoreException | IOException e) {
                 e.printStackTrace();
             }
@@ -153,15 +155,19 @@ public class SplashScreenActivity extends Activity {
                         try {
                             JSONObject obj = new JSONObject(result);
                             error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
+                            restime = Long.parseLong(String.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_TIME))));
+                            diff = restime -reqtime;
                             // Log.d("test", String.valueOf(error));
-                            if (!error) {
-                                getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
-                                safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
-                                brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
-                                editor.putLong(TAG_DURATION, getduration);
-                                editor.apply();
+                            if (diff == urlref.logindiff) {
+                                if (!error) {
+                                    getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
+                                    safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
+                                    brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
+                                    editor.putLong(TAG_DURATION, getduration);
+                                    editor.apply();
 
-                                //    Log.d("splash", String.valueOf(getduration));
+                                    //    Log.d("splash", String.valueOf(getduration));
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

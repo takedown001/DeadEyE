@@ -46,7 +46,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
     public FloatLogo() {
     }
     static {
-        System.loadLibrary("error");
+        System.loadLibrary("vxposed");
     }
      LinearLayout player ;
     @Override

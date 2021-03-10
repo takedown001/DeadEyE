@@ -1,17 +1,27 @@
 package com.Gcc.Deadeye;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.Gcc.Deadeye.GccConfig.urlref.TAG_DURATION;
+import static com.Gcc.Deadeye.Overlay.ctx;
 
 public class ESPView extends View implements Runnable {
     Paint mStrokePaint;
@@ -21,18 +31,29 @@ public class ESPView extends View implements Runnable {
     int FPS = 60;
     long sleepTime;
     Date time;
+    Long getduration;
     SimpleDateFormat formatter;
-
+    long secondsInMilli = 1000;
+    long minutesInMilli = secondsInMilli * 60;
+    long hoursInMilli = minutesInMilli * 60;
+    long daysInMilli = hoursInMilli * 24;
+    NumberFormat f = new DecimalFormat("00");
+    SharedPreferences shred = ctx.getSharedPreferences("userdetails", MODE_PRIVATE);
     public ESPView(Context context) {
         super(context, null, 0);
         InitializePaints();
         setFocusableInTouchMode(false);
+
+        getduration = shred.getLong(TAG_DURATION, 0);
         setBackgroundColor(Color.TRANSPARENT);
         time = new Date();
         formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         sleepTime = 1000 / FPS;
         mThread = new Thread(this);
         mThread.start();
+
+
+
     }
 
     @Override
@@ -55,7 +76,7 @@ public class ESPView extends View implements Runnable {
                 long td = System.currentTimeMillis() - t1;
                 Thread.sleep(Math.max(Math.min(0, sleepTime - td), sleepTime));
             } catch (InterruptedException it) {
-                Log.e("OverlayThread", Objects.requireNonNull(it.getMessage()));
+             //   Log.e("OverlayThread", Objects.requireNonNull(it.getMessage()));
             }
         }
     }

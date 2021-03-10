@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
@@ -33,6 +35,7 @@ import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 import static com.Gcc.Deadeye.GccConfig.urlref.canary;
 import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
 import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 public class PluginActivity extends AppCompatActivity {
 
@@ -41,6 +44,7 @@ public class PluginActivity extends AppCompatActivity {
     LottieAnimationView safeupgrade,brutalupgrade,espupgrade,switchsafe,switchbrutal;
     private boolean isvalidsafe =false,isIsvalidbrutal=false;
     public  boolean espcheck,safecheck,brutalcheck;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_plugin);
@@ -137,8 +141,12 @@ public class PluginActivity extends AppCompatActivity {
                 }
             }
         });
-        Check();
-       setvisibilty();
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        setvisibilty();
     }
 
     public void setvisibilty(){
@@ -161,24 +169,9 @@ public class PluginActivity extends AppCompatActivity {
 
     }
 
-    private  void Check(){
-        if(Helper.checkVPN(PluginActivity.this)) {
-            Toast.makeText(PluginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-            finish();
-        }
-        if(Helper.isXposedActive()){
-            finish();
-        }
-        if(Helper.isXposedInstallerAvailable(PluginActivity.this)){
-            finish();
-        }
-        if (Helper.isAppRunning(PluginActivity.this,netgaurd)){
-            finish();
-        }
-        if (Helper.isAppRunning(PluginActivity.this,canary)){
-            finish();
-        }
-        if (Helper.isAppRunning(PluginActivity.this,pcanary)){
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(PluginActivity.this).equals(time)){
             finish();
         }
     }

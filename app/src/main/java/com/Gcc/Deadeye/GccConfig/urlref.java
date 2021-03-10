@@ -12,6 +12,9 @@ public class urlref {
     public static final String apkupdateurl = "https://gcc-org.com/deadeyeesp/app_updater.php";
     public static final String Image = "https://gcc-org.com/deadeyeesp/Image/";
     public static final String gen = "https://gcc-org.com/deadeyeesp/Keys/";
+    public static final String TAG_TIME = "999";
+
+    public static final int logindiff = 1000;
 
     //auth
     public static final String TAG_DEVICEID = "2";
@@ -74,5 +77,6 @@ public class urlref {
     public static final String netgaurd  = "eu.faircode.netguard";
     public static final String canary  = "com.guoshi.httpcanary";
     public static final String pcanary  = "com.guoshi.httpcanary.premium";
+
 
 }

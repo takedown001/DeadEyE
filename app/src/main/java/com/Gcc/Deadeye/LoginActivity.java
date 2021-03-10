@@ -3,10 +3,8 @@
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -19,18 +17,15 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 
 import com.Gcc.Deadeye.GccConfig.urlref;
-import com.framgia.android.emulator.EmulatorDetector;
 import com.google.android.material.textfield.TextInputEditText;
 import com.onesignal.OneSignal;
 import com.scottyab.rootbeer.RootBeer;
@@ -40,18 +35,19 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.Locale;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
-import static android.content.DialogInterface.BUTTON_POSITIVE;
+import static com.Gcc.Deadeye.GccConfig.urlref.Main;
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ERROR;
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_MSG;
 import static com.Gcc.Deadeye.GccConfig.urlref.TAG_ONESIGNALID;
-import static com.Gcc.Deadeye.GccConfig.urlref.canary;
-import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
-import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.GccConfig.urlref.TAG_TIME;
 import static com.Gcc.Deadeye.GccConfig.urlref.remove;
 
 
@@ -62,80 +58,70 @@ import static com.Gcc.Deadeye.GccConfig.urlref.remove;
     private static final String TAG_KEY = urlref.TAG_KEY;
     private boolean error,safe,brutal;
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
-    private static final String url = urlref.Main +"login.php";
+    private static final String url = Main +"p.php";
     private static final String TAG_DURATION =urlref.TAG_DURATION;
     JSONParserString jsonParserString = new JSONParserString();
     private static final String TAG_ISFIRSTSTART = "firstStart";
     TextInputEditText editTextUsername;
-
+    Context context;
     private long getduration;
     private String key,UUID;
     TextView version;
+     Date time;
 
+     SimpleDateFormat formatter;
+    // long  timeMilli;
+     long reqtime, restime,diff;
     Handler handler = new Handler();
+    @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         editTextUsername = findViewById(R.id.username);
         PackageInfo pInfo = null;
+        context = this ;
+        time = new Date();
+        formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+
+      //  Log.d("time", String.valueOf(time));
+
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
-            @Override
-            public void idsAvailable(String userId, String registrationId) {
-           //     String text = "OneSignal UserID:\n" + userId + "\n\n";
-               UUID = userId;
-                if(UUID.isEmpty()){
-                    new AlertDialog.Builder(LoginActivity.this)
-                            .setTitle("Warning")
-                            .setMessage("Something is Wrong, Restart Your App")
-                            .setCancelable(false)
-                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            }).show();
-                }
-                UUID = AESUtils.DarKnight.getEncrypted(UUID);
+        OneSignal.idsAvailable((userId, registrationId) -> {
+       //     String text = "OneSignal UserID:\n" + userId + "\n\n";
+           UUID = userId;
+            if(UUID.isEmpty()){
+                new AlertDialog.Builder(LoginActivity.this)
+                        .setTitle("Warning")
+                        .setMessage("Something is Wrong, Restart Your App")
+                        .setCancelable(false)
+                        .setPositiveButton("ok", (dialog, which) -> finish()).show();
             }
+            UUID = AESUtils.DarKnight.getEncrypted(UUID);
         });
-
 
      //   Log.d("key",UUID);
         version = findViewById(R.id.verisondisplay);
         String setversion = pInfo.versionName;
         version.setText("version "+setversion);
-        findViewById(R.id.signinbtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(Helper.checkVPN(LoginActivity.this)) {
-                    Toast.makeText(LoginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    finish();
-                }else {
-                    userLogin();
-                }
+        findViewById(R.id.signinbtn).setOnClickListener(view -> {
+            if(Helper.checkVPN(LoginActivity.this)) {
+                Toast.makeText(LoginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+                finish();
+            }else {
+                userLogin();
             }
         });
 
+        findViewById(R.id.GetkeyButton).setOnClickListener(v -> {
+            Intent i = new Intent(LoginActivity.this,StoreActivity.class);
+            startActivity(i);
 
 
-        findViewById(R.id.GetkeyButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this,StoreActivity.class);
-                startActivity(i);
-
-
-            }
         });
-
-
-
-
         isStoragePermissionGranted();
         Iscall();
         RootBeer rootBeer = new RootBeer(LoginActivity.this);
@@ -144,12 +130,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.remove;
                     .setTitle("Warning")
                     .setMessage("Root Not Detected")
                     .setCancelable(false)
-                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    }).show();
+                    .setPositiveButton("ok", (dialog, which) -> finish()).show();
 
         }
         else{
@@ -162,38 +143,22 @@ import static com.Gcc.Deadeye.GccConfig.urlref.remove;
                    .setTitle("Warning")
                    .setMessage("Emulator Detected")
                    .setCancelable(false)
-                   .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                       @Override
-                       public void onClick(DialogInterface dialog, int which) {
-                           finish();
-                       }
-                   }).show();
+                   .setPositiveButton("ok", (dialog, which) -> finish()).show();
 
        }
 
-        Check();
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
-     private  void Check(){
-         if(Helper.checkVPN(LoginActivity.this)) {
-             Toast.makeText(LoginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-             finish();
-         }
-      if(Helper.isXposedActive()){
-             finish();
-         }
-        if(Helper.isXposedInstallerAvailable(LoginActivity.this)){
-             finish();
-         }
-         if (Helper.isAppRunning(LoginActivity.this,netgaurd)){
-             finish();
-         }
-         if (Helper.isAppRunning(LoginActivity.this,canary)){
-             finish();
-         }
-         if (Helper.isAppRunning(LoginActivity.this,pcanary)){
-             finish();
-         }
+     @RequiresApi(api = Build.VERSION_CODES.N)
+     private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+       if(imgLoad.Load(LoginActivity.this).equals(time)){
+           finish();
+       }
      }
 
     @SuppressLint("HardwareIds")
@@ -291,16 +256,18 @@ import static com.Gcc.Deadeye.GccConfig.urlref.remove;
             @Override
             protected String doInBackground(Void... voids) {
                 //creating request handler object
-
-
+                time.setTime(System.currentTimeMillis());
+                reqtime = time.getTime();
                 //creating request parameters
                 HashMap<String,String> params = new HashMap<>();
                 params.put(TAG_DEVICEID,AESUtils.DarKnight.getEncrypted(deviceid));
                 params.put(TAG_KEY,AESUtils.DarKnight.getEncrypted(key));
                 params.put(TAG_ONESIGNALID,UUID);
-          //     Log.d("test",AESUtils.DarKnight.getEncrypted(deviceid));
-           //     Log.d("test",AESUtils.DarKnight.getEncrypted(key));
+                params.put(TAG_TIME,AESUtils.DarKnight.getEncrypted(String.valueOf(reqtime)));
+//               Log.d("test",AESUtils.DarKnight.getEncrypted(deviceid));
+//                Log.d("test",AESUtils.DarKnight.getEncrypted(key));
 //                Log.d("test",AESUtils.DarKnight.getEncrypted(UUID));
+//                Log.d("test",AESUtils.DarKnight.getEncrypted(String.valueOf(TimeMilli)));
                 String rq = null;
 
 
@@ -325,45 +292,50 @@ import static com.Gcc.Deadeye.GccConfig.urlref.remove;
                         try {
 
                             JSONObject obj = new JSONObject(s);
-                           //  Log.d("login", obj.toString());
+                          //   Log.d("login", obj.toString());
                             //checking for error to authenticate
                             error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-                       //    Log.d("test", String.valueOf(error));
+                            restime = Long.parseLong(String.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_TIME))));
+                            diff = restime -reqtime;
+                          //  Log.d("test", String.valueOf(diff));
                             if(Helper.checkVPN(LoginActivity.this)) {
                                 Toast.makeText(LoginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                                 finish();
                             }else {
-                                if (!error) {
+                                if (diff == urlref.logindiff) {
+                                    if (!error) {
 
-                                    getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
-                                    //     Log.d("test", String.valueOf(getduration));
-                                    if (getduration == 0) {
-                                        Toast.makeText(getApplicationContext(), "SubscriptionExpired", Toast.LENGTH_LONG).show();
+                                        getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
+                                        //     Log.d("test", String.valueOf(getduration));
+                                        if (getduration == 0) {
+                                            Toast.makeText(getApplicationContext(), "SubscriptionExpired", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            //saving to prefrences m
+                                            editor.putBoolean(TAG_ISFIRSTSTART, false).apply();
+                                            editor.putLong(TAG_DURATION, getduration).apply();
+                                            editor.putString(TAG_KEY, key);
+                                            editor.apply();
+                                            //      Log.d("test", String.valueOf(obj.getBoolean("sf")));
+                                            //   Log.d("test", String.valueOf(obj.getBoolean("br")));
+                                            //    Log.d("date",getcurrentdate);
+                                            safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
+                                            brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
+                                            Toast.makeText(getApplicationContext(), AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                            intent.putExtra("safe", safe);
+                                            intent.putExtra("brutal", brutal);
+                                            startActivity(intent);
+
+                                            //getting the user from the response.
+                                            //starting the profile activity
+                                            finish();
+                                        }
+
+
                                     } else {
-                                        //saving to prefrences m
-                                        editor.putBoolean(TAG_ISFIRSTSTART, false).apply();
-                                        editor.putLong(TAG_DURATION, getduration).apply();
-                                        editor.putString(TAG_KEY, key);
-                                        editor.apply();
-                                        //      Log.d("test", String.valueOf(obj.getBoolean("sf")));
-                                        //   Log.d("test", String.valueOf(obj.getBoolean("br")));
-                                        //    Log.d("date",getcurrentdate);
-                                        safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
-                                        brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
-                                        Toast.makeText(getApplicationContext(), AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
-                                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                        intent.putExtra("safe", safe);
-                                        intent.putExtra("brutal", brutal);
-                                        startActivity(intent);
-
-                                        //getting the user from the response.
-                                        //starting the profile activity
-                                        finish();
+                                        String msg = AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG));
+                                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                                     }
-
-                                } else {
-                                    String msg = AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG));
-                                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         } catch (JSONException e) {

@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.topjohnwu.superuser.Shell;
@@ -23,10 +25,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.NoSuchAlgorithmException;
 
 import static com.Gcc.Deadeye.GccConfig.urlref.canary;
 import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
 import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 //import android.support.v7.app.*;
 
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     static{
-        System.loadLibrary("error");
+        System.loadLibrary("vxposed");
     }
 
 
@@ -65,12 +69,17 @@ public class MainActivity extends AppCompatActivity {
     private String game, version;
     public static boolean isDaemon = false;
     Button back;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CheckFloatViewPermission();
-        Check();
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         ctx = this;
         SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
         if (!isConfigExist()) {
@@ -137,35 +146,19 @@ public class MainActivity extends AppCompatActivity {
     //    loadAssets64();
 
         socket = daemonPath;
+        new PassME(MainActivity.this).execute();
         cheat();
 
         //Log.d("1","herer");
     }
 
 
-    private  void Check(){
-        if(Helper.checkVPN(MainActivity.this)) {
-            Toast.makeText(MainActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(MainActivity.this).equals(time)){
             finish();
         }
-        if(Helper.isXposedActive()){
-            finish();
-        }
-        if(Helper.isXposedInstallerAvailable(MainActivity.this)){
-            finish();
-        }
-        if (Helper.isAppRunning(MainActivity.this,netgaurd)){
-            finish();
-        }
-        if (Helper.isAppRunning(MainActivity.this,canary)){
-            finish();
-        }
-        if (Helper.isAppRunning(MainActivity.this,pcanary)){
-            finish();
-        }
-
     }
-
     public void cheat() {
 
 
@@ -309,13 +302,13 @@ public class MainActivity extends AppCompatActivity {
     public void loadAssets()
     {
 
-        String pathf = getFilesDir().toString()+"/xcode";
+        String pathf = getFilesDir().toString()+"/xvpn";
         try
         {
             OutputStream myOutput = new FileOutputStream(pathf);
             byte[] buffer = new byte[1024];
             int length;
-            InputStream myInput = getAssets().open("xcode");
+            InputStream myInput = getAssets().open("xvpn");
             while ((length = myInput.read(buffer)) > 0) {
                 myOutput.write(buffer, 0, length);
             }
@@ -330,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        daemonPath = getFilesDir().toString()+"/xcode";
+        daemonPath = getFilesDir().toString()+"/xvpn";
 
 
         try{

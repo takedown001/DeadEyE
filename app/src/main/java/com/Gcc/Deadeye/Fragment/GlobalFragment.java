@@ -35,13 +35,16 @@ import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.SafeService;
 import com.Gcc.Deadeye.ShellUtils;
 import com.Gcc.Deadeye.SplashScreenActivity;
+import com.Gcc.Deadeye.imgLoad;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Objects;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
@@ -49,6 +52,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.Gcc.Deadeye.GccConfig.urlref.canary;
 import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
 import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 
 public class GlobalFragment extends Fragment implements View.OnClickListener {
@@ -74,28 +78,6 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Check();
-    }
-    private void Check(){
-        if(Helper.checkVPN(getActivity())) {
-            Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-            getActivity().finish();
-        }
-        if(Helper.isXposedActive()){
-            getActivity().finish();
-        }
-        if(Helper.isXposedInstallerAvailable(getActivity())){
-            getActivity().finish();
-        }
-        if (Helper.isAppRunning(getActivity(),netgaurd)){
-            getActivity().finish();
-        }
-        if (Helper.isAppRunning(getActivity(),canary)){
-            getActivity().finish();
-        }
-        if (Helper.isAppRunning(getActivity(),pcanary)){
-            getActivity().finish();
-        }
     }
 
     final DialogFragment lottieDialog = new LottieDialogFragment().newInstance("loadingdone.json", true);
@@ -155,6 +137,11 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onClick(View v) {
+                try {
+                    Check();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                   getActivity().finish();
@@ -250,6 +237,11 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
         StopCheatGl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    Check();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -593,7 +585,12 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
         new load().execute();
 
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(getActivity()).equals(time)){
+          getActivity().finish();
+        }
+    }
     public void betastopcheat(){
 
 
@@ -642,12 +639,18 @@ public class GlobalFragment extends Fragment implements View.OnClickListener {
         new load().execute();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
 
         switch (v.getId()){
 
             case R.id.taptoactivategl:
+                try {
+                    Check();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();

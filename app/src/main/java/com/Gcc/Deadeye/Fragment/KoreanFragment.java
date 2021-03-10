@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.Gcc.Deadeye.AESUtils;
@@ -32,16 +34,19 @@ import com.Gcc.Deadeye.Overlay;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.SafeService;
 import com.Gcc.Deadeye.ShellUtils;
+import com.Gcc.Deadeye.imgLoad;
 
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 import static android.content.Context.MODE_PRIVATE;
 import static com.Gcc.Deadeye.GccConfig.urlref.canary;
 import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
 import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 public class KoreanFragment extends Fragment implements View.OnClickListener {
 
@@ -66,29 +71,9 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-    Check();
+
     }
-    private void Check(){
-        if(Helper.checkVPN(getActivity())) {
-            Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-            getActivity().finish();
-        }
-        if(Helper.isXposedActive()){
-            getActivity().finish();
-        }
-        if(Helper.isXposedInstallerAvailable(getActivity())){
-            getActivity().finish();
-        }
-        if (Helper.isAppRunning(getActivity(),netgaurd)){
-            getActivity().finish();
-        }
-        if (Helper.isAppRunning(getActivity(),canary)){
-            getActivity().finish();
-        }
-        if (Helper.isAppRunning(getActivity(),pcanary)){
-            getActivity().finish();
-        }
-    }
+
     final DialogFragment lottieDialog = new LottieDialogFragment().newInstance("loadingdone.json", true);
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -141,8 +126,14 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
 
         StartCheatKr.setOnClickListener(new View.OnClickListener() {
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+                try {
+                    Check();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 if (Helper.checkVPN(getActivity())) {
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -157,9 +148,34 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
                                 if (safecheck) {
                                     getActivity().startService(new Intent(getContext(), SafeService.class));
                                     ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/liberror.so");
+                                    PackageManager pm = getContext().getPackageManager();
+                                    if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
+                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        i.putExtra("game", "Korea");
+                                        startActivity(i);
+                                        Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                                        ShellUtils.SU(
+                                                "am start -n com.pubg.krmobile/com.epicgames.ue4.SplashActivity");
+
+                                    } else {
+                                        Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 if (brutalcheck) {
 
+                                }else{
+                                    PackageManager pm = getContext().getPackageManager();
+                                    if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
+                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        i.putExtra("game", "Korea");
+                                        startActivity(i);
+                                        Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                                        ShellUtils.SU(
+                                                "am start -n com.pubg.krmobile/com.epicgames.ue4.SplashActivity");
+
+                                    } else {
+                                        Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                                    }
                                 }
 
                                 //     Log.d("betastartcheat", String.valueOf(HomeActivity.beta));
@@ -169,9 +185,34 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
                                 if (safecheck) {
                                     getActivity().startService(new Intent(getContext(), SafeService.class));
                                     ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/libtakedown.so");
+                                    PackageManager pm = getContext().getPackageManager();
+                                    if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
+                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        i.putExtra("game", "Korea");
+                                        startActivity(i);
+                                        Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                                        ShellUtils.SU(
+                                                "am start -n com.pubg.krmobile/com.epicgames.ue4.SplashActivity");
+
+                                    } else {
+                                        Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 if (brutalcheck) {
 
+                                }else{
+                                    PackageManager pm = getContext().getPackageManager();
+                                    if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
+                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        i.putExtra("game", "Korea");
+                                        startActivity(i);
+                                        Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                                        ShellUtils.SU(
+                                                "am start -n com.pubg.krmobile/com.epicgames.ue4.SplashActivity");
+
+                                    } else {
+                                        Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                                    }
                                 }
 
 
@@ -188,8 +229,14 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
 
 
         StopCheatKr.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+                try {
+                    Check();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -581,13 +628,24 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
         }
         new load().execute();
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(getActivity()).equals(time)){
+           getActivity().finish();
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
 
         switch (v.getId()){
 
             case R.id.taptoactivatekr:
+                try {
+                    Check();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();

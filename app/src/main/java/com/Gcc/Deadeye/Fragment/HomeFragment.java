@@ -3,9 +3,12 @@ package com.Gcc.Deadeye.Fragment;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -25,14 +28,19 @@ import android.widget.Toast;
 import com.Gcc.Deadeye.Adapter.SectionPagerAdapter;
 import com.Gcc.Deadeye.GccConfig.urlref;
 import com.Gcc.Deadeye.LoginActivity;
+import com.Gcc.Deadeye.PassME;
 import com.Gcc.Deadeye.R;
+import com.Gcc.Deadeye.imgLoad;
 import com.google.android.material.tabs.TabLayout;
 
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Objects;
 
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 
 public class HomeFragment extends Fragment {
@@ -58,14 +66,19 @@ public class HomeFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myFragment = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-
+        new PassME(getActivity()).execute();
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         viewPager = myFragment.findViewById(R.id.viewPager);
         tabLayout = myFragment.findViewById(R.id.tabLayout);
         SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
@@ -99,18 +112,24 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFinish() {
-
                 Toast.makeText(getActivity(),"Subcription Expired",Toast.LENGTH_SHORT).show();
                 shred.edit().clear().apply();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
 
             }
         }.start();
+
+
         return myFragment;
     }
 
     //Call onActivity Create method
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(getActivity()).equals(time)){
+            getActivity().finish();
+        }
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

@@ -3,6 +3,7 @@ package com.Gcc.Deadeye;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,12 +28,17 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.topjohnwu.superuser.Shell;
+
+import java.security.NoSuchAlgorithmException;
 
 import static com.Gcc.Deadeye.FloatLogo.SettingValue;
 import static com.Gcc.Deadeye.GccConfig.urlref.canary;
 import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
 import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 public class Overlay extends Service {
     public static boolean isRunning = false;
@@ -39,7 +46,8 @@ public class Overlay extends Service {
     private WindowManager windowManager;
     private View mFloatingView;
     private ESPView overlayView;
-    Context ctx;
+    static Context ctx;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate() {
         super.onCreate();
@@ -72,12 +80,24 @@ public class Overlay extends Service {
 //        else if (MainActivity.gameType == 4 && MainActivity.is64) {
 //            Start(ctx,4,2);
 //        }
+
         windowManager = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
         overlayView = new ESPView(ctx);
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         DrawCanvas();
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(ctx).equals(time)){
+           stopSelf();
+        }
+    }
 
     @Override
     public void onDestroy() {
@@ -148,8 +168,8 @@ public class Overlay extends Service {
 
     private void startDaemon(int mode){
         new Thread(() -> {
-            String cmd = getFilesDir() + "/xcode " + mode;
-            //        Log.d("log",cmd);
+            String cmd = getFilesDir() + "/xvpn " + mode;
+                    Log.d("log",cmd);
             if(Shell.rootAccess()){
                 Shell.su(cmd).submit();
             } else {

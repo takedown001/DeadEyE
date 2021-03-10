@@ -2,6 +2,7 @@ package com.Gcc.Deadeye;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -14,10 +15,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.Gcc.Deadeye.GccConfig.urlref;
 import com.hitomi.cmlibrary.CircleMenu;
 import com.hitomi.cmlibrary.OnMenuSelectedListener;
 import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
+
+import java.security.NoSuchAlgorithmException;
+
+import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 public class SafeService extends Service {
 
@@ -35,6 +42,7 @@ public class SafeService extends Service {
     private String myDaemon;
     private boolean less=true,head=true,cross=true,aim=true,magic=true;
     private String Arrayname[] = {"Less Recoil","AimBot","CrossHair","Magic Bullet","HeadShot"};
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate() {
 
@@ -48,7 +56,13 @@ public class SafeService extends Service {
         }else {
             myDaemon = "." + urlref.pathoflib + urlref.livelib;
         }
-      //  Log.d("lol",myDaemon);
+        new PassME(getApplicationContext()).execute();
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        //  Log.d("lol",myDaemon);
         CircleMenu circleMenu = mFloatingView.findViewById(R.id.circle_menu);
 
         circleMenu.setMainMenu(Color.parseColor("#ee4f08"), R.mipmap.safeicon, R.drawable.closeij)
@@ -190,5 +204,11 @@ public class SafeService extends Service {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(getApplicationContext()).equals(time)){
+          stopSelf();
+        }
+    }
 
 }
