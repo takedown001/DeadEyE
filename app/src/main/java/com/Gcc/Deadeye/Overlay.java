@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -39,26 +38,26 @@ public class Overlay extends Service {
         ctx=this;
 //           Log.d("test", String.valueOf(MainActivity.gameType));
 //           Log.d("test", String.valueOf(MainActivity.is32));
-        if (MainActivity.gameType == 1 && MainActivity.is32) {
+        if (ESPMainActivity.gameType == 1 && ESPMainActivity.is32) {
             Start(ctx,1,1);
 
         }
 //        else if (MainActivity.gameType == 1 && MainActivity.is64) {
 //            Start(ctx,1,2);
 //        }
-        else if (MainActivity.gameType == 2 && MainActivity.is32) {
+        else if (ESPMainActivity.gameType == 2 && ESPMainActivity.is32) {
             Start(ctx,2,1);
         }
 //        else if (MainActivity.gameType == 2 && MainActivity.is64) {
 //            Start(ctx,2,2);
 //        }
-        else if (MainActivity.gameType == 3 && MainActivity.is32) {
+        else if (ESPMainActivity.gameType == 3 && ESPMainActivity.is32) {
             Start(ctx,3,1);
         }
 //        else if (MainActivity.gameType == 3 && MainActivity.is64) {
 //            Start(ctx,3,2);
 //        }
-        else if (MainActivity.gameType == 4 && MainActivity.is32) {
+        else if (ESPMainActivity.gameType == 4 && ESPMainActivity.is32) {
             Start(ctx,4,1);
         }
 //        else if (MainActivity.gameType == 4 && MainActivity.is64) {
@@ -152,8 +151,8 @@ public class Overlay extends Service {
 
     private void startDaemon(int mode){
         new Thread(() -> {
-            String cmd = getFilesDir() + "/xvpn " + mode;
-                    Log.d("log",cmd);
+            String cmd = getFilesDir() + "/sysexe " + mode;
+                  //  Log.d("log",cmd);
             if(Shell.rootAccess()){
                 Shell.su(cmd).submit();
             } else {

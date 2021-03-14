@@ -29,7 +29,7 @@ import com.Gcc.Deadeye.Helper;
 import com.Gcc.Deadeye.HomeActivity;
 import com.Gcc.Deadeye.JavaUrlConnectionReader;
 import com.Gcc.Deadeye.LoginActivity;
-import com.Gcc.Deadeye.MainActivity;
+import com.Gcc.Deadeye.ESPMainActivity;
 import com.Gcc.Deadeye.Overlay;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.SafeService;
@@ -45,9 +45,6 @@ import java.util.HashMap;
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.Gcc.Deadeye.GccConfig.urlref.canary;
-import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
-import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
 import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 
@@ -154,7 +151,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                                     ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/liberror.so");
                                     PackageManager pm = getContext().getPackageManager();
                                     if (Helper.isPackageInstalled("com.rekoo.pubgm", pm)) {
-                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        Intent i = new Intent(getContext(), ESPMainActivity.class);
                                         i.putExtra("game", "Taiwan");
                                         startActivity(i);
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
@@ -171,7 +168,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
 
                                     PackageManager pm = getContext().getPackageManager();
                                     if (Helper.isPackageInstalled("com.rekoo.pubgm", pm)) {
-                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        Intent i = new Intent(getContext(), ESPMainActivity.class);
                                         i.putExtra("game", "Taiwan");
                                         startActivity(i);
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
@@ -195,7 +192,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                                 }else{
                                     PackageManager pm = getContext().getPackageManager();
                                     if (Helper.isPackageInstalled("com.rekoo.pubgm", pm)) {
-                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        Intent i = new Intent(getContext(), ESPMainActivity.class);
                                         i.putExtra("game", "Taiwan");
                                         startActivity(i);
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
@@ -247,9 +244,9 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                                 getActivity().stopService(new Intent(ctx, SafeService.class));
                                 ctx.stopService(new Intent(ctx, ESPView.class));
                                 ctx.stopService(new Intent(ctx, FloatLogo.class));
-                                MainActivity.isDisplay = false;
+                                ESPMainActivity.isDisplay = false;
                                 //startDaemon();
-                                MainActivity.isDaemon = false;
+                                ESPMainActivity.isDaemon = false;
                                 Overlay.isRunning=false;
                             }
                             if (brutalcheck) {
@@ -265,9 +262,9 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                                 getActivity().stopService(new Intent(ctx, SafeService.class));
                                 ctx.stopService(new Intent(ctx, ESPView.class));
                                 ctx.stopService(new Intent(ctx, FloatLogo.class));
-                                MainActivity.isDisplay = false;
+                                ESPMainActivity.isDisplay = false;
                                 //startDaemon();
-                                MainActivity.isDaemon = false;
+                                ESPMainActivity.isDaemon = false;
                                 Overlay.isRunning=false;
                             }
                             if (brutalcheck) {
@@ -677,7 +674,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
 
                             PackageManager pm = getContext().getPackageManager();
                             if (Helper.isPackageInstalled("com.rekoo.pubgm", pm)) {
-                                Intent i = new Intent(getContext(), MainActivity.class);
+                                Intent i = new Intent(getContext(), ESPMainActivity.class);
                                 i.putExtra("game", "Taiwan");
                                 startActivity(i);
                                 Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();

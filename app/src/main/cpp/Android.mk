@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := xvpn
+LOCAL_MODULE := sysexe
 
 LOCAL_SRC_FILES := PMSocket/PMSocketServer.cpp \
 				   PMServer/PMerror.cpp \
@@ -17,7 +17,7 @@ include $(BUILD_EXECUTABLE)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := vxposed
+LOCAL_MODULE := sysload
 
 LOCAL_SRC_FILES := PMSocket/PMSocketClient.cpp \
                    PMClient/PMerror.cpp \

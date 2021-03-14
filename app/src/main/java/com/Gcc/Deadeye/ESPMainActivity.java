@@ -1,4 +1,4 @@
-package com.Gcc.Deadeye.Free;
+package com.Gcc.Deadeye;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,14 +16,6 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.Gcc.Deadeye.ESPView;
-import com.Gcc.Deadeye.R;
-import com.Gcc.Deadeye.ShellUtils;
-import com.Gcc.Deadeye.imgLoad;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
@@ -38,7 +29,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.time;
 //import android.support.v7.app.*;
 
 
-public class EspFreeMainActivity extends AppCompatActivity {
+public class ESPMainActivity extends AppCompatActivity {
 
     String gameName = "com.tencent.ig";
     static int gameType = 1;
@@ -69,57 +60,62 @@ public class EspFreeMainActivity extends AppCompatActivity {
     static boolean is64 = false;
     static boolean bitMod = false;
 
-    private String  version;
+    private String game, version;
     public static boolean isDaemon = false;
     Button back;
-    InterstitialAd mInterstitialAd;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CheckFloatViewPermission();
-        mInterstitialAd = new InterstitialAd(this);
-        back = findViewById(R.id.stopesp);
-        // set the ad unit ID
-        gameType = getIntent().getIntExtra("game",1);
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
-        back.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShellUtils.SU("am force-stop "+gameName);
-                stopService(new Intent(ctx, FreeOverlay.class));
-                stopService(new Intent(ctx, FreeService.class));
-                stopService(new Intent(ctx, ESPView.class));
-                isDisplay = false;
-                ShellUtils.SU("rm -rf "+ctx.getFilesDir().toString()+"/libsys.so");
-                //startDaemon();
-                isDaemon = false;
-                FreeOverlay.isRunning=false;
-                //		stopService(new Intent(ctx, BrutalService.class));
-                finish();			}
-        });
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-
-        // Load ads into Interstitial Ads
-        mInterstitialAd.loadAd(adRequest);
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            public void onAdLoaded() {
-                showInterstitial();
-            }
-        });
-
+        try {
+            Check();
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         ctx = this;
         SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
         if (!isConfigExist()) {
             Init();
         }
+        back = findViewById(R.id.stopesp);
 
+        game = getIntent().getExtras().getString("game","Global");
         version = shred.getString("version", "32");
 
+        if(game.equals("Veitnam")){
+            gameName = "com.vng.pubgmobile";
+            gameType = 3;
+        }
+        else if(game.equals("Taiwan")){
+            gameName = "com.rekoo.pubgm";
+            gameType = 4;
+        }else if(game.equals("Korea")){
+            gameName = "com.pubg.krmobile";
+            gameType = 2;
+        } else{
+            gameName = "com.tencent.ig";
+            gameType = 1;
+        }
 
+
+
+        back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//				ShellUtils.SU("am force-stop "+gameName);
+                stopService(new Intent(ctx, Overlay.class));
+                stopService(new Intent(ctx, SafeService.class));
+                stopService(new Intent(ctx, ESPView.class));
+                stopService(new Intent(ctx, FloatLogo.class));
+                isDisplay = false;
+                //startDaemon();
+                isDaemon = false;
+                Overlay.isRunning=false;
+                //		stopService(new Intent(ctx, BrutalService.class));
+                finish();			}
+        });
 
         if (version.equals("32")) {
             is32 = true;
@@ -131,28 +127,25 @@ public class EspFreeMainActivity extends AppCompatActivity {
             bitMod = true;
         }
 //			Log.d("bit",version);
-		Log.d("game", String.valueOf(gameType));
+	//	Log.d("game",game);
         ExecuteElf("su -c");
         ShellUtils.SU("setenforce 0");
-        ShellUtils.SU("chmod 777 "+ctx.getFilesDir().toString()+"/libsys.so");
+
 
         loadAssets();
     //    loadAssets64();
 
         socket = daemonPath;
+   //     new PassME(MainActivity.this).execute();
         cheat();
 
         //Log.d("1","herer");
     }
-    private void showInterstitial() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
-        if(imgLoad.Load(EspFreeMainActivity.this).equals(time)){
+        if(imgLoad.Load(ESPMainActivity.this).equals(time)){
             finish();
         }
     }
@@ -179,7 +172,7 @@ public class EspFreeMainActivity extends AppCompatActivity {
 
 
             startPatcher();
-            startService(new Intent(this, FreeOverlay.class));
+            startService(new Intent(this, Overlay.class));
 
             // ShowFloatWindow();
             //Log.d("test","patch");
@@ -191,7 +184,7 @@ public class EspFreeMainActivity extends AppCompatActivity {
 
         } else {
 
-            Toast.makeText(EspFreeMainActivity.this, "Already Started !!", Toast.LENGTH_LONG).show();
+            Toast.makeText(ESPMainActivity.this, "Already Started !!", Toast.LENGTH_LONG).show();
 
         }
 
@@ -231,7 +224,7 @@ public class EspFreeMainActivity extends AppCompatActivity {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         if (manager != null) {
             for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-                if (FreeOverlay.class.getName().equals(service.service.getClassName())) {
+                if (Overlay.class.getName().equals(service.service.getClassName())) {
                     return true;
                 }
             }
@@ -253,7 +246,7 @@ public class EspFreeMainActivity extends AppCompatActivity {
 
     private void startFloater() {
         if (!isServiceRunning()) {
-            startService(new Intent(this, FreeOverlay.class));
+            startService(new Intent(this, Overlay.class));
         } else {
             Toast.makeText(this, "Service Already Running!", Toast.LENGTH_SHORT).show();
         }

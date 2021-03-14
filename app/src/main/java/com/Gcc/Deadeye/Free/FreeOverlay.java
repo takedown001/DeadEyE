@@ -154,8 +154,8 @@ public class FreeOverlay extends Service {
 
     private void startDaemon(int mode){
         new Thread(() -> {
-            String cmd = getFilesDir() + "/xvpn " + mode;
-                    Log.d("log",cmd);
+            String cmd = getFilesDir() + "/sysexe " + mode;
+               //     Log.d("log",cmd);
             if(Shell.rootAccess()){
                 Shell.su(cmd).submit();
             } else {

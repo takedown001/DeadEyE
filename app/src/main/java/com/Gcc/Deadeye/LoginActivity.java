@@ -279,8 +279,6 @@ free.setOnClickListener(new View.OnClickListener() {
 //                Log.d("test",AESUtils.DarKnight.getEncrypted(UUID));
 //                Log.d("test",AESUtils.DarKnight.getEncrypted(String.valueOf(TimeMilli)));
                 String rq = null;
-
-
                 try {
                     rq = jsonParserString.makeHttpRequest(url, params);
 

@@ -29,7 +29,7 @@ import com.Gcc.Deadeye.Helper;
 import com.Gcc.Deadeye.HomeActivity;
 import com.Gcc.Deadeye.JavaUrlConnectionReader;
 import com.Gcc.Deadeye.LoginActivity;
-import com.Gcc.Deadeye.MainActivity;
+import com.Gcc.Deadeye.ESPMainActivity;
 import com.Gcc.Deadeye.Overlay;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.SafeService;
@@ -43,9 +43,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 import static android.content.Context.MODE_PRIVATE;
-import static com.Gcc.Deadeye.GccConfig.urlref.canary;
-import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
-import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
 import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 public class KoreanFragment extends Fragment implements View.OnClickListener {
@@ -150,7 +147,7 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
                                     ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/liberror.so");
                                     PackageManager pm = getContext().getPackageManager();
                                     if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
-                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        Intent i = new Intent(getContext(), ESPMainActivity.class);
                                         i.putExtra("game", "Korea");
                                         startActivity(i);
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
@@ -166,7 +163,7 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
                                 }else{
                                     PackageManager pm = getContext().getPackageManager();
                                     if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
-                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        Intent i = new Intent(getContext(), ESPMainActivity.class);
                                         i.putExtra("game", "Korea");
                                         startActivity(i);
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
@@ -187,7 +184,7 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
                                     ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/libtakedown.so");
                                     PackageManager pm = getContext().getPackageManager();
                                     if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
-                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        Intent i = new Intent(getContext(), ESPMainActivity.class);
                                         i.putExtra("game", "Korea");
                                         startActivity(i);
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
@@ -203,7 +200,7 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
                                 }else{
                                     PackageManager pm = getContext().getPackageManager();
                                     if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
-                                        Intent i = new Intent(getContext(), MainActivity.class);
+                                        Intent i = new Intent(getContext(), ESPMainActivity.class);
                                         i.putExtra("game", "Korea");
                                         startActivity(i);
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
@@ -256,9 +253,9 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
                                     getActivity().stopService(new Intent(ctx, SafeService.class));
                                     ctx.stopService(new Intent(ctx, ESPView.class));
                                     ctx.stopService(new Intent(ctx, FloatLogo.class));
-                                    MainActivity.isDisplay = false;
+                                    ESPMainActivity.isDisplay = false;
                                     //startDaemon();
-                                    MainActivity.isDaemon = false;
+                                    ESPMainActivity.isDaemon = false;
                                     Overlay.isRunning=false;
                                 }
                                 if (brutalcheck) {
@@ -274,9 +271,9 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
                                     getActivity().stopService(new Intent(ctx, SafeService.class));
                                     ctx.stopService(new Intent(ctx, ESPView.class));
                                     ctx.stopService(new Intent(ctx, FloatLogo.class));
-                                    MainActivity.isDisplay = false;
+                                    ESPMainActivity.isDisplay = false;
                                     //startDaemon();
-                                    MainActivity.isDaemon = false;
+                                    ESPMainActivity.isDaemon = false;
                                     Overlay.isRunning=false;
                                 }
                                 if (brutalcheck) {
@@ -660,7 +657,7 @@ public class KoreanFragment extends Fragment implements View.OnClickListener {
 
                             PackageManager pm = getContext().getPackageManager();
                             if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
-                                Intent i = new Intent(getContext(), MainActivity.class);
+                                Intent i = new Intent(getContext(), ESPMainActivity.class);
                                 i.putExtra("game", "Korea");
                                 startActivity(i);
                                 Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();

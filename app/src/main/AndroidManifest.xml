@@ -45,8 +45,7 @@
             android:exported="false"/>
         <activity android:name=".PluginActivity"/>
         <activity android:name=".MyActivity"/>
-        <activity android:name=".MainActivity" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BaseActivity" />
+        <activity android:name=".ESPMainActivity" android:theme="@style/AppTheme.NoActionBar" />
 
 
         <activity android:name=".Free.EspFreeMainActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
