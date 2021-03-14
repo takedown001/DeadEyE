@@ -31,20 +31,15 @@ public class ESPView extends View implements Runnable {
     int FPS = 60;
     long sleepTime;
     Date time;
-    Long getduration;
     SimpleDateFormat formatter;
-    long secondsInMilli = 1000;
-    long minutesInMilli = secondsInMilli * 60;
-    long hoursInMilli = minutesInMilli * 60;
-    long daysInMilli = hoursInMilli * 24;
+
+
+    public static native void DrawOn(ESPView espView, Canvas canvas);
     NumberFormat f = new DecimalFormat("00");
-    SharedPreferences shred = ctx.getSharedPreferences("userdetails", MODE_PRIVATE);
     public ESPView(Context context) {
         super(context, null, 0);
         InitializePaints();
         setFocusableInTouchMode(false);
-
-        getduration = shred.getLong(TAG_DURATION, 0);
         setBackgroundColor(Color.TRANSPARENT);
         time = new Date();
         formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
@@ -53,8 +48,10 @@ public class ESPView extends View implements Runnable {
         mThread.start();
 
 
-
     }
+
+
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -62,7 +59,7 @@ public class ESPView extends View implements Runnable {
             ClearCanvas(canvas);
             time.setTime(System.currentTimeMillis());
             DrawText(canvas, 255, 255, 0, 0, formatter.format(time), 155, 55, 20);
-            Overlay.DrawOn(this, canvas);
+            DrawOn(this, canvas);
         }
     }
 
@@ -100,6 +97,8 @@ public class ESPView extends View implements Runnable {
         mTextPaint.setStrokeWidth(1.1f);
     }
 
+
+
     public void ClearCanvas(Canvas cvs) {
         cvs.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
     }
@@ -124,6 +123,8 @@ public class ESPView extends View implements Runnable {
 
         cvs.drawText(txt, posX, posY, mTextPaint);
     }
+
+
 
     public void DrawCircle(Canvas cvs, int a, int r, int g, int b, float stroke, float posX, float posY, float radius) {
         mStrokePaint.setColor(Color.rgb(r, g, b));
@@ -150,4 +151,8 @@ public class ESPView extends View implements Runnable {
         mFilledPaint.setAlpha(a);
         cvs.drawRect(x, y, x + width, y + height, mFilledPaint);
     }
+
+
+
+
 }

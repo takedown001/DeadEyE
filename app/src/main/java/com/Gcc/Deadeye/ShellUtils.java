@@ -22,9 +22,7 @@ public class ShellUtils {
 						reader.close();
 						su.waitFor();
 
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					} catch (InterruptedException e) {
+					} catch (IOException | InterruptedException e) {
 						throw new RuntimeException(e);
 					}
 				}

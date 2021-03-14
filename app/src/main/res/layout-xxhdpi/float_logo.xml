@@ -10,7 +10,7 @@
 
 	<RelativeLayout
 		android:id="@+id/espView"
-		android:layout_width="400dp"
+		android:layout_width="300dp"
 		android:layout_height="match_parent"
 		android:visibility="visible"
 		tools:ignore="UselessParent"
@@ -48,7 +48,7 @@
 				<ImageView
 					android:id="@+id/vehicleBtn"
 					android:layout_width="match_parent"
-					android:layout_height="45dp"
+					android:layout_height="42dp"
 					android:layout_weight="1"
 					android:background="@android:color/transparent"
 					android:src="@drawable/vehicalimg" />
@@ -493,18 +493,6 @@
 							tools:ignore="HardcodedText" />
 
 						<Switch
-							android:id="@+id/isName"
-							android:layout_width="match_parent"
-							android:layout_height="@dimen/dimen_40dp"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:checked="true"
-							android:fontFamily="@font/montserrat"
-							android:text="Name"
-							android:textColor="@color/white"
-							android:theme="@style/switchtheme"
-							tools:ignore="HardcodedText" />
-
-						<Switch
 							android:id="@+id/isHead"
 							android:layout_width="match_parent"
 							android:layout_height="@dimen/dimen_40dp"
@@ -513,6 +501,18 @@
 							android:visibility="gone"
 							android:fontFamily="@font/montserrat"
 							android:text="Head Position"
+							android:textColor="@color/white"
+							android:theme="@style/switchtheme"
+							tools:ignore="HardcodedText" />
+
+						<Switch
+							android:id="@+id/isName"
+							android:layout_width="match_parent"
+							android:layout_height="@dimen/dimen_40dp"
+							android:layout_marginStart="@dimen/dimen_5dp"
+							android:checked="true"
+							android:fontFamily="@font/montserrat"
+							android:text="Name"
 							android:textColor="@color/white"
 							android:theme="@style/switchtheme"
 							tools:ignore="HardcodedText" />
@@ -2081,14 +2081,13 @@
 
 			<TextView
 				android:id="@+id/textView4"
-
-				android:layout_width="331dp"
+				android:layout_width="227dp"
 				android:layout_height="match_parent"
 				android:fontFamily="@font/montserrat"
 				android:gravity="center"
 				android:text="@string/app_name"
 				android:textColor="@color/white"
-				android:textSize="30sp"
+				android:textSize="@dimen/dimen_20dp"
 				android:textStyle="bold"
 				tools:ignore="HardcodedText" />
 

@@ -11,14 +11,12 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -499,84 +497,84 @@ public class FloatLogo extends Service implements View.OnClickListener {
 //        });
         final Switch isSkelton = mFloatingView.findViewById(R.id.isSkelton);
         isSkelton.setChecked(getConfig((String) isSkelton.getText()));
-        SettingValue(14,getConfig((String) isSkelton.getText()));
+        PremiumValue(614,getConfig((String) isSkelton.getText()));
         isSkelton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setValue(String.valueOf(isSkelton.getText()), isSkelton.isChecked());
-                SettingValue(14,isSkelton.isChecked());
+                PremiumValue(614,isSkelton.isChecked());
             }
         });
         final Switch isHead = mFloatingView.findViewById(R.id.isHead);
         isHead.setChecked(getConfig((String) isHead.getText()));
-        SettingValue(6,getConfig((String) isHead.getText()));
+        PremiumValue(6,getConfig((String) isHead.getText()));
         isHead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setValue(String.valueOf(isHead.getText()), isHead.isChecked());
-                SettingValue(6,isHead.isChecked());
+                PremiumValue(6,isHead.isChecked());
             }
         });
         final Switch isBox = mFloatingView.findViewById(R.id.isBox);
         isBox.setChecked(getConfig((String) isBox.getText()));
-        SettingValue(6,getConfig((String) isBox.getText()));
+        PremiumValue(606,getConfig((String) isBox.getText()));
         isBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setValue(String.valueOf(isBox.getText()), isBox.isChecked());
-                SettingValue(6,isBox.isChecked());
+                PremiumValue(606,isBox.isChecked());
             }
         });
         final Switch isLine = mFloatingView.findViewById(R.id.isLine);
         isLine.setChecked(getConfig((String) isLine.getText()));
-        SettingValue(5,getConfig((String) isLine.getText()));
+        PremiumValue(605,getConfig((String) isLine.getText()));
         isLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setValue(String.valueOf(isLine.getText()), isLine.isChecked());
-                SettingValue(5,isLine.isChecked());
+                PremiumValue(605,isLine.isChecked());
             }
         });
         final Switch isBack = mFloatingView.findViewById(R.id.isBack);
         isBack.setChecked(getConfig((String) isBack.getText()));
-        SettingValue(7,getConfig((String) isBack.getText()));
+        PremiumValue(607,getConfig((String) isBack.getText()));
         isBack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setValue(String.valueOf(isBack.getText()), isBack.isChecked());
-                SettingValue(7,isBack.isChecked());
+                PremiumValue(607,isBack.isChecked());
             }
         });
 
         final Switch isHealth = mFloatingView.findViewById(R.id.isHealth);
         isHealth.setChecked(getConfig((String) isHealth.getText()));
-        SettingValue(2,getConfig((String) isHealth.getText()));
+        PremiumValue(602,getConfig((String) isHealth.getText()));
         isHealth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setValue(String.valueOf(isHealth.getText()), isHealth.isChecked());
-                SettingValue(2,isHealth.isChecked());
+                PremiumValue(602,isHealth.isChecked());
             }
         });
 
         final Switch isName = mFloatingView.findViewById(R.id.isName);
         isName.setChecked(getConfig((String) isName.getText()));
-        SettingValue(1,getConfig((String) isName.getText()));
+        PremiumValue(601,getConfig((String) isName.getText()));
         isName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setValue(String.valueOf(isName.getText()), isName.isChecked());
-                SettingValue(1,isName.isChecked());
+                PremiumValue(601,isName.isChecked());
             }
         });
         final Switch isDist = mFloatingView.findViewById(R.id.isDist);
         isDist.setChecked(getConfig((String) isDist.getText()));
-        SettingValue(3,getConfig((String) isDist.getText()));
+        PremiumValue(603,getConfig((String) isDist.getText()));
         isDist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setValue(String.valueOf(isDist.getText()), isDist.isChecked());
-                SettingValue(3,isDist.isChecked());
+                PremiumValue(603,isDist.isChecked());
             }
         });
 
@@ -589,7 +587,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 float psize = (progress + 4.0f);
                 String tsize = "PlayerESP Size: " + pindex;
                 sizetext.setText(tsize);
-                Size(0, psize);
+                Size(999, psize);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -597,12 +595,12 @@ public class FloatLogo extends Service implements View.OnClickListener {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        addSwitch("Item Name", (buttonView, isChecked) -> SettingValue(9, isChecked));
-        addSwitch("Item Distance", (buttonView, isChecked) -> SettingValue(10, isChecked));
-        addSwitch("Vehicles", (buttonView, isChecked) -> SettingValue(11, isChecked));
-        addSwitch("LootBox", (buttonView, isChecked) -> SettingValue(12, isChecked));
-        addSwitch("Airdrop", (buttonView, isChecked) -> SettingValue(15, isChecked));
-        addSwitch("Special Items", (buttonView, isChecked) -> SettingValue(13, isChecked));
+        addSwitch("Item Name", (buttonView, isChecked) -> PremiumValue(609, isChecked));
+        addSwitch("Item Distance", (buttonView, isChecked) -> PremiumValue(610, isChecked));
+        addSwitch("Vehicles", (buttonView, isChecked) -> PremiumValue(611, isChecked));
+        addSwitch("LootBox", (buttonView, isChecked) -> PremiumValue(612, isChecked));
+        addSwitch("Airdrop", (buttonView, isChecked) -> PremiumValue(615, isChecked));
+        addSwitch("Special Items", (buttonView, isChecked) -> PremiumValue(613, isChecked));
 
         addSeekbar(30, 10, new SeekBar.OnSeekBarChangeListener() {
             TextView sizetext = addText("ItemsESP Size: 15");
@@ -612,7 +610,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 float psize = (progress + 4.0f);
                 String tsize = "ItemsESP Size: " + pindex;
                 sizetext.setText(tsize);
-                Size(1, psize);
+                Size(1000, psize);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -676,7 +674,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
 //
 //    }
 
-    public static native void SettingValue(int setting_code,boolean value);
+    public static native void PremiumValue(int setting_code, boolean value);
 
     private void addSwitch(String name, CompoundButton.OnCheckedChangeListener listener) {
         final Switch sw = new Switch(this);

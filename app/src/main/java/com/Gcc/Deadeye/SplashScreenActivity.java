@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -48,16 +49,21 @@ public class SplashScreenActivity extends Activity {
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String url = urlref.Main + "p.php";
     private static final String TAG_DURATION = urlref.TAG_DURATION;
-    private  boolean error,safe,brutal;
+    private  boolean error,safe,brutal,Aerror;
     //Prefrance
-    String UUID;
+    private String newversion;
+    private String data = "data";
+    private String whatsNewData;
+    private boolean ismaintaince;
+    private static final String TAG_APP_NEWVERSION = "newversion";
+
     long reqtime, restime,diff;
     Handler handler = new Handler();
     JSONParserString jsonParserString = new JSONParserString();
-    private String key, deviceid;
+    private String key, deviceid,version;
     private long getduration;
     Date time;
-    private boolean isFirstStart;
+    RequestHandler requestHandler = new RequestHandler();
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,23 +128,38 @@ public class SplashScreenActivity extends Activity {
             time.setTime(System.currentTimeMillis());
             reqtime = time.getTime();
             HashMap<String, String> params = new HashMap<>();
-            params.put(TAG_KEY,AESUtils.DarKnight.getEncrypted(key));
+            HashMap<String, String> Ar = new HashMap<>();
+            params.put(TAG_KEY, AESUtils.DarKnight.getEncrypted(key));
             params.put(TAG_DEVICEID, deviceid);
             params.put(TAG_ONESIGNALID, "null");
-            params.put(TAG_TIME,AESUtils.DarKnight.getEncrypted(String.valueOf(reqtime)));
-      //      Log.d("test", AESUtils.DarKnight.getEncrypted(UUID));
-         // Log.d("test",deviceid);
-       //     Log.d("test",AESUtils.DarKnight.getEncrypted(key));
+            Ar.put(TAG_KEY, AESUtils.DarKnight.getEncrypted(key));
+            params.put(TAG_TIME, AESUtils.DarKnight.getEncrypted(String.valueOf(reqtime)));
+            //      Log.d("test", AESUtils.DarKnight.getEncrypted(UUID));
+            // Log.d("test",deviceid);
+            //     Log.d("test",AESUtils.DarKnight.getEncrypted(key));
             String rq = null;
+            String sq = null;
             try {
                 rq = jsonParserString.makeHttpRequest(url, params);
-        //       Log.d("json",rq.toString());
-            } catch (KeyStoreException | IOException e) {
+                sq = requestHandler.sendPostRequest(urlref.apkupdateurl, Ar);
+                JSONObject obj = null;
+                obj = new JSONObject(sq);
+                Aerror = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
+                if (!Aerror) {
+                    newversion = obj.getString(TAG_APP_NEWVERSION);
+                    whatsNewData = obj.getString(data);
+                    ismaintaince = obj.getBoolean("ismain");
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    version = pInfo.versionName;
+                    Log.d("new Version",newversion);
+                }
+            } catch (KeyStoreException | IOException | JSONException | PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-            //returing the response
-            return rq;
 
+            //converting response to json object
+
+            return rq;
         }
 
         @Override
@@ -149,71 +170,84 @@ public class SplashScreenActivity extends Activity {
                 @Override
                 public void run() {
 
-                        boolean isFirstStart = shred.getBoolean("firstStart", true);
-                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                        try {
-                            JSONObject obj = new JSONObject(result);
-                            error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-                            restime = Long.parseLong(String.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_TIME))));
-                            diff = restime -reqtime;
-                            // Log.d("test", String.valueOf(error));
-                            if (diff == urlref.logindiff) {
-                                if (!error) {
-                                    getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
-                                    safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
-                                    brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
-                                    editor.putLong(TAG_DURATION, getduration);
-                                    editor.apply();
+                    boolean isFirstStart = shred.getBoolean("firstStart", true);
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    try {
+                        JSONObject obj = new JSONObject(result);
+                        error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
+                        restime = Long.parseLong(String.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_TIME))));
+                        diff = restime -reqtime;
+                        // Log.d("test", String.valueOf(error));
+                        if (diff == urlref.logindiff) {
+                            if (!error) {
+                                getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
+                                safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
+                                brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
+                                editor.putLong(TAG_DURATION, getduration);
+                                editor.apply();
 
-                                    //    Log.d("splash", String.valueOf(getduration));
-                                }
+                                //    Log.d("splash", String.valueOf(getduration));
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                        if (checkVPN()) {
-                            Toast.makeText(SplashScreenActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                            finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (checkVPN()) {
+                        Toast.makeText(SplashScreenActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        // If the activity has never started before...
+                        if (isFirstStart) {
+
+                            // Launch app intro
+                            Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                            startActivity(i);
+
+
                         } else {
-                            // If the activity has never started before...
-                            if (isFirstStart) {
 
-                                // Launch app intro
-                                Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                                startActivity(i);
+                            // Create a new boolean and preference and set it to true
+                            String isSignedin = shred.getString(TAG_KEY, "null");
 
+                            if (!isSignedin.equals("null")) {
+                                if (!(getduration == 0)) {
+                                    //user signedin
+                                    Intent i = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                                    i.putExtra("safe", safe);
+                                    i.putExtra("brutal", brutal);
+                                    startActivity(i);
+                                } else {
+                                    //   Log.d("duration", String.valueOf(getduration));
+                                    Toast.makeText(SplashScreenActivity.this, "Subscription Expired ", Toast.LENGTH_LONG).show();
+                                    shred.edit().clear().apply();
+                                    Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                                    startActivity(i);
+                                }
 
                             } else {
-
-                                // Create a new boolean and preference and set it to true
-                                String isSignedin = shred.getString(TAG_KEY, "null");
-
-                                if (!isSignedin.equals("null")) {
-                                    if (!(getduration == 0)) {
-
-                                        //user signedin
-                                        Intent i = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                                        i.putExtra("safe", safe);
-                                        i.putExtra("brutal", brutal);
-                                        startActivity(i);
-                                    } else {
-                                        //   Log.d("duration", String.valueOf(getduration));
-                                        Toast.makeText(SplashScreenActivity.this, "Subscription Expired ", Toast.LENGTH_LONG).show();
-                                        shred.edit().clear().apply();
-                                        Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                                        startActivity(i);
-                                    }
-
-                                } else {
+                                if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
+                                    Intent intent = new Intent(SplashScreenActivity.this, AppUpdaterActivity.class);
+                                    intent.putExtra(TAG_APP_NEWVERSION, newversion);
+                                    intent.putExtra(data,whatsNewData);
+                                    //intent.putExtra("updateurl",url);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+                                else if(ismaintaince){
+                                    Intent intent = new Intent(SplashScreenActivity.this, activityMaintain.class);
+                                    startActivity(intent);
+                                }
+                                else {
                                     //user not signedin
                                     Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
                                     startActivity(i);
                                 }
                             }
                         }
-                        finish();
                     }
+                    finish();
+                }
 
             },SPLASH_SHOW_TIME);
             // Create a new boolean and preference and set it to true

@@ -4,28 +4,15 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebView;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -34,10 +21,7 @@ import com.topjohnwu.superuser.Shell;
 
 import java.security.NoSuchAlgorithmException;
 
-import static com.Gcc.Deadeye.FloatLogo.SettingValue;
-import static com.Gcc.Deadeye.GccConfig.urlref.canary;
-import static com.Gcc.Deadeye.GccConfig.urlref.netgaurd;
-import static com.Gcc.Deadeye.GccConfig.urlref.pcanary;
+import static com.Gcc.Deadeye.FloatLogo.PremiumValue;
 import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 public class Overlay extends Service {
@@ -158,8 +142,8 @@ public class Overlay extends Service {
                 } else {
                     isRunning = true;
                     startService(new Intent(this, FloatLogo.class));
-                    SettingValue(0,true);
-                    SettingValue(8,true);
+                    PremiumValue(600,true);
+                    PremiumValue(608,true);
                 }
             }
         }).start();
@@ -220,7 +204,6 @@ public class Overlay extends Service {
     //Native Funcs
     public static native int Init();
 
-    public static native void DrawOn(ESPView espView, Canvas canvas);
 
 
     public static native void Size(int num, float size);

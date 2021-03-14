@@ -31,8 +31,8 @@ import dalvik.system.DexClassLoader;
 import static java.security.CryptoPrimitive.SIGNATURE;
 
 public class Helper {
-   private static final String APP_SIGNATURE = "46490ACB753B0D1DF9F14B6F1FEEC3FE32EC8508";  //release
-  //  private static final String APP_SIGNATURE = "37F760E29CF520940697C165525198B2D9A6D764";  //debug
+ //  private static final String APP_SIGNATURE = "46490ACB753B0D1DF9F14B6F1FEEC3FE32EC8508";  //release
+    private static final String APP_SIGNATURE = "37F760E29CF520940697C165525198B2D9A6D764";  //debug
     public static boolean isPackageInstalled(String packageName, PackageManager packageManager) {
         try {
             packageManager.getPackageInfo(packageName, 0);

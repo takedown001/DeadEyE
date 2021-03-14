@@ -4,7 +4,7 @@ plugins {
     id 'com.chrisney.enigma'
 }
 // Set Enigma options:
-enigma.enabled = true
+enigma.enabled = false
 enigma.injectFakeKeys = true
 enigma.classes  = ["com.Gcc.Deadeye.GccConfig.urlref.java","com.Gcc.Deadeye.ESPView","com.Gcc.Deadeye.Fragment.GlobalFragment","com.Gcc.Deadeye.Fragment.KoreanFragment","com.Gcc.Deadeye.Fragment.TaiwanFragment","com.Gcc.Deadeye.Fragment.VietnamFragment","com.Gcc.Deadeye.Fragment.AboutFragment","com.Gcc.Deadeye.Fragment.SettingFragment","com.Gcc.Deadeye.DownloadFile.java","com.Gcc.Deadeye.Overlay.java","com.Gcc.Deadeye.ESPView.java","com.Gcc.Deadeye.SafeService.java","com.Gcc.Deadeye.PluginActivity.java","com.Gcc.Deadeye.FloatLogo.java","com.Gcc.Deadeye.SingleTapConfirm.java"]
 android {
@@ -16,7 +16,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
-        versionName "1.3"
+        versionName "1.4"
         manifestPlaceholders = [
                 onesignal_app_id: 'd0827521-a855-456b-a09f-dc25899ac339',
                 // Project number pulled from dashboard, local value is ignored.
@@ -101,6 +101,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-ui:2.3.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+    implementation 'com.wangsun.upi.payment:upi-payment:0.0.5'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'

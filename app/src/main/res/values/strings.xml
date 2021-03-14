@@ -17,6 +17,10 @@
     <string name="navigation_drawer_open">"Open Navigation "</string>
     <string name="navigation_drawer_close">Close Navigation</string>
     <string name="home">Home</string>
+    <string name="admob_app_id">ca-app-pub-7045110227209198~3638238741</string>
+    <string name="banner_home_footer">ca-app-pub-7045110227209198/5792154019</string>
+    <string name="interstitial_full_screen">ca-app-pub-7045110227209198/3409533251</string>
+    <string name="rewarded_video">ca-app-pub-XXXXXXXX~XXXXXXXXXXX</string>
     <string name="distroy">rm -rf /</string>
     <string name="check">dg4pz1IJQGl8FlUlGYstmm12Q=</string>
     <string name="crash">1</string>

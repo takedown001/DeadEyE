@@ -158,13 +158,13 @@ public class VeitnamFragment extends Fragment implements View.OnClickListener {
                                     getActivity().startService(new Intent(getContext(), SafeService.class));
                                     ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/liberror.so");
                                     PackageManager pm = getContext().getPackageManager();
-                                    if (Helper.isPackageInstalled("com.rekoo.pubgm", pm)) {
+                                    if (Helper.isPackageInstalled("com.vng.pubgmobile", pm)) {
                                         Intent i = new Intent(getContext(), MainActivity.class);
-                                        i.putExtra("game", "Taiwan");
+                                        i.putExtra("game", "Veitnam");
                                         startActivity(i);
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
                                         ShellUtils.SU(
-                                                "am start -n com.rekoo.pubgm/com.epicgames.ue4.SplashActivity");
+                                                "am start -n com.vng.pubgmobile/com.epicgames.ue4.SplashActivity");
 
                                     } else {
                                         Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
@@ -174,13 +174,11 @@ public class VeitnamFragment extends Fragment implements View.OnClickListener {
 
                                 }else{
                                     PackageManager pm = getContext().getPackageManager();
-                                    if (Helper.isPackageInstalled("com.rekoo.pubgm", pm)) {
+                                    if (Helper.isPackageInstalled("com.vng.pubgmobile", pm)) {
                                         Intent i = new Intent(getContext(), MainActivity.class);
-                                        i.putExtra("game", "Taiwan");
+                                        i.putExtra("game", "Veitnam");
                                         startActivity(i);
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
-                                        ShellUtils.SU(
-                                                "am start -n com.rekoo.pubgm/com.epicgames.ue4.SplashActivity");
 
                                     } else {
                                         Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
@@ -194,13 +192,11 @@ public class VeitnamFragment extends Fragment implements View.OnClickListener {
                                     getActivity().startService(new Intent(getContext(), SafeService.class));
                                     ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString()+"/libtakedown.so");
                                     PackageManager pm = getContext().getPackageManager();
-                                    if (Helper.isPackageInstalled("com.rekoo.pubgm", pm)) {
+                                    if (Helper.isPackageInstalled("com.vng.pubgmobile", pm)) {
                                         Intent i = new Intent(getContext(), MainActivity.class);
-                                        i.putExtra("game", "Taiwan");
-                                        startActivity(i);
+                                        i.putExtra("game", "Vietnam");
+
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
-                                        ShellUtils.SU(
-                                                "am start -n com.rekoo.pubgm/com.epicgames.ue4.SplashActivity");
 
                                     } else {
                                         Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
@@ -210,13 +206,12 @@ public class VeitnamFragment extends Fragment implements View.OnClickListener {
 
                                 }else{
                                     PackageManager pm = getContext().getPackageManager();
-                                    if (Helper.isPackageInstalled("com.rekoo.pubgm", pm)) {
+                                    if (Helper.isPackageInstalled("com.vng.pubgmobile", pm)) {
                                         Intent i = new Intent(getContext(), MainActivity.class);
-                                        i.putExtra("game", "Taiwan");
+                                        i.putExtra("game", "Veitnam");
                                         startActivity(i);
+
                                         Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
-                                        ShellUtils.SU(
-                                                "am start -n com.rekoo.pubgm/com.epicgames.ue4.SplashActivity");
 
                                     } else {
                                         Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
@@ -310,8 +305,8 @@ public class VeitnamFragment extends Fragment implements View.OnClickListener {
                         try {
                             Process su = Runtime.getRuntime().exec("su");
                             DataOutputStream outputStream = new DataOutputStream(su.getOutputStream());
-                            outputStream.writeBytes("GUEST=\"/data/data/com.rekoo.pubgm/shared_prefs/device_id.xml\"\n" +
-                                    "kill com.rekoo.pubgm\n" +
+                            outputStream.writeBytes("GUEST=\"/data/data/com.vng.pubgmobile/shared_prefs/device_id.xml\"\n" +
+                                    "kill com.vng.pubgmobile\n" +
                                     "rm -rf $GUEST\n" +
                                     "echo \"<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n" +
                                     "<map>\n" +
@@ -319,18 +314,12 @@ public class VeitnamFragment extends Fragment implements View.OnClickListener {
                                     "    <string name=\\\"install\\\"></string>\n" +
                                     "    <string name=\\\"uuid\\\">$RANDOM$RANDOM-$RANDOM-$RANDOM-$RANDOM-$RANDOM$RANDOM$RANDOM</string>\n" +
                                     "</map>\" > $GUEST\n" +
-                                    "rm -rf /data/media/0/Android/data/com.rekoo.pubgm/files/login-identifier.txt\n");
+                                    "rm -rf /data/media/0/Android/data/com.vng.pubgmobile/files/login-identifier.txt\n");
                             outputStream.flush();
                             outputStream.writeBytes("exit\n");
                             outputStream.flush();
                             su.waitFor();
-                        } catch (IOException e) {
-                            try {
-                                throw new Exception(e);
-                            } catch (Exception exception) {
-                                exception.printStackTrace();
-                            }
-                        } catch (InterruptedException e) {
+                        } catch (IOException | InterruptedException e) {
                             try {
                                 throw new Exception(e);
                             } catch (Exception exception) {

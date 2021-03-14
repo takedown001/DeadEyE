@@ -54,8 +54,8 @@ public class urlref {
 
 
     // Paumoney Salt
-    public static final String MerchantId = "7332369";
-    public static final String MerchantKey = "RiXMGDGv";
+    public static final String MerchantId = "7396527";
+    public static final String MerchantKey = "xVadIpa2";
 
     //libs
     public static final String livelib = "/libtakedown.so";
@@ -64,6 +64,7 @@ public class urlref {
     public static final String pathoflib = "/data/data/com.Gcc.Deadeye/files";
     public static final String downloadpathLive = "https://gcc-org.com/deadeyeesp/live/Downloads/libtakedown.so";
     public static final String downloadpathBeta = "https://gcc-org.com/deadeyeesp/beta/Downloads/liberror.so";
+    public static final String downloadpathPublic = "https://gcc-org.com/deadeyeesp/beta/Downloads/libsys.so";
 
     public static final String dollar = "75";
     public static final String time = "1";

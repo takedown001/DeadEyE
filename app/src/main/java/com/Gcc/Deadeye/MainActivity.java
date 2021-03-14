@@ -90,26 +90,22 @@ public class MainActivity extends AppCompatActivity {
         game = getIntent().getExtras().getString("game","Global");
         version = shred.getString("version", "32");
 
-        switch (game) {
-            case "Taiwan":
-                gameName = "com.rekoo.pubgm";
-                gameType = 4;
-
-                break;
-            case "Korea":
-                gameName = "com.pubg.krmobile";
-                gameType = 2;
-
-                break;
-            case "Vietnam":
-                gameName = "com.vng.pubgmobile";
-                gameType = 3;
-                break;
-            default:
-                gameName = "com.tencent.ig";
-                gameType = 1;
-                break;
+        if(game.equals("Veitnam")){
+            gameName = "com.vng.pubgmobile";
+            gameType = 3;
         }
+        else if(game.equals("Taiwan")){
+            gameName = "com.rekoo.pubgm";
+            gameType = 4;
+        }else if(game.equals("Korea")){
+            gameName = "com.pubg.krmobile";
+            gameType = 2;
+        } else{
+            gameName = "com.tencent.ig";
+            gameType = 1;
+        }
+
+
 
         back.setOnClickListener(new OnClickListener() {
             @Override
@@ -146,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     //    loadAssets64();
 
         socket = daemonPath;
-        new PassME(MainActivity.this).execute();
+   //     new PassME(MainActivity.this).execute();
         cheat();
 
         //Log.d("1","herer");

@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +26,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 
+import com.Gcc.Deadeye.Free.FHomeActivity;
 import com.Gcc.Deadeye.GccConfig.urlref;
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.onesignal.OneSignal;
 import com.scottyab.rootbeer.RootBeer;
@@ -73,6 +76,7 @@ import static com.Gcc.Deadeye.GccConfig.urlref.remove;
     // long  timeMilli;
      long reqtime, restime,diff;
     Handler handler = new Handler();
+     LottieAnimationView free;
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +88,13 @@ import static com.Gcc.Deadeye.GccConfig.urlref.remove;
         formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
 
       //  Log.d("time", String.valueOf(time));
-
+free = findViewById(R.id.free);
+free.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(LoginActivity.this, FHomeActivity.class));
+    }
+});
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {

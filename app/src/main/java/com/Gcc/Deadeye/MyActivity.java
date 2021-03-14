@@ -21,10 +21,14 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.Gcc.Deadeye.GccConfig.urlref;
+import com.google.firebase.database.annotations.NotNull;
 import com.onesignal.OneSignal;
 import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
+import com.wangsun.upi.payment.UpiPayment;
+import com.wangsun.upi.payment.model.PaymentDetail;
+import com.wangsun.upi.payment.model.TransactionDetails;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +36,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -59,6 +64,8 @@ public class MyActivity extends AppCompatActivity {
     Handler handler = new Handler();
     JSONParserString jsonParserString = new JSONParserString();
     Context ctx;
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +74,10 @@ public class MyActivity extends AppCompatActivity {
         ctx=this;
         try {
             Check();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
         UUID = OneSignal.getPermissionSubscriptionState().getSubscriptionStatus().getUserId();
         txnid = getIntent().getExtras().getString("taxid");
         amount = getIntent().getExtras().getString("amount");
@@ -94,6 +100,47 @@ public class MyActivity extends AppCompatActivity {
             finish();
         }
     }
+
+public void startupi(){
+    PaymentDetail pay = new PaymentDetail("9166253128@ybl",prodname,"",txnid,"Premium Plan For deadeye",amount);
+
+
+
+    new UpiPayment(this)
+            .setPaymentDetail(pay)
+            .setUpiApps(UpiPayment.getExistingUpiApps(MyActivity.this))
+            .setCallBackListener(new UpiPayment.OnUpiPaymentListener() {
+                @Override
+                public void onSubmitted(@NotNull TransactionDetails data) {
+                    //transaction pending: use data to get TransactionDetails
+                        Toast.makeText(MyActivity.this,"Wait While We Setup ",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(@NotNull String message) {
+                    Toast.makeText(MyActivity.this,"Transaction Cancelled",Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(@NotNull TransactionDetails data) {
+                    //transaction success: use data to get TransactionDetails
+                                 if(Helper.checkVPN(MyActivity.this)){
+                                     Toast.makeText(MyActivity.this,"Vpn Enabled ,No Refund ",Toast.LENGTH_SHORT).show();
+                                 }else {
+                                     new Oneload().execute();
+                                     Toast.makeText(MyActivity.this,"Transaction Successful",Toast.LENGTH_LONG).show();
+                                 }
+
+
+                }
+            }).pay();
+}
+
+
+
+
+
+
     PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
     //declare paymentParam object
     PayUmoneySdkInitializer.PaymentParam paymentParam = null;
@@ -117,7 +164,7 @@ public class MyActivity extends AppCompatActivity {
                 .setUdf8("")
                 .setUdf9("")
                 .setUdf10("")
-                .setIsDebug(false)                              // Integration environment - true (Debug)/ false(Production)
+                .setIsDebug(true)                              // Integration environment - true (Debug)/ false(Production)
                 .setKey(merchantkey)                        // Merchant key
                 .setMerchantId(merchantId);
 
