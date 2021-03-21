@@ -106,11 +106,7 @@ public class KoreanFreeFragment extends Fragment{
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
+
                 if (Helper.checkVPN(getActivity())) {
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -120,16 +116,11 @@ public class KoreanFreeFragment extends Fragment{
                         @Override
                         public void run() {
                             antiban.dismiss();
-                            PackageManager pm = getContext().getPackageManager();
-                            if (Helper.isPackageInstalled("com.pubg.krmobile", pm)) {
                                 Intent i = new Intent(getContext(), EspFreeMainActivity.class);
                                 i.putExtra("game", 2);
                                 startActivity(i);
                                 Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
 
-                            } else {
-                                Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
-                            }
                         }
                     }, 4000);
                 }
@@ -141,11 +132,6 @@ public class KoreanFreeFragment extends Fragment{
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -319,12 +305,6 @@ public class KoreanFreeFragment extends Fragment{
         return rootViewone;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
-        if(imgLoad.Load(getActivity()).equals(time)){
-           getActivity().finish();
-        }
-    }
 
     }
 

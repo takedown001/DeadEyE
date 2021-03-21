@@ -73,16 +73,18 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
     if(isESP){
         esp.DrawCrosshair(PMColor(0, 0, 0, 255), PMVector2(screenWidth / 2, screenHeight / 2), 42);
         if(isfov){
-            esp.DrawCircle(PMColor(255, 0, 0, 200),2,PMVector2(screenWidth / 2, screenHeight / 2),300);
+            esp.DrawCircle(PMColor(255, 0, 0, 200),2,PMVector2(screenWidth / 2, screenHeight / 2),200);
         }
         PMVector2 screen(screenWidth, screenHeight);
         float mScale = screenHeight / (float) 1080;
         if(isfree){
-        esp.DrawText(PMColor::Red(), "DeadEyE.Gcc-org.com", PMVector2(
+        esp.DrawText(PMColor::Red(), "Deadeye.Gcc-org.com", PMVector2(
                 (screenWidth) - 130, (screenHeight) - 60), 20);
-        esp.DrawText(PMColor::Red(), "@DeadEYE_TG", PMVector2(
+        esp.DrawText(PMColor::Red(), "@DeadEye_TG", PMVector2(
                  155,(screenHeight) - 60 ), 20);
             }
+        esp.DrawText(PMColor::Red(), "Deadeye.Gcc-org.com", PMVector2(
+                (screenWidth) - 130, (screenHeight) - 60), 20);
         Response response = getData(screenWidth, screenHeight);
         if(response.Success){
             if(isNearEnemy) {
@@ -114,25 +116,28 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
 
             int count = response.PlayerCount;
             if(count > 0){
-                for(int i=0; i < count; i++){
+                for(int i=0; i < count; i++) {
                     PlayerData player = response.Players[i];
-                    if(!isValidPlayer(player)){ continue;}
+                    if (!isValidPlayer(player)) { continue; }
 
                     bool isTeamMate = player.TeamID == response.MyTeamID;
-                    if(isTeamMate && !isTeamMateShow){ continue;}
+                    if (isTeamMate && !isTeamMateShow) { continue; }
 
                     PMVector2 location = player.Body;
-                    if(isPlayer360 && isOutsideSafeZone(location, screen)){
+                    if (isPlayer360 && isOutsideSafeZone(location, screen)) {
                         string dist;
                         dist += to_string((int) player.Distance);
                         dist += "M";
 
                         PMVector2 hintDotRenderPos = pushToScreenBorder(location, screen,
-                                                                      (int) ((mScale * 100) / 3));
+                                                                        (int) ((mScale * 100) / 3));
                         PMVector2 hintTextRenderPos = pushToScreenBorder(location, screen,
-                                                                       -(int) ((mScale * 36)));
-                        esp.DrawFilledCircle((isTeamMate ? PMColor(0,255,0,128) : PMColor(255,0,0,128)), hintDotRenderPos, (mScale * 100));
-                        esp.DrawText(PMColor::White(), dist.c_str(), hintTextRenderPos, playerTextSize);
+                                                                         -(int) ((mScale * 36)));
+                        esp.DrawFilledCircle(
+                                (isTeamMate ? PMColor(0, 255, 0, 128) : PMColor(255, 0, 0, 128)),
+                                hintDotRenderPos, (mScale * 100));
+                        esp.DrawText(PMColor::White(), dist.c_str(), hintTextRenderPos,
+                                     playerTextSize);
                         continue;
                     }
 
@@ -140,61 +145,91 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                     float boxWidth = boxHeight * 0.56;
                     PMRect Box(player.Head.x - (boxWidth / 2), player.Head.y, boxWidth, boxHeight);
 
-                    if(isPlayerSkel){
-                        esp.DrawFilledCircle(PMColor::Red(), player.Neck, boxWidth / 25);
+                    if (isPlayerSkel) {
+                        esp.DrawCircle(PMColor::Red(), 4, player.Neck, boxWidth / 6);
 
-                        esp.DrawLine(PMColor::Red(), 2, player.Neck, player.Chest);
-                        esp.DrawLine(PMColor::Red(), 2, player.Chest, player.Pelvis);
+                        esp.DrawLine(PMColor::Red(), 3, player.Neck, player.Chest);
+                        esp.DrawLine(PMColor::Red(), 3, player.Chest, player.Pelvis);
 
-                        esp.DrawLine(PMColor::Red(), 2, player.Chest, player.LShoulder);
-                        esp.DrawLine(PMColor::Red(), 2, player.Chest, player.RShoulder);
+                        esp.DrawLine(PMColor::Red(), 3, player.Chest, player.LShoulder);
+                        esp.DrawLine(PMColor::Red(), 3, player.Chest, player.RShoulder);
 
-                        esp.DrawLine(PMColor::Red(), 2, player.LShoulder, player.LElbow);
-                        esp.DrawLine(PMColor::White(), 2, player.RShoulder, player.RElbow);
+                        esp.DrawLine(PMColor::Red(), 3, player.LShoulder, player.LElbow);
+                        esp.DrawLine(PMColor::Red(), 3, player.RShoulder, player.RElbow);
 
-                        esp.DrawLine(PMColor::Red(), 2, player.LElbow, player.LWrist);
-                        esp.DrawLine(PMColor::Red(), 2, player.RElbow, player.RWrist);
+                        esp.DrawLine(PMColor::Red(), 3, player.LElbow, player.LWrist);
+                        esp.DrawLine(PMColor::Red(), 3, player.RElbow, player.RWrist);
 
-                        esp.DrawLine(PMColor::Red(), 2, player.Pelvis, player.LThigh);
-                        esp.DrawLine(PMColor::Red(), 2, player.Pelvis, player.RThigh);
+                        esp.DrawLine(PMColor::Red(), 3, player.Pelvis, player.LThigh);
+                        esp.DrawLine(PMColor::Red(), 3, player.Pelvis, player.RThigh);
 
-                        esp.DrawLine(PMColor::Red(), 2, player.LThigh, player.LKnee);
-                        esp.DrawLine(PMColor::Red(), 2, player.RThigh, player.RKnee);
+                        esp.DrawLine(PMColor::Red(), 3, player.LThigh, player.LKnee);
+                        esp.DrawLine(PMColor::Red(), 3, player.RThigh, player.RKnee);
 
-                        esp.DrawLine(PMColor::Red(), 2, player.LKnee, player.LAnkle);
-                        esp.DrawLine(PMColor::Red(), 2, player.RKnee, player.RAnkle);
+                        esp.DrawLine(PMColor::Red(), 3, player.LKnee, player.LAnkle);
+                        esp.DrawLine(PMColor::Red(), 3, player.RKnee, player.RAnkle);
                     }
 
-                    if(isPlayerLine){
-                        esp.DrawLine((isTeamMate ? PMColor(0,255,0) : PMColor(255,0,0)), 1, PMVector2((screenWidth / 2) - (boxWidth / 2), 77+40), player.Neck);
-                    }
-
-                    if(isPlayerBox){
-                        if(player.isBot){
-                            esp.DrawRect((isTeamMate ? PMColor(0,255,0) : PMColor(255,0,0)), 1, Box);
+                    if (isPlayerLine) {
+                        if (player.isBot) {
+                            esp.DrawLine((isTeamMate ? PMColor(0, 255, 0) : PMColor(0, 255, 0)), 1,
+                                         PMVector2((screenWidth / 2) - (boxWidth / 2), 77 + 40),
+                                         player.Neck);
+                        } else {
+                            esp.DrawLine((isTeamMate ? PMColor(0, 255, 0) : PMColor(255, 0, 0)), 1,
+                                         PMVector2((screenWidth / 2) - (boxWidth / 2), 77 + 40),
+                                         player.Neck);
                         }
-                        else {
+                    }
+                    if (isPlayerBox) {
+                        if (player.isBot) {
+                            esp.DrawRect((isTeamMate ? PMColor(0, 255, 0) : PMColor(0, 255, 0)), 1,
+                                         Box);
+                        } else {
 
-                            esp.DrawRect((isTeamMate ? PMColor(0, 255, 0) : PMColor(255, 0, 0)), 1,
+                            esp.DrawRect((isTeamMate ? PMColor(0, 255, 0) : PMColor::White()), 1,
                                          Box);
                         }
                     }
+                    if (isPlayerHealth) {
+                        if (!isfree) {
+                            esp.DrawHorizontalHealthBar(
+                                    PMVector2(Box.x + (Box.width / 2) - 40, Box.y - 20),
+                                    (100 * mScale),
+                                    100, player.Health);
+                        } else {
+                            esp.DrawHorizontalHealthBarFree(
+                                    PMVector2(Box.x - (35 * mScale), Box.y - 33),
+                                    (80 * mScale),
+                                    100, player.Health);
+                        }
+                    }
+
 
                     if(isPlayerName) {
                         wstring pname = player.PlayerName;
-                        if(player.isBot){
-                            pname += L"[ Bot ]";
-                        }
-                        else {
-                            pname += L"[";
-                            pname += to_wstring(player.TeamID);
-                            pname += L"]";
-                        }
-                        esp.DrawPlayerText(PMColor::White(), pname.c_str(),
-                                           PMVector2(Box.x + (Box.width / 2), Box.y - 12),
-                                           playerTextSize);
-                    }
+                        wstring bname = L" AI ";
 
+
+                        if(player.isBot) {
+                            esp.DrawPlayerText(PMColor::White(), bname.c_str(),
+                                               PMVector2(Box.x + (Box.width / 2), Box.y - 20),
+                                               ((30 * mScale)) / 2);
+                        }else{
+                            esp.DrawPlayerText(PMColor::White(), pname.c_str(),
+                                               PMVector2(Box.x + (Box.width / 2)+22, Box.y - 20),
+                                               ((30 * mScale)) / 2);
+
+                        }
+                    }
+                    if(!isfree) {
+                        if (isteamid) {
+                            wstring teamid = L"" + to_wstring(player.TeamID);
+                            esp.DrawPlayerText(PMColor::Orange(), teamid.c_str(),
+                                               PMVector2(Box.x + (Box.width / 2) - 45, Box.y - 20),
+                                               ((30 * mScale)) / 2);
+                        }
+                    }
                     if(isPlayerDist) {
                         string dist;
                         dist += "[ ";
@@ -207,19 +242,7 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                                              Box.y + Box.height + 25), playerTextSize);
                     }
 
-                    if(isPlayerHealth) {
-                        if(player.Distance > 60){
-                            esp.DrawHorizontalHealthBar(
-                                    PMVector2(Box.x - (35 * mScale), Box.y - 33),
-                                    (80 * mScale),
-                                    100, player.Health);
-                        } else {
-                            esp.DrawVerticalHealthBar(
-                                    PMVector2(Box.x + Box.width, Box.y),
-                                    boxHeight,
-                                    100, player.Health);
-                        }
-                    }
+
                 }
             }
 
@@ -260,5 +283,4 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
         }
     }
 }
-
 #endif //HACKS_H

@@ -3,7 +3,6 @@ package com.Gcc.Deadeye.Free;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -17,12 +16,10 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.Gcc.Deadeye.ESPView;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.ShellUtils;
 import com.Gcc.Deadeye.imgLoad;
 import com.hitomi.cmlibrary.CircleMenu;
-import com.hitomi.cmlibrary.OnMenuSelectedListener;
 import com.hitomi.cmlibrary.OnMenuStatusChangeListener;
 
 import java.security.NoSuchAlgorithmException;
@@ -49,8 +46,6 @@ public class FreeService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate() {
-
-
         super.onCreate();
         //Inflate the floating view layout we created
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null);
@@ -69,87 +64,83 @@ public class FreeService extends Service {
                 .addSubMenu(Color.parseColor("#FF4B32"), R.drawable.vehicalimg)//vehical
                 .addSubMenu(Color.parseColor("#8A39FF"), R.drawable.gun)
                 .addSubMenu(Color.parseColor("#FFFFFF"), R.drawable.aimbot)
-                .setOnMenuSelectedListener(new OnMenuSelectedListener() {
+                .setOnMenuSelectedListener(index -> {
+                    if(index==0) {
+                        if (PlayerEsp) {
+                           SettingValue(86,true);
+                           SettingValue(87,true);
+                           SettingValue(88,true);
+                           SettingValue(91,true);
+                           SettingValue(93,true);
+                           SettingValue(99,true);
 
-                    @Override
-                    public void onMenuSelected(int index) {
-                        if(index==0) {
-                            if (PlayerEsp) {
-                               SettingValue(86,true);
-                               SettingValue(87,true);
-                               SettingValue(88,true);
-                               SettingValue(91,true);
-                               SettingValue(93,true);
-                               SettingValue(99,true);
-
-                               Toast.makeText(getApplicationContext(), "Player ESP Activated ", Toast.LENGTH_SHORT).show();
-                                PlayerEsp =false;
-                            } else {
-                                SettingValue(86,false);
-                                SettingValue(87,false);
-                                SettingValue(88,false);
-                                SettingValue(91,false);
-                                SettingValue(93,false);
-                                SettingValue(99,false);
-                                Toast.makeText(getApplicationContext(), "Player ESP Deactivated ", Toast.LENGTH_SHORT).show();
-                                PlayerEsp =true;
-                            }
+                           Toast.makeText(getApplicationContext(), "Player ESP Activated ", Toast.LENGTH_SHORT).show();
+                            PlayerEsp =false;
+                        } else {
+                            SettingValue(86,false);
+                            SettingValue(87,false);
+                            SettingValue(88,false);
+                            SettingValue(91,false);
+                            SettingValue(93,false);
+                            SettingValue(99,false);
+                            Toast.makeText(getApplicationContext(), "Player ESP Deactivated ", Toast.LENGTH_SHORT).show();
+                            PlayerEsp =true;
                         }
-                        else if (index == 1) {
-                            if (ItemESP) {
-                                SettingValue(92,true);
-                                SettingValue(95,true);
-                                SettingValue(97,true);
-                                Toast.makeText(getApplicationContext(), "Item Esp Activated " , Toast.LENGTH_SHORT).show();
-                                ItemESP =false;
-                            } else {
-                                SettingValue(92,false);
-                                SettingValue(95,false);
-                                SettingValue(97,false);
-                                Toast.makeText(getApplicationContext(), "Item Esp DeActivated " , Toast.LENGTH_SHORT).show();
-                                ItemESP =true;
-                            }
+                    }
+                    else if (index == 1) {
+                        if (ItemESP) {
+                            SettingValue(92,true);
+                            SettingValue(95,true);
+                            SettingValue(97,true);
+                            Toast.makeText(getApplicationContext(), "Item Esp Activated " , Toast.LENGTH_SHORT).show();
+                            ItemESP =false;
+                        } else {
+                            SettingValue(92,false);
+                            SettingValue(95,false);
+                            SettingValue(97,false);
+                            Toast.makeText(getApplicationContext(), "Item Esp DeActivated " , Toast.LENGTH_SHORT).show();
+                            ItemESP =true;
                         }
-                        else if (index == 2) {
-                            if (Vehical) {
-                                SettingValue(96,true);
-                                Toast.makeText(getApplicationContext(), "Vehical Esp Activated "  , Toast.LENGTH_SHORT).show();
-                                Vehical =false;
+                    }
+                    else if (index == 2) {
+                        if (Vehical) {
+                            SettingValue(96,true);
 
-                            } else {
-                                SettingValue(96,false);
-                                Toast.makeText(getApplicationContext(), "Vehical Esp Deactivated " , Toast.LENGTH_SHORT).show();
-                                Vehical =true;
-                            }
+                            Toast.makeText(getApplicationContext(), "Vehical Esp Activated ", Toast.LENGTH_SHORT).show();
+                            Vehical =false;
+
+                        } else {
+                            SettingValue(96,false);
+                            Toast.makeText(getApplicationContext(), "Vehical Esp Deactivated " , Toast.LENGTH_SHORT).show();
+                            Vehical =true;
                         }
-                        else if (index == 3) {
-                            if (less) {
-                                ShellUtils.SU(myDaemon + " LESSCHALU");
-                                Toast.makeText(getApplicationContext(), "Recoil Compansation Activated " , Toast.LENGTH_SHORT).show();
-                                less=false;
-                            } else {
-                                ShellUtils.SU(myDaemon + " LESSBAND");
-                                Toast.makeText(getApplicationContext(), "Recoil Compansation Deactivated ", Toast.LENGTH_SHORT).show();
-                                less=true;
-                            }
+                    }
+                    else if (index == 3) {
+                        if (less) {
+                            ShellUtils.SU(myDaemon + " LESSCHALU");
+                            Toast.makeText(getApplicationContext(), "Recoil Compansation Activated " , Toast.LENGTH_SHORT).show();
+                            less=false;
+                        } else {
+                            ShellUtils.SU(myDaemon + " LESSBAND");
+                            Toast.makeText(getApplicationContext(), "Recoil Compansation Deactivated ", Toast.LENGTH_SHORT).show();
+                            less=true;
                         }
-                        else if (index == 4) {
-                            if (aim) {
-                                ShellUtils.SU(myDaemon + "AIMCHALU");
-                               SettingValue(101,true);
-                                Toast.makeText(getApplicationContext(), "Fov Aimbot Activated " , Toast.LENGTH_SHORT).show();
-                                aim=false;
+                    }
+                    else if (index == 4) {
+                        if (aim) {
+                            ShellUtils.SU(myDaemon + "AIMCHALU");
+                           SettingValue(101,true);
+                            Toast.makeText(getApplicationContext(), "FOV Aimbot Activated " , Toast.LENGTH_SHORT).show();
+                            aim=false;
 
-                            } else {
-                                SettingValue(101,false);
-                                ShellUtils.SU(myDaemon + " AIMBAND");
-                                Toast.makeText(getApplicationContext(), "Fov Aimbot Deactivated", Toast.LENGTH_SHORT).show();
-                                aim=true;
+                        } else {
+                            SettingValue(101,false);
+                            ShellUtils.SU(myDaemon + " AIMBAND");
+                            Toast.makeText(getApplicationContext(), "FOV Aimbot Deactivated", Toast.LENGTH_SHORT).show();
+                            aim=true;
 
 
-                            }
                         }
-
                     }
 
                 }).setOnMenuStatusChangeListener(new OnMenuStatusChangeListener() {

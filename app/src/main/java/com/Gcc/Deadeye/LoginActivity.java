@@ -61,17 +61,17 @@ import static com.Gcc.Deadeye.GccConfig.urlref.remove;
     private static final String TAG_KEY = urlref.TAG_KEY;
     private boolean error,safe,brutal;
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
-    private static final String url = Main +"p.php";
+    private static final String url = Main +"login.php";
     private static final String TAG_DURATION =urlref.TAG_DURATION;
     JSONParserString jsonParserString = new JSONParserString();
     private static final String TAG_ISFIRSTSTART = "firstStart";
     TextInputEditText editTextUsername;
     Context context;
+
     private long getduration;
     private String key,UUID;
     TextView version;
      Date time;
-
      SimpleDateFormat formatter;
     // long  timeMilli;
      long reqtime, restime,diff;

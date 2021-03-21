@@ -27,7 +27,7 @@ public class AppUpdaterActivity extends AppCompatActivity {
     private TextView whatsNew;
     private String whatsNewData;
 
-    private String newversion;
+    private String newversion,updateurl;
 
     public AppUpdaterActivity() {
     }
@@ -38,7 +38,7 @@ public class AppUpdaterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_updater);
         newversion = getIntent().getStringExtra(TAG_APP_NEWVERSION);
         whatsNewData = getIntent().getStringExtra("data");
-
+        updateurl = getIntent().getStringExtra("updateurl");
         newVersion = (TextView) findViewById(R.id.version);
         whatsNew = (TextView) findViewById(R.id.whatsnew);
         forceUpdateNote = (TextView) findViewById(R.id.forceUpdateNote);
@@ -51,7 +51,7 @@ public class AppUpdaterActivity extends AppCompatActivity {
             forceUpdateNote.setVisibility(View.VISIBLE);
         }
         update.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://deadeye.gcc-org.com"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateurl));
             startActivity(browserIntent);
         });
     }

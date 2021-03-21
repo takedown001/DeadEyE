@@ -402,7 +402,7 @@
 						android:id="@+id/players"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
-						android:layout_marginEnd="@dimen/dimen_15dp"
+						android:layout_marginEnd="@dimen/dimen_5dp"
 						android:background="@color/bgblue"
 						android:orientation="vertical"
 						android:visibility="visible">
@@ -420,10 +420,10 @@
 								android:fontFamily="@font/montserrat"
 								android:gravity="center_vertical"
 								android:text="FPS"
-								android:visibility="gone"
 								android:textAlignment="gravity"
 								android:textColor="@color/white"
 								android:theme="@style/switchtheme"
+								android:visibility="gone"
 								tools:ignore="HardcodedText" />
 
 							<com.ramotion.fluidslider.FluidSlider
@@ -431,8 +431,8 @@
 								android:layout_width="300dp"
 								android:layout_height="wrap_content"
 								android:elevation="2dp"
-								app:bar_color="@color/white"
 								android:visibility="gone"
+								app:bar_color="@color/white"
 								app:bubble_color="@color/blue"
 								app:bubble_text_color="@color/white"
 								app:duration="@android:integer/config_mediumAnimTime"
@@ -443,104 +443,229 @@
 								app:size="small" />
 						</LinearLayout>
 
-						<Switch
-							android:id="@+id/isBox"
+						<TextView
 							android:layout_width="match_parent"
-							android:layout_height="@dimen/dimen_40dp"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:checked="true"
-							android:fontFamily="@font/montserrat"
-							android:text="Box"
+							android:layout_height="match_parent"
+							android:layout_marginStart="5dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="Bounding Box Display"
 							android:textColor="@color/white"
-							android:theme="@style/switchtheme"
-							android:thumbTextPadding="@dimen/dimen_30dp"
-							tools:ignore="HardcodedText" />
+							android:textSize="@dimen/dimen_14sp" />
 
-						<Switch
-							android:id="@+id/isLine"
+						<LinearLayout
 							android:layout_width="match_parent"
-							android:layout_height="@dimen/dimen_40dp"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:checked="true"
-							android:fontFamily="@font/montserrat"
-							android:text="Line"
-							android:textColor="@color/white"
-							android:theme="@style/switchtheme"
-							tools:ignore="HardcodedText" />
+							android:layout_height="wrap_content"
+							android:orientation="vertical"
+							android:padding="5dp">
 
-						<Switch
-							android:id="@+id/isDist"
-							android:layout_width="match_parent"
-							android:layout_height="@dimen/dimen_40dp"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:checked="true"
-							android:fontFamily="@font/montserrat"
-							android:text="Distance"
-							android:textColor="@color/white"
-							android:theme="@style/switchtheme"
-							tools:ignore="HardcodedText" />
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="8dp"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat"
+								android:text="Show The Bounding Box Of Player"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_10dp" />
 
-						<Switch
-							android:id="@+id/isHealth"
-							android:layout_width="match_parent"
-							android:layout_height="@dimen/dimen_40dp"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:checked="true"
-							android:fontFamily="@font/montserrat"
-							android:text="Health"
-							android:textColor="@color/white"
-							android:theme="@style/switchtheme"
-							tools:ignore="HardcodedText" />
+							<RadioGroup
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content">
 
-						<Switch
-							android:id="@+id/isHead"
-							android:layout_width="match_parent"
-							android:layout_height="@dimen/dimen_40dp"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:checked="true"
-							android:visibility="gone"
-							android:fontFamily="@font/montserrat"
-							android:text="Head Position"
-							android:textColor="@color/white"
-							android:theme="@style/switchtheme"
-							tools:ignore="HardcodedText" />
+								<RadioButton
+									android:id="@+id/boxoff"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+									android:checked="true"
+									android:text="OFF"
+									android:textColor="@color/white" />
 
-						<Switch
-							android:id="@+id/isName"
-							android:layout_width="match_parent"
-							android:layout_height="@dimen/dimen_40dp"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:checked="true"
-							android:fontFamily="@font/montserrat"
-							android:text="Name"
-							android:textColor="@color/white"
-							android:theme="@style/switchtheme"
-							tools:ignore="HardcodedText" />
+								<RadioButton
+									android:id="@+id/box2d"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+									android:fontFamily="@font/montserrat"
+									android:text="2-D Box"
+									android:textColor="@color/white" />
 
-						<Switch
-							android:id="@+id/isBack"
-							android:layout_width="match_parent"
-							android:layout_height="@dimen/dimen_40dp"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:checked="true"
-							android:fontFamily="@font/montserrat"
-							android:text="360 Alert"
-							android:textColor="@color/white"
-							android:theme="@style/switchtheme"
-							tools:ignore="HardcodedText" />
+								<RadioButton
+									android:id="@+id/box3d"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+									android:visibility="gone"
+									android:fontFamily="@font/montserrat"
+									android:text="3-D Box"
+									android:textColor="@color/white" />
 
 
-						<Switch
-							android:id="@+id/isSkelton"
+							</RadioGroup>
+						</LinearLayout>
+
+						<TextView
 							android:layout_width="match_parent"
-							android:layout_height="@dimen/dimen_40dp"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:checked="true"
-							android:fontFamily="@font/montserrat"
-							android:text="Skeleton"
+							android:layout_height="match_parent"
+							android:layout_marginStart="5dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="ESP Generic Adjustment"
 							android:textColor="@color/white"
-							android:theme="@style/switchtheme"
-							tools:ignore="HardcodedText" />
+							android:textSize="@dimen/dimen_14sp" />
+
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="3dp"
+							android:fontFamily="@font/montserrat"
+							android:background="@color/bgblue"
+							android:orientation="vertical"
+							android:visibility="visible">
+
+							<TableLayout
+								android:layout_width="match_parent"
+								android:layout_height="match_parent">
+
+								<TableRow
+									android:layout_width="match_parent"
+									android:layout_height="match_parent">
+
+									<CheckBox
+										android:id="@+id/isLine"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Line"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/isDist"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Distance"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/isHealth"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Health"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+
+								</TableRow>
+							</TableLayout>
+
+							<TableLayout
+								android:layout_width="match_parent"
+								android:fontFamily="@font/montserrat"
+								android:layout_height="match_parent">
+
+								<TableRow
+									android:layout_width="match_parent"
+									android:layout_height="match_parent">
+
+									<CheckBox
+										android:id="@+id/isName"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Name"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/isBack"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="360Alert"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/isSkelton"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Skeleton"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+								</TableRow>
+							</TableLayout>
+							<TableLayout
+								android:layout_width="match_parent"
+								android:layout_height="match_parent">
+
+								<TableRow
+									android:layout_width="match_parent"
+									android:layout_height="match_parent">
+
+									<CheckBox
+										android:id="@+id/isteamid"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:fontFamily="@font/montserrat"
+										android:text="Team ID"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+								</TableRow>
+							</TableLayout>
+						</LinearLayout>
+
+
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="3dp"
+							android:background="@color/bgblue"
+							android:orientation="vertical"
+							android:visibility="visible">
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="5dp"
+								android:layout_marginTop="@dimen/dimen_5dp"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat_bold"
+								android:text=" Esp Size adjustment"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_14sp" />
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="8dp"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat"
+								android:text="Adjust the Size Of Player Esp"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_10dp" />
+
+							<com.ramotion.fluidslider.FluidSlider
+								android:id="@+id/playersize"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:elevation="2dp"
+								app:bar_color="@color/white"
+								app:bubble_color="@color/blue"
+								app:bubble_text_color="@color/white"
+								app:duration="@android:integer/config_mediumAnimTime"
+								app:size="small" />
+						</LinearLayout>
 
 						<Switch
 							android:id="@+id/isGrenadeWarning"
@@ -548,11 +673,11 @@
 							android:layout_height="@dimen/dimen_40dp"
 							android:layout_marginStart="@dimen/dimen_5dp"
 							android:checked="true"
-							android:visibility="gone"
 							android:fontFamily="@font/montserrat"
 							android:text="Grenade Warning"
 							android:textColor="@color/white"
 							android:theme="@style/switchtheme"
+							android:visibility="gone"
 							tools:ignore="HardcodedText" />
 
 						<Switch
@@ -561,13 +686,166 @@
 							android:layout_height="41dp"
 							android:layout_marginStart="@dimen/dimen_5dp"
 							android:checked="true"
-							android:visibility="gone"
 							android:fontFamily="@font/montserrat"
 							android:text="Enemy Weapon"
 							android:textColor="@color/white"
 							android:theme="@style/switchtheme"
+							android:visibility="gone"
 							tools:ignore="HardcodedText" />
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="3dp"
+							android:background="@color/bgblue"
+							android:fontFamily="@font/montserrat"
+							android:orientation="vertical"
+							android:visibility="visible">
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="5dp"
+								android:layout_marginTop="@dimen/dimen_5dp"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat_bold"
+								android:text="Items Esp Genenric Adjustment"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_14sp" />
+
+							<RadioGroup
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content">
+
+								<RadioButton
+									android:id="@+id/Offitems"
+									android:layout_width="match_parent"
+									android:layout_height="34dp"
+									android:buttonTint="#FFF"
+									android:checked="true"
+									android:fontFamily="@font/montserrat"
+									android:text="OFF"
+									android:textColor="@color/white" />
+
+
+								<RadioButton
+									android:id="@+id/Onitems"
+									android:layout_width="match_parent"
+									android:layout_height="33dp"
+									android:buttonTint="#FFF"
+									android:fontFamily="@font/montserrat"
+									android:text="Show Items"
+									android:textColor="@color/white" />
+							</RadioGroup>
+
+							<TableLayout
+								android:layout_width="match_parent"
+								android:layout_height="match_parent">
+
+								<TableRow
+									android:layout_width="match_parent"
+									android:layout_height="match_parent">
+
+									<CheckBox
+										android:id="@+id/itemname"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Name"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/itemDistance"
+										android:layout_width="90dp"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Distance"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/LootBox"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="LootBox"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+
+								</TableRow>
+							</TableLayout>
+
+							<TableLayout
+								android:layout_width="match_parent"
+								android:layout_height="match_parent">
+
+								<TableRow
+									android:layout_width="match_parent"
+									android:layout_height="match_parent">
+
+
+									<CheckBox
+										android:id="@+id/Drop"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="AirDrop"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/vehical"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Vehical"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+
+								</TableRow>
+							</TableLayout>
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="5dp"
+								android:layout_marginTop="@dimen/dimen_5dp"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat_bold"
+								android:text=" Item Esp Size adjustment"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_14sp" />
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="8dp"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat"
+								android:text="Adjust the Size Of Item Esp"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_10dp" />
+
+
+							<com.ramotion.fluidslider.FluidSlider
+								android:id="@+id/itemsize"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:elevation="2dp"
+								android:paddingBottom="@dimen/dimen_20dp"
+								app:bar_color="@color/white"
+								app:bubble_color="@color/blue"
+								app:bubble_text_color="@color/white"
+								app:duration="@android:integer/config_mediumAnimTime"
+								app:size="small" />
+
+						</LinearLayout>
+
+
 					</LinearLayout>
+
+
 
 
 					<LinearLayout
@@ -576,22 +854,21 @@
 						android:layout_height="match_parent"
 						android:background="@color/bgblue"
 						android:orientation="vertical"
-						android:visibility="visible">
+						android:visibility="gone">
 
 						<LinearLayout
 							android:id="@+id/specialTab"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="3dp"
-							android:background="@color/blue"
+							android:background="@color/bgblue"
 							android:orientation="vertical"
-							android:visibility="gone">
+							android:visibility="visible">
 
 							<TableLayout
 
 								android:layout_width="match_parent"
-								android:layout_height="match_parent"
-								>
+								android:layout_height="match_parent">
 
 								<TableRow
 									android:layout_width="match_parent"
@@ -667,7 +944,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="3dp"
-							android:background="@color/blue"
+							android:background="@color/bgblue"
 							android:orientation="vertical"
 							android:visibility="gone">
 
@@ -727,7 +1004,6 @@
 										tools:ignore="HardcodedText" />
 
 
-
 									<CheckBox
 										android:id="@+id/fourx"
 										android:layout_width="match_parent"
@@ -738,8 +1014,8 @@
 										tools:ignore="HardcodedText" />
 
 
-
 								</TableRow>
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent"
@@ -765,7 +1041,6 @@
 										tools:ignore="HardcodedText" />
 
 
-
 									<CheckBox
 										android:id="@+id/sixx"
 										android:layout_width="match_parent"
@@ -786,7 +1061,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="3dp"
-							android:background="@color/blue"
+							android:background="@color/bgblue"
 							android:orientation="vertical"
 							android:visibility="gone">
 
@@ -1307,12 +1582,13 @@
 
 							</TableLayout>
 						</LinearLayout>
+
 						<LinearLayout
 							android:id="@+id/AmmoTab"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="3dp"
-							android:background="@color/blue"
+							android:background="@color/bgblue"
 							android:orientation="vertical"
 							android:visibility="gone">
 
@@ -1373,8 +1649,6 @@
 										tools:ignore="HardcodedText" />
 
 
-
-
 								</TableRow>
 
 								<TableRow
@@ -1388,6 +1662,7 @@
 										android:text="Arrow"
 										android:textColor="@color/white"
 										tools:ignore="HardcodedText" />
+
 									<CheckBox
 										android:id="@+id/otGuage"
 										android:layout_width="match_parent"
@@ -1406,7 +1681,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="3dp"
-							android:background="@color/blue"
+							android:background="@color/bgblue"
 							android:orientation="vertical"
 							android:visibility="gone">
 
@@ -1436,7 +1711,6 @@
 										tools:ignore="HardcodedText" />
 
 
-
 								</TableRow>
 
 								<TableRow
@@ -1458,8 +1732,6 @@
 										android:text="Helmet 2"
 										android:textColor="@color/white"
 										tools:ignore="HardcodedText" />
-
-
 
 
 								</TableRow>
@@ -1486,6 +1758,7 @@
 
 
 								</TableRow>
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1525,7 +1798,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="3dp"
-							android:background="@color/blue"
+							android:background="@color/bgblue"
 							android:orientation="vertical"
 							android:visibility="gone">
 
@@ -1556,8 +1829,6 @@
 										tools:ignore="HardcodedText" />
 
 
-
-
 								</TableRow>
 
 								<TableRow
@@ -1571,7 +1842,6 @@
 										android:text="FirstAidKit"
 										android:textColor="@color/white"
 										tools:ignore="HardcodedText" />
-
 
 
 									<CheckBox
@@ -1588,7 +1858,6 @@
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
-
 
 
 									<CheckBox
@@ -1619,7 +1888,7 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="3dp"
-							android:background="@color/blue"
+							android:background="@color/bgblue"
 							android:orientation="vertical"
 							android:visibility="gone">
 
@@ -2085,7 +2354,7 @@
 				android:layout_height="match_parent"
 				android:fontFamily="@font/montserrat"
 				android:gravity="center"
-				android:text="@string/app_name"
+				android:text="Display"
 				android:textColor="@color/white"
 				android:textSize="@dimen/dimen_20dp"
 				android:textStyle="bold"
@@ -2094,7 +2363,6 @@
 			<ImageView
 				android:id="@+id/closeBtn"
 				android:layout_width="66dp"
-
 				android:layout_height="match_parent"
 				android:src="@drawable/close"
 				tools:ignore="HardcodedText" />

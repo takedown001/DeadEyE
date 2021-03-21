@@ -6,7 +6,7 @@ plugins {
 // Set Enigma options:
 enigma.enabled = false
 enigma.injectFakeKeys = true
-enigma.classes  = ["com.Gcc.Deadeye.GccConfig.urlref.java","com.Gcc.Deadeye.ESPView","com.Gcc.Deadeye.Fragment.GlobalFragment","com.Gcc.Deadeye.Fragment.KoreanFragment","com.Gcc.Deadeye.Fragment.TaiwanFragment","com.Gcc.Deadeye.Fragment.VietnamFragment","com.Gcc.Deadeye.Fragment.AboutFragment","com.Gcc.Deadeye.Fragment.SettingFragment","com.Gcc.Deadeye.DownloadFile.java","com.Gcc.Deadeye.Overlay.java","com.Gcc.Deadeye.ESPView.java","com.Gcc.Deadeye.SafeService.java","com.Gcc.Deadeye.PluginActivity.java","com.Gcc.Deadeye.FloatLogo.java","com.Gcc.Deadeye.SingleTapConfirm.java"]
+enigma.classes  = ["com.Gcc.Deadeye.GccConfig.urlref.java","com.Gcc.Deadeye.ESPView","com.Gcc.Deadeye.Fragment.GlobalFragment","com.Gcc.Deadeye.Fragment.KoreanFragment","com.Gcc.Deadeye.Fragment.TaiwanFragment","com.Gcc.Deadeye.Fragment.VietnamFragment","com.Gcc.Deadeye.Fragment.AboutFragment","com.Gcc.Deadeye.Fragment.SettingFragment","com.Gcc.Deadeye.DownloadFile.java","com.Gcc.Deadeye.Overlay.java","com.Gcc.Deadeye.ESPView.java","com.Gcc.Deadeye.SafeService.java","com.Gcc.Deadeye.PluginActivity.java","com.Gcc.Deadeye.FloatLogo.java","com.Gcc.Deadeye.SingleTapConfirm.java","com.Gcc.Deadeye.Free.FreeService.java","com.Gcc.Deadeye.Free.ESPMainActivity.java","com.Gcc.Deadeye.Free.FreeOverlay.java"]
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -16,7 +16,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
-        versionName "1.4"
+        versionName "1.6"
         manifestPlaceholders = [
                 onesignal_app_id: 'd0827521-a855-456b-a09f-dc25899ac339',
                 // Project number pulled from dashboard, local value is ignored.

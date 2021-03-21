@@ -31,21 +31,24 @@ import dalvik.system.DexClassLoader;
 import static java.security.CryptoPrimitive.SIGNATURE;
 
 public class Helper {
- //  private static final String APP_SIGNATURE = "46490ACB753B0D1DF9F14B6F1FEEC3FE32EC8508";  //release
-    private static final String APP_SIGNATURE = "37F760E29CF520940697C165525198B2D9A6D764";  //debug
+//  private static final String APP_SIGNATURE = "46490ACB753B0D1DF9F14B6F1FEEC3FE32EC8508";  //release
+   private static final String APP_SIGNATURE = "37F760E29CF520940697C165525198B2D9A6D764";  //debug
+
+
     public static boolean isPackageInstalled(String packageName, PackageManager packageManager) {
         try {
             packageManager.getPackageInfo(packageName, 0);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
+
             return false;
         }
     }
 
     public static boolean checkVPN(final Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getNetworkInfo(ConnectivityManager.TYPE_VPN).isConnectedOrConnecting();
-
+   //   return cm.getNetworkInfo(ConnectivityManager.TYPE_VPN).isConnectedOrConnecting();
+        return false;
     }
 
     public static boolean hookdetection(){
@@ -88,7 +91,6 @@ public class Helper {
         for (Signature signature : packageInfo.signatures) {
             // SHA1 the signature
             String sha1 = getSHA1(signature.toByteArray());
-            // check is matches hardcoded value
          //   Log.d("sign",sha1);
             return !APP_SIGNATURE.equals(sha1);
         }
@@ -118,36 +120,36 @@ public class Helper {
     }
 
     public static final boolean isEmulator() {
-
+//
         int rating = 0;
-
-        if ((Build.PRODUCT.equals("sdk")) || (Build.PRODUCT.equals("google_sdk"))
-                || (Build.PRODUCT.equals("sdk_x86")) || (Build.PRODUCT.equals("vbox86p"))) {
-            rating++;
-        }
-        if ((Build.MANUFACTURER.equals("unknown")) || (Build.MANUFACTURER.equals("Genymotion"))) {
-            rating++;
-        }
-        if ((Build.BRAND.equals("generic")) || (Build.BRAND.equals("generic_x86"))) {
-            rating++;
-        }
-        if ((Build.DEVICE.equals("generic")) || (Build.DEVICE.equals("generic_x86")) || (Build.DEVICE.equals("vbox86p"))) {
-            rating++;
-        }
-        if ((Build.MODEL.equals("sdk")) || (Build.MODEL.equals("google_sdk"))
-                || (Build.MODEL.equals("Android SDK built for x86"))) {
-            rating++;
-        }
-        if ((Build.HARDWARE.equals("goldfish")) || (Build.HARDWARE.equals("vbox86"))) {
-            rating++;
-        }
-        if ((Build.FINGERPRINT.contains("generic/sdk/generic"))
-                || (Build.FINGERPRINT.contains("generic_x86/sdk_x86/generic_x86"))
-                || (Build.FINGERPRINT.contains("generic/google_sdk/generic"))
-                || (Build.FINGERPRINT.contains("generic/vbox86p/vbox86p"))) {
-            rating++;
-        }
-
+//
+//        if ((Build.PRODUCT.equals("sdk")) || (Build.PRODUCT.equals("google_sdk"))
+//                || (Build.PRODUCT.equals("sdk_x86")) || (Build.PRODUCT.equals("vbox86p"))) {
+//            rating++;
+//        }
+//        if ((Build.MANUFACTURER.equals("unknown")) || (Build.MANUFACTURER.equals("Genymotion"))) {
+//            rating++;
+//        }
+//        if ((Build.BRAND.equals("generic")) || (Build.BRAND.equals("generic_x86"))) {
+//            rating++;
+//        }
+//        if ((Build.DEVICE.equals("generic")) || (Build.DEVICE.equals("generic_x86")) || (Build.DEVICE.equals("vbox86p"))) {
+//            rating++;
+//        }
+//        if ((Build.MODEL.equals("sdk")) || (Build.MODEL.equals("google_sdk"))
+//                || (Build.MODEL.equals("Android SDK built for x86"))) {
+//            rating++;
+//        }
+//        if ((Build.HARDWARE.equals("goldfish")) || (Build.HARDWARE.equals("vbox86"))) {
+//            rating++;
+//        }
+//        if ((Build.FINGERPRINT.contains("generic/sdk/generic"))
+//                || (Build.FINGERPRINT.contains("generic_x86/sdk_x86/generic_x86"))
+//                || (Build.FINGERPRINT.contains("generic/google_sdk/generic"))
+//                || (Build.FINGERPRINT.contains("generic/vbox86p/vbox86p"))) {
+//            rating++;
+//        }
+//
         return rating > 4;
 
     }
@@ -161,13 +163,13 @@ public class Helper {
      * @return {@code true} if the package "de.robv.android.xposed.installer" is installed and enabled.
      */
     public static boolean isXposedInstallerAvailable(Context context) {
-        try {
-            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo("de.robv.android.xposed.installer", 0);
-            if (appInfo != null) {
-                return appInfo.enabled;
-            }
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
+//        try {
+//            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo("de.robv.android.xposed.installer", 0);
+//            if (appInfo != null) {
+//                return appInfo.enabled;
+//            }
+//        } catch (PackageManager.NameNotFoundException ignored) {
+//        }
         return false;
     }
 
@@ -177,64 +179,64 @@ public class Helper {
      * @return {@code true} if Xposed is active on the device.
      */
     public static boolean isXposedActive(Context context) {
-            PackageManager packageManager=context.getPackageManager();
-            List<ApplicationInfo> appliacationInfoList=packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
-            for(ApplicationInfo item:appliacationInfoList ){
-                if(item.packageName.equals("de.robv.android.xposed.installer")){
-                    return true;
-                }
-                if(item.packageName.equals("com.saurik.substrate")){
-                    return true;
-                }
-        }
+//            PackageManager packageManager=context.getPackageManager();
+//            List<ApplicationInfo> appliacationInfoList=packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
+//            for(ApplicationInfo item:appliacationInfoList ){
+//                if(item.packageName.equals("de.robv.android.xposed.installer")){
+//                    return true;
+//                }
+//                if(item.packageName.equals("com.saurik.substrate")){
+//                    return true;
+//                }
+//        }
         return false;
     }
 
     public static boolean xposedhook(){
-        try {
-
-            throw new Exception("Deteck hook");
-
-        } catch (Exception e) {
-
-            int zygoteInitCallCount = 0;
-            for (StackTraceElement item : e.getStackTrace()) {
-                // Check if "com.android.internal.os.ZygoteInit" occurs twice, and if it occurs twice, it indicates that the Substrate gy framework has been installed.
-                if (item.getClassName().equals("com.android.internal.os.ZygoteInit")) {
-                    zygoteInitCallCount++;
-                    if (zygoteInitCallCount == 2) {
-
-                        Log.wtf("HookDetection", "Substrate is active on the device.");
-                        return true;
-                    }
-                }
-
-                if (item.getClassName().equals("com.saurik.substrate.MS$2") && item.getMethodName().equals("invoke")) {
-                    Log.wtf("HookDetection", "A method on the stack trace has been hooked using Substrate.");
-                    return true;
-                }
-
-                if (item.getClassName().equals("de.robv.android.xposed.XposedBridge")
-                        && item.getMethodName().equals("main")) {
-
-                    Log.wtf("HookDetection", "Xposed is active on the device.");
-                    return true;
-                }
-                if (item.getClassName().equals("de.robv.android.xposed.XposedBridge")
-                        && item.getMethodName().equals("handleHookedMethod")) {
-                    Log.wtf("HookDetection", "A method on the stack trace has been hooked using Xposed.");
-                    return true;
-                }
-
-            }
-        }
+//        try {
+//
+//            throw new Exception("Deteck hook");
+//
+//        } catch (Exception e) {
+//
+//            int zygoteInitCallCount = 0;
+//            for (StackTraceElement item : e.getStackTrace()) {
+//                // Check if "com.android.internal.os.ZygoteInit" occurs twice, and if it occurs twice, it indicates that the Substrate gy framework has been installed.
+//                if (item.getClassName().equals("com.android.internal.os.ZygoteInit")) {
+//                    zygoteInitCallCount++;
+//                    if (zygoteInitCallCount == 2) {
+//
+//                        Log.wtf("HookDetection", "Substrate is active on the device.");
+//                        return true;
+//                    }
+//                }
+//
+//                if (item.getClassName().equals("com.saurik.substrate.MS$2") && item.getMethodName().equals("invoke")) {
+//                    Log.wtf("HookDetection", "A method on the stack trace has been hooked using Substrate.");
+//                    return true;
+//                }
+//
+//                if (item.getClassName().equals("de.robv.android.xposed.XposedBridge")
+//                        && item.getMethodName().equals("main")) {
+//
+//                    Log.wtf("HookDetection", "Xposed is active on the device.");
+//                    return true;
+//                }
+//                if (item.getClassName().equals("de.robv.android.xposed.XposedBridge")
+//                        && item.getMethodName().equals("handleHookedMethod")) {
+//                    Log.wtf("HookDetection", "A method on the stack trace has been hooked using Xposed.");
+//                    return true;
+//                }
+//
+//            }
+//        }
         return false;
     }
     public static boolean isAppRunning(final Context context, final String packageName) {
         final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         final List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
         if (procInfos != null)
-        {
+       {
             for (final ActivityManager.RunningAppProcessInfo processInfo : procInfos) {
                 if (processInfo.processName.equals(packageName)) {
                     return true;

@@ -1,6 +1,6 @@
 obj/local/armeabi-v7a/objs/sysload/PMClient/PMerror.o: \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMerror.cpp \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMDeadeye.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMerror.cpp \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMDeadeye.h \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\string \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\__config \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\string_view \
@@ -41,24 +41,24 @@ obj/local/armeabi-v7a/objs/sysload/PMClient/PMerror.o: \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\cctype \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\ctype.h \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\wctype.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMStructsCommon.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMVector3.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMVector2.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMRect.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMLog.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMESP.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMColor.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMStructsCommon.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMVector3.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMVector2.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMRect.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMLog.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMESP.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMColor.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.h \
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\vector \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\__bit_reference \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\climits \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\limits.h \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\__split_buffer \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\errno.h \
-  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMHacks.h
+  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMHacks.h
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMDeadeye.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMDeadeye.h:
 
 C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\string:
 
@@ -140,23 +140,23 @@ C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-
 
 C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\wctype.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMStructsCommon.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMStructsCommon.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMVector3.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMVector3.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMVector2.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMVector2.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMRect.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMRect.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMLog.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMLog.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMESP.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMESP.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMColor.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMColor.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h:
 
 C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\vector:
 
@@ -170,4 +170,4 @@ C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-
 
 C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\errno.h:
 
-C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMHacks.h:
+F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMClient\PMHacks.h:

@@ -137,6 +137,8 @@ Java_com_Gcc_Deadeye_FloatLogo_PremiumValue(JNIEnv *env, jclass clazz, jint num,
         case 615:
             isAirDrop = flag;
             break;
+        case 616:
+            isteamid = flag;
         default:
             break;
     }

@@ -19,9 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.Gcc.Deadeye.BetaLoadMem;
 import com.Gcc.Deadeye.DownloadFile;
 import com.Gcc.Deadeye.GccConfig.urlref;
 import com.Gcc.Deadeye.LoadBeta;
+import com.Gcc.Deadeye.LoadMem;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.ShellUtils;
 import com.ramotion.fluidslider.FluidSlider;
@@ -322,14 +324,20 @@ public class SettingFragment extends Fragment {
             public void onClick(View v) {
                 if(safe){
 
-
                 ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+urlref.livelib);
                 ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+ urlref.Betalib);
+                ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+ urlref.libmem);
+                ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+ urlref.libbetamem);
                 //Log.d("check","rm -rf "+ getActivity().getFilesDir().toString()+urlref.livelib);
                 new DownloadFile(getActivity()).execute(urlref.downloadpathLive);
                 new LoadBeta(getActivity()).execute(urlref.downloadpathBeta);
+                new LoadMem(getActivity()).execute(urlref.downloadpathmem);
+                new BetaLoadMem(getActivity()).execute(urlref.downloadpathBetamem);
                 ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.livelib);
                 ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.Betalib);
+                ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.libmem);
+                ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.libbetamem);
+
                 }else{
                     Toast.makeText(getContext(),"You are A Basic Plan User",Toast.LENGTH_SHORT).show();
                 }
@@ -342,7 +350,7 @@ public class SettingFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://Deadeye.Gcc-org.com"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://Deadeye.Gcc-org.com"));
                 startActivity(browserIntent);
             }
         });

@@ -87,7 +87,7 @@ public class EspFreeMainActivity extends AppCompatActivity {
         back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShellUtils.SU("am force-stop "+gameName);
+           //     ShellUtils.SU("am force-stop "+gameName);
                 stopService(new Intent(ctx, FreeOverlay.class));
                 stopService(new Intent(ctx, FreeService.class));
                 stopService(new Intent(ctx, ESPView.class));
@@ -131,7 +131,7 @@ public class EspFreeMainActivity extends AppCompatActivity {
             bitMod = true;
         }
 //			Log.d("bit",version);
-		Log.d("game", String.valueOf(gameType));
+	//	Log.d("game", String.valueOf(gameType));
         ExecuteElf("su -c");
         ShellUtils.SU("setenforce 0");
         ShellUtils.SU("chmod 777 "+ctx.getFilesDir().toString()+"/libsys.so");

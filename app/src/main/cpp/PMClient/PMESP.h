@@ -209,6 +209,23 @@ public:
 
     void DrawHorizontalHealthBar(PMVector2 screenPos, float width, float maxHealth, float currentHealth) {
         screenPos -= PMVector2(0.0f, 8.0f);
+        float hpWidth = (currentHealth * width) / maxHealth;
+  //      DrawLineBorder(PMColor(0, 0, 0, 255), 3, PMRect(screenPos.x, screenPos.y,  ((width) + 20), 5.0f));
+        DrawRect(PMColor::Black(),1,PMRect(screenPos.x-16, screenPos.y-17, hpWidth+36 , 40));
+        screenPos += PMVector2(1.0f, 1.0f);
+        PMColor clr = PMColor(0, 200, 0, 100);
+
+        if (currentHealth <= (maxHealth * 0.6)) {
+            clr = PMColor(200, 200, 0, 100);
+        }
+        if (currentHealth < (maxHealth * 0.3)) {
+            clr = PMColor(200, 0, 0, 100);
+        }
+        DrawRect(clr, 33, PMRect(screenPos.x, screenPos.y, hpWidth, 4.0f));
+    }
+
+    void DrawHorizontalHealthBarFree(PMVector2 screenPos, float width, float maxHealth, float currentHealth) {
+        screenPos -= PMVector2(0.0f, 8.0f);
         DrawLineBorder(PMColor(0, 0, 0, 255), 3, PMRect(screenPos.x, screenPos.y, width + 2, 5.0f));
         screenPos += PMVector2(1.0f, 1.0f);
         PMColor clr = PMColor(0, 255, 0, 255);
@@ -221,7 +238,6 @@ public:
         }
         DrawLineBorder(clr, 3, PMRect(screenPos.x, screenPos.y, hpWidth, 4.0f));
     }
-
     void DrawVerticalHealthBar(PMVector2 screenPos, float height, float maxHealth, float currentHealth) {
         screenPos += PMVector2(8.0f, 0.0f);
         DrawLineBorder(PMColor(0, 0, 0, 255), 3, PMRect(screenPos.x, screenPos.y, 5.0f, height + 10));

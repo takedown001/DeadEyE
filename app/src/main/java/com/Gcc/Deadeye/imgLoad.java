@@ -32,11 +32,11 @@ public class imgLoad {
             Check = "1";
             return Check;
         }
-        if (Helper.isAppRunning(context,netgaurd)){
-            Check = "1";
-            ShellUtils.SU("am force-stop "+netgaurd);
-            return Check;
-        }
+//        if (Helper.isAppRunning(context,netgaurd)){
+//            Check = "1";
+//            ShellUtils.SU("am force-stop "+netgaurd);
+//            return Check;
+//        }
         if (Helper.isAppRunning(context,canary)){
             Check = "1";
             ShellUtils.SU("am force-stop "+canary);
@@ -47,11 +47,11 @@ public class imgLoad {
             ShellUtils.SU("am force-stop "+pcanary);
             return Check;
         }
-        if(Helper.appInstalledOrNot(netgaurd,context)){
-            Check = "1";
-            ShellUtils.SU("am force-stop "+netgaurd);
-            return Check;
-        }
+//        if(Helper.appInstalledOrNot(netgaurd,context)){
+//            Check = "1";
+//            ShellUtils.SU("am force-stop "+netgaurd);
+//            return Check;
+//        }
         if(Helper.appInstalledOrNot(canary,context)){
             Check = "1";
             ShellUtils.SU("am force-stop "+canary);

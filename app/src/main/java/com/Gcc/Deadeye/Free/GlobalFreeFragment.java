@@ -84,7 +84,6 @@ public class GlobalFreeFragment extends Fragment {
         SharedPreferences.Editor g = ga.edit();
         g.putString("game", "Global").apply();
         version = AESUtils.DarKnight.getEncrypted(version);
-        final File daemon = new File(urlref.pathoflib+urlref.livelib);
 
         deviceid = LoginActivity.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
@@ -111,11 +110,7 @@ public class GlobalFreeFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
+
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -126,16 +121,12 @@ public class GlobalFreeFragment extends Fragment {
                         @Override
                         public void run() {
                             antiban.dismiss();
-                            PackageManager pm = getContext().getPackageManager();
-                            if (Helper.isPackageInstalled("com.tencent.ig", pm)) {
+
                                 Intent i = new Intent(getActivity(),EspFreeMainActivity.class);
                                 i.putExtra("game",1);
                                 startActivity(i);
                                 Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
 
-                            } else {
-                                Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
-                            }
 
                         }
                     }, 4000);

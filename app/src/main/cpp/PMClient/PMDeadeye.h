@@ -15,6 +15,8 @@ bool isfov=false;
 //Player
 bool isPlayerName = false;
 bool isPlayerDist = false;
+bool isteamid = false;
+
 bool isPlayerHealth = false;
 bool isTeamMateShow = false;
 bool isPlayerBox = false;

@@ -21,7 +21,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.Gcc.Deadeye.GccConfig.urlref;
-import com.google.firebase.database.annotations.NotNull;
 import com.onesignal.OneSignal;
 import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.core.entity.TransactionResponse;
@@ -30,6 +29,7 @@ import com.wangsun.upi.payment.UpiPayment;
 import com.wangsun.upi.payment.model.PaymentDetail;
 import com.wangsun.upi.payment.model.TransactionDetails;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -164,7 +164,7 @@ public void startupi(){
                 .setUdf8("")
                 .setUdf9("")
                 .setUdf10("")
-                .setIsDebug(true)                              // Integration environment - true (Debug)/ false(Production)
+                .setIsDebug(false)                              // Integration environment - true (Debug)/ false(Production)
                 .setKey(merchantkey)                        // Merchant key
                 .setMerchantId(merchantId);
 

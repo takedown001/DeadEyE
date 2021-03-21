@@ -615,7 +615,6 @@ int main(int argc, char *argv[]) {
                     createUDataList(response);
                 }else{
                     createDataList(response);
-
                 }
 			}
 			else if (request.Mode == HackMode) {

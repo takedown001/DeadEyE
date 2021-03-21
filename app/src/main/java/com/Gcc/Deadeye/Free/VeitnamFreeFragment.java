@@ -133,16 +133,10 @@ public class VeitnamFreeFragment extends Fragment {
                         @Override
                         public void run() {
                             antiban.dismiss();
-                            PackageManager pm = getContext().getPackageManager();
-                            if (Helper.isPackageInstalled("com.vng.pubgmobile", pm)) {
                                 Intent i = new Intent(getContext(), EspFreeMainActivity.class);
                                 i.putExtra("game", 3);
                                 startActivity(i);
                                 Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
-
-                            } else {
-                                Toast.makeText(getContext(), "Game Not Installed", Toast.LENGTH_LONG).show();
-                            }
 
                         }
                     }, 4000);

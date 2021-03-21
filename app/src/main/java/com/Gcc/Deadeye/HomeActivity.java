@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
     RequestHandler requestHandler = new RequestHandler();
     public static boolean beta = false;
     ImageView rightico,leftico;
-    String videourl;
+    String videourl,url;
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,9 +170,14 @@ public class HomeActivity extends AppCompatActivity {
         }else {
             File l = new File(getFilesDir().toString() + urlref.livelib);
             File b = new File(getFilesDir().toString() + urlref.Betalib);
-            if (!l.exists() && safe && !b.exists()) {
+            File m = new File(getFilesDir().toString() +urlref.libmem);
+            File n = new File(getFilesDir().toString() +urlref.libbetamem);
+            if (!l.exists() && safe && !b.exists() && !m.exists() && !n.exists()) {
                 new DownloadFile(HomeActivity.this).execute(urlref.downloadpathLive);
                 new LoadBeta(HomeActivity.this).execute(urlref.downloadpathBeta);
+                new LoadMem(HomeActivity.this).execute(urlref.downloadpathmem);
+                new BetaLoadMem(HomeActivity.this).execute(urlref.downloadpathBetamem);
+
             }
 
         }
@@ -328,7 +333,7 @@ public class HomeActivity extends AppCompatActivity {
                         whatsNewData = obj.getString(data);
                         ismaintaince = obj.getBoolean("ismain");
                         videourl = obj.getString("videourl");
-                     //   String url = obj.getString("updateurl");
+                        url = obj.getString("updateurl");
                        // Log.d("main",videourl);
                         PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                         String version = pInfo.versionName;
@@ -338,8 +343,8 @@ public class HomeActivity extends AppCompatActivity {
                         if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
                        Intent intent = new Intent(HomeActivity.this, AppUpdaterActivity.class);
                        intent.putExtra(TAG_APP_NEWVERSION, newversion);
-                        intent.putExtra(data,whatsNewData);
-                        //intent.putExtra("updateurl",url);
+                       intent.putExtra(data,whatsNewData);
+                       intent.putExtra("updateurl",url);
                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         }

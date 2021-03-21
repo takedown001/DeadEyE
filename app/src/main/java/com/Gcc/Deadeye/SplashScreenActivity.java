@@ -47,7 +47,7 @@ public class SplashScreenActivity extends Activity {
     private static final String TAG_KEY = urlref.TAG_KEY;
     private static final String TAG_ERROR = urlref.TAG_ERROR;
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
-    private static final String url = urlref.Main + "p.php";
+    private static final String url = urlref.Main + "login.php";
     private static final String TAG_DURATION = urlref.TAG_DURATION;
     private  boolean error,safe,brutal,Aerror;
     //Prefrance
@@ -101,8 +101,8 @@ public class SplashScreenActivity extends Activity {
 
     private boolean checkVPN() {
         ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getNetworkInfo(ConnectivityManager.TYPE_VPN).isConnectedOrConnecting();
-
+    //    return cm.getNetworkInfo(ConnectivityManager.TYPE_VPN).isConnectedOrConnecting();
+        return false;
     }
 
     /**
@@ -151,7 +151,7 @@ public class SplashScreenActivity extends Activity {
                     ismaintaince = obj.getBoolean("ismain");
                     PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                     version = pInfo.versionName;
-                    Log.d("new Version",newversion);
+               //     Log.d("new Version",newversion);
                 }
             } catch (KeyStoreException | IOException | JSONException | PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
@@ -199,11 +199,24 @@ public class SplashScreenActivity extends Activity {
                     } else {
                         // If the activity has never started before...
                         if (isFirstStart) {
-
+                            if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
+                                Intent intent = new Intent(SplashScreenActivity.this, AppUpdaterActivity.class);
+                                intent.putExtra(TAG_APP_NEWVERSION, newversion);
+                                intent.putExtra(data,whatsNewData);
+                                //intent.putExtra("updateurl",url);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                            else if(ismaintaince){
+                                Intent intent = new Intent(SplashScreenActivity.this, activityMaintain.class);
+                                startActivity(intent);
+                            }
+                            else {
+                                //user not signedin
+                                Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                                startActivity(i);
+                            }
                             // Launch app intro
-                            Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                            startActivity(i);
-
 
                         } else {
 
