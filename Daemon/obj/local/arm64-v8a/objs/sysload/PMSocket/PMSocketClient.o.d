@@ -1,7 +1,7 @@
 obj/local/arm64-v8a/objs/sysload/PMSocket/PMSocketClient.o: \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.cpp \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.h \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.cpp \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\stdlib.h \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\__config \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\string \
@@ -49,9 +49,9 @@ obj/local/arm64-v8a/objs/sysload/PMSocket/PMSocketClient.o: \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\__split_buffer \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\errno.h
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketClient.h:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h:
 
 C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\stdlib.h:
 

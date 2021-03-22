@@ -23,6 +23,8 @@ import com.Gcc.Deadeye.imgLoad;
 import com.topjohnwu.superuser.Shell;
 
 import java.security.NoSuchAlgorithmException;
+
+import static com.Gcc.Deadeye.Free.EspFreeMainActivity.isrootfree;
 import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
 public class FreeOverlay extends Service {
@@ -155,14 +157,15 @@ public class FreeOverlay extends Service {
     private void startDaemon(int mode){
         new Thread(() -> {
             String cmd = getFilesDir() + "/sysexe " + mode;
-               //     Log.d("log",cmd);
-            if(Shell.rootAccess()){
-                Shell.su(cmd).submit();
-            } else {
+       //       Log.d("log",cmd);
+            if(!isrootfree){
                 Shell.sh(cmd).submit();
+            } else {
+                Shell.su(cmd).submit();
             }
         }).start();
     }
+
 
 
 //    private int getProcessID(String pkg) {

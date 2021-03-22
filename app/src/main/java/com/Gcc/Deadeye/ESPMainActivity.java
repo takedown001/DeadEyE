@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -16,6 +17,9 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.Gcc.Deadeye.Free.EspFreeMainActivity;
+import com.scottyab.rootbeer.RootBeer;
 
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
@@ -54,7 +58,7 @@ public class ESPMainActivity extends AppCompatActivity {
 
     public String daemonPath64;
 
-
+     static boolean isroot = false;
 
     static boolean is32 = false;
     static boolean is64 = false;
@@ -79,11 +83,21 @@ public class ESPMainActivity extends AppCompatActivity {
         if (!isConfigExist()) {
             Init();
         }
+        RootBeer rootBeer = new RootBeer(ESPMainActivity.this);
+        if (!rootBeer.isRooted()) {
+            isroot =false;
+            ShellUtils.NO("chmod 777 "+ctx.getFilesDir().toString()+"/libsys.so");
+        }
+        else{
+            isroot =true;
+            ShellUtils.SU("setenforce 0");
+            ShellUtils.SU("chmod 777 "+ctx.getFilesDir().toString()+"/libsys.so");
+        }
         back = findViewById(R.id.stopesp);
 
         game = getIntent().getExtras().getString("game","Global");
         version = shred.getString("version", "32");
-
+   //     Log.d("game",game);
         if(game.equals("Veitnam")){
             gameName = "com.vng.pubgmobile";
             gameType = 3;
@@ -94,7 +108,11 @@ public class ESPMainActivity extends AppCompatActivity {
         }else if(game.equals("Korea")){
             gameName = "com.pubg.krmobile";
             gameType = 2;
-        } else{
+        }else if(game.equals("Lite")){
+            gameName = "com.tencent.iglite";
+            gameType = 5;
+        }
+        else{
             gameName = "com.tencent.ig";
             gameType = 1;
         }
@@ -128,9 +146,6 @@ public class ESPMainActivity extends AppCompatActivity {
         }
 //			Log.d("bit",version);
 	//	Log.d("game",game);
-        ExecuteElf("su -c");
-        ShellUtils.SU("setenforce 0");
-
 
         loadAssets();
     //    loadAssets64();
@@ -156,17 +171,30 @@ public class ESPMainActivity extends AppCompatActivity {
 
 
             if (isDisplay == false && isMenuDis == false) {
+                if (isroot) {
+                    if (is32) {
 
-                if (is32) {
+                        socket = "su -c " + daemonPath;
+                        //			MemHack = "su -c " + daemonPathMEM;
+                    } else if (is64) {
 
-                    socket = "su -c " + daemonPath;
-                    //			MemHack = "su -c " + daemonPathMEM;
-                } else if (is64) {
-
-                    socket = "su -c " + daemonPath64;
-                    //		MemHack = "su -c " + daemonPath64;
+                        socket = "su -c " + daemonPath64;
+                        //		MemHack = "su -c " + daemonPath64;
 
 
+                    }
+                }
+                else {
+
+                    if (is32) {
+
+                        socket = daemonPath;
+                        //			MemHack = "su -c " + daemonPathMEM;
+                    } else if (is64) {
+
+                        socket = daemonPath64;
+                        //		MemHack = "su -c " + daemonPath64;
+                    }
                 }
             }
 
@@ -183,9 +211,7 @@ public class ESPMainActivity extends AppCompatActivity {
 
 
         } else {
-
             Toast.makeText(ESPMainActivity.this, "Already Started !!", Toast.LENGTH_LONG).show();
-
         }
 
 

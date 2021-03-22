@@ -10,6 +10,11 @@ namespace Offsets {
 		PointerSize = 0x4,
         UGWorld = 0x6CB08FC,
         UGNames =  0x6F5AB14,
+
+		//Pubg Lite
+		LiteWorld = 0x4C7F360,
+		LiteNames = 0x4EE2604,
+
 		//Struct Size
 		FTransformSizeInGame = 0x30,
 
@@ -47,6 +52,25 @@ namespace Offsets {
 		UAECharacterTobIsAI = 0x694,
 		//Class: STExtraCharacter
 		STExtraCharacterToHealth = 0x880,
+
+		//----------Pubg Lite Classes-----------
+
+        //Class: Level
+        LevelToAActorsLite = 0x318,
+		//Class: PlayerController
+		UAEPlayerControllerToPlayerKeyLite = 0x594,
+		UAEPlayerControllerToTeamIDLite = 0x5AC,
+		//Class: SkeletalMeshComponent
+		SkeletalMeshComponentToCachedComponentSpaceTransformsLite = 0x66C,
+		//Class: Actor
+		ActorToRootComponentLite = 0x140,
+		//Class: Character
+		CharacterToMeshLite = 0x30C,
+		UAECharacterTobIsAILite = 0x688,
+		//Class: STExtraCharacter
+		STExtraCharacterToHealthLite = 0x7A0,
+
+
 	};
 }
 

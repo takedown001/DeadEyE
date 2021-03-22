@@ -1,5 +1,7 @@
 package com.Gcc.Deadeye;
 
+import com.topjohnwu.superuser.Shell;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -30,4 +32,9 @@ public class ShellUtils {
 
 
     }
+
+	public static void NO(final String cmd){
+		Shell.sh(cmd).submit();
+
+	}
 }

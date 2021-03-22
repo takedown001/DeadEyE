@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.Gcc.Deadeye.GccConfig.urlref;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.ShellUtils;
 import com.Gcc.Deadeye.imgLoad;
@@ -49,13 +51,13 @@ public class FreeService extends Service {
         super.onCreate();
         //Inflate the floating view layout we created
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_widget, null);
-
+        myDaemon = "."+ getApplicationContext().getFilesDir().toString()+"/libsys.so";
         try {
             Check();
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        //  Log.d("lol",myDaemon);
+
         CircleMenu circleMenu = mFloatingView.findViewById(R.id.circle_menu);
 
         circleMenu.setMainMenu(Color.parseColor("#ee4f08"), R.mipmap.safeicon, R.drawable.closeij)
@@ -118,6 +120,7 @@ public class FreeService extends Service {
                     else if (index == 3) {
                         if (less) {
                             ShellUtils.SU(myDaemon + " LESSCHALU");
+                      //      Log.d("lol",myDaemon + " LESSCHALU");
                             Toast.makeText(getApplicationContext(), "Recoil Compansation Activated " , Toast.LENGTH_SHORT).show();
                             less=false;
                         } else {
@@ -128,7 +131,7 @@ public class FreeService extends Service {
                     }
                     else if (index == 4) {
                         if (aim) {
-                            ShellUtils.SU(myDaemon + "AIMCHALU");
+                            ShellUtils.SU(myDaemon + " AIMCHALU");
                            SettingValue(101,true);
                             Toast.makeText(getApplicationContext(), "FOV Aimbot Activated " , Toast.LENGTH_SHORT).show();
                             aim=false;

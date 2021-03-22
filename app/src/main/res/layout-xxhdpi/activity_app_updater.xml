@@ -85,7 +85,6 @@
                         android:gravity="center"
                         android:text="What's New?"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-
                         android:visibility="gone" />
 
                     <TextView
@@ -113,25 +112,24 @@
                         android:textSize="17.0sp"
                         android:visibility="gone" />
 
-                    <Button
-                        android:id="@+id/updateButton"
-                        android:layout_width="324dp"
-                        android:layout_height="63dp"
-                        android:layout_marginLeft="15.0dip"
-                        android:layout_marginTop="10.0dip"
-                        android:layout_marginRight="15.0dip"
-                        android:layout_marginBottom="2.0dip"
-                        android:background="@drawable/activatebtnbacki"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="UPDATE"
-                        android:textColor="#ffffffff"
-                        android:textSize="@dimen/dimen_15dp"
-                        android:textStyle="bold" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
+            <Button
+                android:id="@+id/updateButton"
+                android:layout_width="324dp"
+                android:layout_height="63dp"
+                android:layout_marginLeft="15.0dip"
+                android:layout_marginRight="15.0dip"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:background="@drawable/activatebtnbacki"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="UPDATE"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/dimen_15dp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </LinearLayout>

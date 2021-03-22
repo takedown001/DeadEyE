@@ -58,4 +58,22 @@ string GetUFNameFromID(uint32 index) {
 
 	return str;
 }
+
+string GetLiteNameFromID(uint32 index) {
+	string cached;
+	if(isCached(index, cached)){
+		return cached;
+	}
+
+	kaddr TNameEntryArray = getPtr(getRealOffset(Offsets::LiteNames));
+
+	kaddr FNameEntryArr = getPtr(TNameEntryArray + ((index / 0x4000) * Offsets::PointerSize));
+	kaddr FNameEntry = getPtr(FNameEntryArr + ((index % 0x4000) * Offsets::PointerSize));
+
+	string str = getUEString(FNameEntry + Offsets::FNameEntryToNameString);
+	gnameCache.insert(pair<int, string>(index, str));
+
+	return str;
+}
+
 #endif

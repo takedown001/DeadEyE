@@ -1,6 +1,6 @@
 obj/local/arm64-v8a/objs/sysexe/PMServer/PMerror.o: \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMerror.cpp \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMDeadeye.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMerror.cpp \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMDeadeye.h \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\cstdio \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\__config \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\stdio.h \
@@ -54,18 +54,18 @@ obj/local/arm64-v8a/objs/sysexe/PMServer/PMerror.o: \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\__tree \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\__node_handle \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\optional \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMLog.h \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMProcess.h \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMMemory.h \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMOffsets.h \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketServer.h \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMLog.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMProcess.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMMemory.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMOffsets.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketServer.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h \
   C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\errno.h \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMStructsCommon.h \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMFNames.h \
-  F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMPUBG.h
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMStructsCommon.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMFNames.h \
+  C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMPUBG.h
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMDeadeye.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMDeadeye.h:
 
 C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\cstdio:
 
@@ -173,22 +173,22 @@ C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-
 
 C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\optional:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMLog.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMLog.h:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMProcess.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMProcess.h:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMMemory.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMMemory.h:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMOffsets.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMOffsets.h:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketServer.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMSocketServer.h:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMSocket\PMConst.h:
 
 C:\Users\wwwsh\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\\..\sources\cxx-stl\llvm-libc++\include\errno.h:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMStructsCommon.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMStructsCommon.h:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMFNames.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMFNames.h:
 
-F:\important\Deadeye\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMPUBG.h:
+C:\Users\wwwsh\AndroidStudioProjects\DeadEyE\Daemon\..\app\src\main\cpp\PMServer\PMPUBG.h:

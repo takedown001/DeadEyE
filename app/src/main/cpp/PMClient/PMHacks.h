@@ -73,7 +73,7 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
     if(isESP){
         esp.DrawCrosshair(PMColor(0, 0, 0, 255), PMVector2(screenWidth / 2, screenHeight / 2), 42);
         if(isfov){
-            esp.DrawCircle(PMColor(255, 0, 0, 200),2,PMVector2(screenWidth / 2, screenHeight / 2),200);
+            esp.DrawCircle(PMColor(255, 0, 0, 200),2,PMVector2(screenWidth / 2, screenHeight / 2),130);
         }
         PMVector2 screen(screenWidth, screenHeight);
         float mScale = screenHeight / (float) 1080;
@@ -204,7 +204,6 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                                     100, player.Health);
                         }
                     }
-
 
                     if(isPlayerName) {
                         wstring pname = player.PlayerName;

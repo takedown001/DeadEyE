@@ -65,11 +65,11 @@ public class urlref {
 
     @SuppressLint("SdCardPath")
     public static final String pathoflib = "/data/data/com.Gcc.Deadeye/files";
-    public static final String downloadpathLive = "https://gcc-org.com/deadeyeesp/live/Downloads/libtakedown.so"; //safe
-    public static final String downloadpathBeta = "https://gcc-org.com/deadeyeesp/beta/Downloads/liberror.so";//safe
-    public static final String downloadpathPublic = "https://gcc-org.com/deadeyeesp/beta/Downloads/libsys.so";//public mem
-    public static final String downloadpathmem = "https://gcc-org.com/deadeyeesp/live/Downloads/libPNR.so";//safe antiban
-    public static final String downloadpathBetamem = "https://gcc-org.com/deadeyeesp/beta/Downloads/libCNR.so";//safe antiban
+    public static final String downloadpathLive = "https://gcc-org.com/deadeyeesp/live/Downloads/libtakedown.so"; //safe Features antiban
+    public static final String downloadpathBeta = "https://gcc-org.com/deadeyeesp/beta/Downloads/liberror.so";// safe beta features antiban
+    public static final String downloadpathPublic = "https://gcc-org.com/deadeyeesp/beta/Downloads/libsys.so";//public aim and recoil
+    public static final String downloadpathmem = "https://gcc-org.com/deadeyeesp/live/Downloads/libPNR.so";//safe live memory antiban
+    public static final String downloadpathBetamem = "https://gcc-org.com/deadeyeesp/beta/Downloads/libCNR.so";//safe memory beta premium antiban
 
     public static final String dollar = "75";
     public static final String time = "1";

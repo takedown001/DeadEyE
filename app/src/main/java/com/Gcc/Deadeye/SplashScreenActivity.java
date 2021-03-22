@@ -47,7 +47,7 @@ public class SplashScreenActivity extends Activity {
     private static final String TAG_KEY = urlref.TAG_KEY;
     private static final String TAG_ERROR = urlref.TAG_ERROR;
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
-    private static final String url = urlref.Main + "login.php";
+    private static final String url = urlref.Main + "test.php";
     private static final String TAG_DURATION = urlref.TAG_DURATION;
     private  boolean error,safe,brutal,Aerror;
     //Prefrance
@@ -203,7 +203,7 @@ public class SplashScreenActivity extends Activity {
                                 Intent intent = new Intent(SplashScreenActivity.this, AppUpdaterActivity.class);
                                 intent.putExtra(TAG_APP_NEWVERSION, newversion);
                                 intent.putExtra(data,whatsNewData);
-                                //intent.putExtra("updateurl",url);
+                                intent.putExtra("updateurl",url);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }
@@ -243,7 +243,7 @@ public class SplashScreenActivity extends Activity {
                                     Intent intent = new Intent(SplashScreenActivity.this, AppUpdaterActivity.class);
                                     intent.putExtra(TAG_APP_NEWVERSION, newversion);
                                     intent.putExtra(data,whatsNewData);
-                                    //intent.putExtra("updateurl",url);
+                                    intent.putExtra("updateurl",url);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                 }

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.Gcc.Deadeye.ESPMainActivity;
 import com.Gcc.Deadeye.ESPView;
 import com.Gcc.Deadeye.R;
 import com.Gcc.Deadeye.ShellUtils;
@@ -25,6 +26,7 @@ import com.Gcc.Deadeye.imgLoad;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.scottyab.rootbeer.RootBeer;
 
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
@@ -48,7 +50,7 @@ public class EspFreeMainActivity extends AppCompatActivity {
     static{
         System.loadLibrary("sysload");
     }
-
+    static boolean isrootfree = false;
 
     public static boolean  isDisplay = false;
     public static boolean isMenuDis = false;
@@ -84,21 +86,7 @@ public class EspFreeMainActivity extends AppCompatActivity {
         // set the ad unit ID
         gameType = getIntent().getIntExtra("game",1);
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_full_screen));
-        back.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-           //     ShellUtils.SU("am force-stop "+gameName);
-                stopService(new Intent(ctx, FreeOverlay.class));
-                stopService(new Intent(ctx, FreeService.class));
-                stopService(new Intent(ctx, ESPView.class));
-                isDisplay = false;
-                ShellUtils.SU("rm -rf "+ctx.getFilesDir().toString()+"/libsys.so");
-                //startDaemon();
-                isDaemon = false;
-                FreeOverlay.isRunning=false;
-                //		stopService(new Intent(ctx, BrutalService.class));
-                finish();			}
-        });
+
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
 
@@ -116,7 +104,39 @@ public class EspFreeMainActivity extends AppCompatActivity {
         if (!isConfigExist()) {
             Init();
         }
+        RootBeer rootBeer = new RootBeer(EspFreeMainActivity.this);
+        if (!rootBeer.isRooted()) {
+            isrootfree =false;
+            ShellUtils.NO("chmod 777 "+ctx.getFilesDir().toString()+"/libsys.so");
+        }
+        else{
+            isrootfree =true;
+            ShellUtils.SU("su");
+            ShellUtils.SU("setenforce 0");
+            ShellUtils.SU("chmod 777 "+ctx.getFilesDir().toString()+"/libsys.so");
+        }
 
+        back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //     ShellUtils.SU("am force-stop "+gameName);
+                stopService(new Intent(ctx, FreeOverlay.class));
+                stopService(new Intent(ctx, FreeService.class));
+                stopService(new Intent(ctx, ESPView.class));
+                isDisplay = false;
+                if (!isrootfree) {
+                    ShellUtils.NO("rm -rf "+ctx.getFilesDir().toString()+"/libsys.so");
+                }
+                else{
+                    ShellUtils.SU("rm -rf "+ctx.getFilesDir().toString()+"/libsys.so");
+                }
+
+                //startDaemon();
+                isDaemon = false;
+                FreeOverlay.isRunning=false;
+                //		stopService(new Intent(ctx, BrutalService.class));
+                finish();			}
+        });
         version = shred.getString("version", "32");
 
 
@@ -132,10 +152,8 @@ public class EspFreeMainActivity extends AppCompatActivity {
         }
 //			Log.d("bit",version);
 	//	Log.d("game", String.valueOf(gameType));
-        ExecuteElf("su -c");
-        ShellUtils.SU("setenforce 0");
-        ShellUtils.SU("chmod 777 "+ctx.getFilesDir().toString()+"/libsys.so");
 
+        ExecuteElf("su -c");
         loadAssets();
     //    loadAssets64();
 
@@ -163,17 +181,30 @@ public class EspFreeMainActivity extends AppCompatActivity {
 
 
             if (isDisplay == false && isMenuDis == false) {
+                if (isrootfree) {
+                    if (is32) {
 
-                if (is32) {
+                        socket = "su -c " + daemonPath;
+                        //			MemHack = "su -c " + daemonPathMEM;
+                    } else if (is64) {
 
-                    socket = "su -c " + daemonPath;
-                    //			MemHack = "su -c " + daemonPathMEM;
-                } else if (is64) {
-
-                    socket = "su -c " + daemonPath64;
-                    //		MemHack = "su -c " + daemonPath64;
+                        socket = "su -c " + daemonPath64;
+                        //		MemHack = "su -c " + daemonPath64;
 
 
+                    }
+                }
+                else {
+
+                    if (is32) {
+
+                        socket = daemonPath;
+                        //			MemHack = "su -c " + daemonPathMEM;
+                    } else if (is64) {
+
+                        socket = daemonPath64;
+                        //		MemHack = "su -c " + daemonPath64;
+                    }
                 }
             }
 

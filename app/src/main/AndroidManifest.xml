@@ -53,6 +53,10 @@
         <activity android:name=".Free.FHomeActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <service android:name=".Free.FreeOverlay" android:enabled="true"  android:exported="false"/>
         <service android:name=".Free.FreeService" android:exported="false" android:enabled="true"/>
+
+
+
+        <activity android:name=".lite.HomeActivityLite" android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>

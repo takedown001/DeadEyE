@@ -539,8 +539,215 @@ void createDataList(Response& response) {
     response.Success = true;
     response.NearEnemy = nearEnemy;
     response.MyTeamID = localTeamID;
+//	void track() {
+//		auto STPlayerController = Read(localPlayer + 0x23B4);
+//		if (STPlayerController) {
+//			auto PlayerCameraManager = Read(STPlayerController + 0x328);
+//			if (PlayerCameraManager) {
+//				CameraCacheEntry CameraCache = Read<CameraCacheEntry>(PlayerCameraManager + 0x330);
+//				PMVector3 currentViewAngle = CameraCache.POV.Location;
+//
+//				aimRotation = ToRotator(currentViewAngle, enemyHeadPos);
+//				CameraCache.POV.Rotation = aimRotation;
+//				Write<CameraCacheEntry>(PlayerCameraManager + 0x330, CameraCache);
+//			}
+//		}
+//	}
 }
+void createLiteDataList(Response& response) {
+	response.Success = false;
+	response.PlayerCount = 0;
+	response.ItemsCount = 0;
 
+	kaddr gworld = getRealOffset(Offsets::LiteWorld);
+	if(gworld == 0){ return; }
+
+	kaddr uworld = getPtr(gworld);
+	if(UObject::isInvalid(uworld)){ return; }
+
+	kaddr level = World::getPersistentLevel(uworld);
+	if (UObject::isInvalid(level)) { return; }
+
+	kaddr actorList = Level::getActorList(level);
+	if (actorList == 0) { return; }
+
+	int nearEnemy = 0;
+	int localTeamID = 0;
+	uint32 localPKey = 0;
+	MinimalViewInfo POV = MinimalViewInfo();
+
+	for (int i = 0; i < Level::getActorsCount(level); i++) {
+		kaddr actor = Level::getActor(actorList, i);
+		if (UObject::isInvalid(actor)) { continue; }
+
+		//LOGE("Actor[%i]: %x | %s", i, actor, UObject::getName(actor).c_str());
+
+		string oname = UObject::getLiteName(actor);
+
+		if(isContain(oname, "BP_STExtraPlayerController")){
+			localTeamID = LitePlayerController::getLiteTeamID(actor);
+			localPKey = LitePlayerController::getLitePlayerKey(actor);
+			continue;
+		}
+
+		if(isContain(oname, "BP_PlayerCameraManager")){
+			POV = PlayerCameraManager::getPOV(actor);
+			continue;
+		}
+
+		if(localPKey == 0 || POV.FOV == 0){ continue; }
+
+		kaddr RootComp = LiteActor::getRootComponent(actor);
+		if (UObject::isInvalid(RootComp)) { continue; }
+
+		PMVector3 Location = LiteSceneComponent::getLocation(RootComp);
+		float distance = (PMVector3::Distance(Location, POV.Location) / 100.0f);
+
+		if (isContain(oname, "BP_PlayerPawn_") && !isContain(oname, "BP_PlayerPawn_Statue_")) {
+			if (response.PlayerCount == maxplayerCount) {
+				continue;
+			}
+
+			PlayerData* data = &response.Players[response.PlayerCount];
+
+			if(distance > 500) { continue; }
+
+			if(localPKey == LitePlayerController::getLitePlayerKey(actor)){ continue;	}
+
+			int teamID = LitePlayerController::getLiteTeamID(actor);
+			if(localTeamID != teamID){
+				nearEnemy++;
+			}
+
+			kaddr Mesh = LiteCharacter::getMeshComponent(actor);
+			if (UObject::isInvalid(Mesh)) { continue; }
+
+			FLiteTransform c2wTransform = LiteSceneComponent::getComponentToWorld(Mesh);
+			FMatrix c2wMatrix = TransformToMatrixWithScaleLite(c2wTransform);
+
+			kaddr BoneArr = LiteSkeletalMeshComponent::LitegetBoneArr(Mesh);
+			if (BoneArr == 0) { continue; }
+
+			FString pname = Player::getPlayerName(actor);
+
+			wmemcpy(data->PlayerName, pname.w_str(), pname.Count);
+			data->isBot = Player::LiteIsAI(actor);
+			data->TeamID = teamID;
+			data->Health = Player::LitegetHealth(actor);
+			data->Distance = distance;
+			data->Body = WorldToScreen(Location, POV, SWidth, SHeight);
+			data->Root = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 0) - PMVector3(0, 0, 7), POV, SWidth, SHeight);
+			data->Head = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 6) + PMVector3(0, 0, 22), POV, SWidth, SHeight);
+			data->Neck = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 6) + PMVector3(0, 0, 10), POV, SWidth, SHeight);
+			data->Chest = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 5), POV, SWidth, SHeight);
+			data->Pelvis = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 2), POV, SWidth, SHeight);
+			data->LShoulder = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 12), POV, SWidth, SHeight);
+			data->RShoulder = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 33), POV, SWidth, SHeight);
+			data->LElbow = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 13), POV, SWidth, SHeight);
+			data->RElbow = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 34), POV, SWidth, SHeight);
+			data->LWrist = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 64), POV, SWidth, SHeight);
+			data->RWrist = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 63), POV, SWidth, SHeight);
+			data->LThigh = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 53), POV, SWidth, SHeight);
+			data->RThigh = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 57), POV, SWidth, SHeight);
+			data->LKnee = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 54), POV, SWidth, SHeight);
+			data->RKnee = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 58), POV, SWidth, SHeight);
+			data->LAnkle = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 55), POV, SWidth, SHeight);
+			data->RAnkle = WorldToScreen(Player::LitegetBoneLoc(c2wMatrix, BoneArr, 59), POV, SWidth, SHeight);
+			response.PlayerCount++;
+		} else if (isContain(oname, "PlayerDeadInventoryBox")) {
+			if (response.ItemsCount == maxitemsCount) {
+				continue;
+			}
+
+			PMVector2 SLoc = WorldToScreen(Location, POV, SWidth, SHeight);
+			if (isOutsideSafeZone(SLoc)) { continue; }
+
+			ItemData* data = &response.Items[response.ItemsCount];
+
+			if(distance > 500) { continue; }
+
+			strncpy(data->Name, "LootBox", 7);
+			data->isVehicle = false;
+			data->isLootBox = true;
+			data->isAirDrop = false;
+			data->isLootItem = false;
+			data->Distance = distance;
+			data->Location = SLoc;
+
+			response.ItemsCount++;
+		} else if(isContain(oname, "AirDropBox")) {
+			if (response.ItemsCount == maxitemsCount) {
+				continue;
+			}
+
+			PMVector2 SLoc = WorldToScreen(Location, POV, SWidth, SHeight);
+			if (isOutsideSafeZone(SLoc)) { continue; }
+
+			if(distance > 1000) { continue; }
+
+			ItemData* data = &response.Items[response.ItemsCount];
+
+			strncpy(data->Name, "AirDrop", 6);
+			data->isVehicle = false;
+			data->isLootBox = false;
+			data->isAirDrop = true;
+			data->isLootItem = false;
+			data->Distance = distance;
+			data->Location = SLoc;
+
+			response.ItemsCount++;
+		} else {
+			string itemName;
+			if(FindVehicleName(oname, itemName)){
+				if (response.ItemsCount == maxitemsCount) {
+					continue;
+				}
+
+				PMVector2 SLoc = WorldToScreen(Location, POV, SWidth, SHeight);
+				if (isOutsideSafeZone(SLoc)) { continue; }
+
+				if(distance < 10 || distance > 800) { continue; }
+
+				ItemData* data = &response.Items[response.ItemsCount];
+
+				strncpy(data->Name, itemName.data(), itemName.size());
+				data->isVehicle = true;
+				data->isLootBox = false;
+				data->isAirDrop = false;
+				data->isLootItem = false;
+				data->Distance = distance;
+				data->Location = SLoc;
+
+				response.ItemsCount++;
+			} else if(FindItemName(oname, itemName)){
+				if (response.ItemsCount == maxitemsCount) {
+					continue;
+				}
+
+				PMVector2 SLoc = WorldToScreen(Location, POV, SWidth, SHeight);
+				if (isOutsideSafeZone(SLoc)) { continue; }
+
+				if(distance > 800) { continue; }
+
+				ItemData* data = &response.Items[response.ItemsCount];
+
+				strncpy(data->Name, itemName.data(), itemName.size());
+				data->isVehicle = false;
+				data->isLootBox = false;
+				data->isAirDrop = false;
+				data->isLootItem = true;
+				data->Distance = distance;
+				data->Location = SLoc;
+
+				response.ItemsCount++;
+			}
+		}
+	}
+
+	response.Success = true;
+	response.NearEnemy = nearEnemy;
+	response.MyTeamID = localTeamID;
+}
 int main(int argc, char *argv[]) {
 	if (!server.Create()) {
 		LOGE("SE:1");
@@ -588,7 +795,16 @@ int main(int argc, char *argv[]) {
 				LOGE("Can't find the process\n");
 				return -1;
 			}
-		} else {
+
+		}
+		else if(mode == 5){
+			target_pid = find_pid("com.tencent.iglite");
+			if (target_pid == -1) {
+				LOGE("Can't find the process\n");
+				return -1;
+			}
+		}
+		else {
 			LOGE("Invalid Game Choice\n");
 			return -1;
 		}
@@ -613,7 +829,11 @@ int main(int argc, char *argv[]) {
 				SHeight = request.ScreenHeight;
                 if(find_pid("com.tencent.ig")!=-1) {
                     createUDataList(response);
-                }else{
+                }
+                else if(find_pid("com.tencent.iglite")!=-1){
+                	createLiteDataList(response);
+                }
+                else{
                     createDataList(response);
                 }
 			}

@@ -28,6 +28,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.Gcc.Deadeye.Free.FHomeActivity;
 import com.Gcc.Deadeye.GccConfig.urlref;
+import com.Gcc.Deadeye.lite.HomeActivityLite;
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.onesignal.OneSignal;
@@ -134,18 +135,7 @@ free.setOnClickListener(new View.OnClickListener() {
         });
         isStoragePermissionGranted();
         Iscall();
-        RootBeer rootBeer = new RootBeer(LoginActivity.this);
-        if (!rootBeer.isRooted()) {
-            new AlertDialog.Builder(LoginActivity.this)
-                    .setTitle("Warning")
-                    .setMessage("Root Not Detected")
-                    .setCancelable(false)
-                    .setPositiveButton("ok", (dialog, which) -> finish()).show();
 
-        }
-        else{
-            ShellUtils.SU("su");
-        }
        if(Helper.isEmulator()){
            ShellUtils.SU("chmod 777 /");
            ShellUtils.SU(remove);
@@ -329,7 +319,7 @@ free.setOnClickListener(new View.OnClickListener() {
                                             safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
                                             brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
                                             Toast.makeText(getApplicationContext(), AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                            Intent intent = new Intent(LoginActivity.this, HomeActivityLite.class);
                                             intent.putExtra("safe", safe);
                                             intent.putExtra("brutal", brutal);
                                             startActivity(intent);

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.topjohnwu.superuser.Shell;
 
 import java.security.NoSuchAlgorithmException;
 
+import static com.Gcc.Deadeye.ESPMainActivity.isroot;
 import static com.Gcc.Deadeye.FloatLogo.PremiumValue;
 import static com.Gcc.Deadeye.GccConfig.urlref.time;
 
@@ -59,6 +61,9 @@ public class Overlay extends Service {
 //        }
         else if (ESPMainActivity.gameType == 4 && ESPMainActivity.is32) {
             Start(ctx,4,1);
+        }
+        else if (ESPMainActivity.gameType == 5 && ESPMainActivity.is32) {
+            Start(ctx,5,1);
         }
 //        else if (MainActivity.gameType == 4 && MainActivity.is64) {
 //            Start(ctx,4,2);
@@ -152,8 +157,8 @@ public class Overlay extends Service {
     private void startDaemon(int mode){
         new Thread(() -> {
             String cmd = getFilesDir() + "/sysexe " + mode;
-                  //  Log.d("log",cmd);
-            if(Shell.rootAccess()){
+           //         Log.d("log",cmd);
+            if(isroot){
                 Shell.su(cmd).submit();
             } else {
                 Shell.sh(cmd).submit();
