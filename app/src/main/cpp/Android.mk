@@ -29,7 +29,3 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/PMClient
 LOCAL_LDFLAGS += -llog
 
 include $(BUILD_SHARED_LIBRARY)
-
-
-
-

@@ -5,21 +5,20 @@
     android:background="@color/blue"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
-        android:layout_width="match_parent"
-        android:layout_height="377dp"
+        android:layout_width="343dp"
+        android:layout_height="333dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="116dp"
-        android:layout_marginBottom="238dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="129dp"
+        android:layout_marginBottom="269dp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="antiban.json"
         app:lottie_loop="true" />
-
-
 
     <TextView
         android:layout_width="272dp"

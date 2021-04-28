@@ -11,9 +11,6 @@ namespace Offsets {
         UGWorld = 0x6CB08FC,
         UGNames =  0x6F5AB14,
 
-		//Pubg Lite
-		LiteWorld = 0x4C7F360,
-		LiteNames = 0x4EE2604,
 
 		//Struct Size
 		FTransformSizeInGame = 0x30,
@@ -50,26 +47,15 @@ namespace Offsets {
 		UAECharacterToPlayerKey = 0x610,
 		UAECharacterToTeamID = 0x620,
 		UAECharacterTobIsAI = 0x694,
+//		//Class: PlayerState
+//		UAECharacterToPlayerID = 0x2E4,
 		//Class: STExtraCharacter
 		STExtraCharacterToHealth = 0x880,
 
-		//----------Pubg Lite Classes-----------
-
-        //Class: Level
-        LevelToAActorsLite = 0x318,
-		//Class: PlayerController
-		UAEPlayerControllerToPlayerKeyLite = 0x594,
-		UAEPlayerControllerToTeamIDLite = 0x5AC,
-		//Class: SkeletalMeshComponent
-		SkeletalMeshComponentToCachedComponentSpaceTransformsLite = 0x66C,
-		//Class: Actor
-		ActorToRootComponentLite = 0x140,
-		//Class: Character
-		CharacterToMeshLite = 0x30C,
-		UAECharacterTobIsAILite = 0x688,
-		//Class: STExtraCharacter
-		STExtraCharacterToHealthLite = 0x7A0,
-
+//		//Class: Weapon
+//		WeaponEntityComp = 0x4F4,
+//		CurBulletNumInClip = 0x90c,
+//		CurMaxBulletNumInOneClip = 0x920,
 
 	};
 }

@@ -1,0 +1,2481 @@
+package mobisocial.arcade.lite;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+import androidx.annotation.RequiresApi;
+
+import com.ramotion.fluidslider.FluidSlider;
+import com.topjohnwu.superuser.Shell;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import mobisocial.arcade.AESUtils;
+import mobisocial.arcade.ESPView;
+import mobisocial.arcade.GccConfig.urlref;
+import mobisocial.arcade.JavaUrlConnectionReader;
+import mobisocial.arcade.LoginActivity;
+import mobisocial.arcade.R;
+import mobisocial.arcade.ShellUtils;
+
+import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
+import static java.lang.System.exit;
+
+public class LiteFloatLogo extends Service implements View.OnClickListener {
+
+
+    public LiteFloatLogo() {
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+    private String version, deviceid;
+    View espView,logoView;
+    LinearLayout player ;
+    private View mFloatingView;
+    @SuppressLint("StaticFieldLeak")
+    private static LiteFloatLogo Instance;
+    public static boolean isRunning = false;
+    private WindowManager windowManager;
+//    static{
+//        System.loadLibrary("charmload");
+//    }
+    private  LiteESPView overlayView;
+    private String hexDaemon, myDaemon;
+    private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
+    private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
+    private static final String TAG_VERSION = "v";
+    String CheatL = urlref.Liveserver + "cheat.php";
+    //    String CheatB = urlref.Betaserver + "cheat.php";
+    private String data,gameName;
+    private int Gametype;
+    @SuppressLint("CutPasteId")
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Instance = this;
+        version = AESUtils.DarKnight.getEncrypted(version);
+        deviceid = AESUtils.DarKnight.getEncrypted(LoginActivity.getDeviceId(getApplicationContext()));
+        windowManager = (WindowManager) Instance.getSystemService(Context.WINDOW_SERVICE);
+            overlayView = new LiteESPView(Instance);
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Check();//    Thread.sleep(3000);
+                    gamerun();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        hexDaemon =Instance.getFilesDir().toString()+ "/libPNR.so";
+        myDaemon = getApplicationContext().getFilesDir().toString()+"/libtakedown.so";
+        ShellUtils.SU("chmod 777 "+ hexDaemon);
+
+    }
+    private int getLayoutType() {
+        int LAYOUT_FLAG;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+        }
+        return LAYOUT_FLAG;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+//        if(imgLoad.Load(Instance).equals(time)){
+//            stopSelf();
+//        }
+    }
+
+    private void DrawCanvas() {
+        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                getLayoutType(),
+                WindowManager.LayoutParams.FLAG_FULLSCREEN |
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                PixelFormat.TRANSLUCENT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+
+        windowManager.addView(overlayView, params);
+    }
+
+
+    public void gamerun(){
+
+        new Thread(() -> {
+
+            new Handler(Looper.getMainLooper()).post(() -> {
+                
+            });
+        }
+        ).start();
+
+    
+    }
+    private void Start(Context ctx,int game ,int bit) {
+
+        new Thread(() -> {
+            if (!isRunning) {
+                /*
+                 * PUG Global = 1
+                 * PUG KR = 2
+                 * PUG VNG = 3
+                 * PUG Taiwan = 4
+                 */
+                //       Log.d("game", String.valueOf(game));
+                startDaemon(game);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if (LiteInit() < 0) {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        Toast.makeText(Instance, "Game Not Detected!", Toast.LENGTH_SHORT).show();
+                        LiteStop();
+                    });
+                    //     Rescan(ctx,game,bit);
+                } else {
+                    isRunning = true;
+                    //       Log.d("check", String.valueOf(safecheck));
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                ShellUtils.SU(hexDaemon +  " 131222002");
+                                createOver();
+                                CInit();
+                                DrawCanvas();
+                            });
+                        }
+                    }).start();
+
+                }
+            }
+        }).start();
+    }
+    private void startDaemon(int mode){
+        new Thread(() -> {
+            String cmd = getFilesDir() + "/charm " + mode;
+            //      Log.d("log",cmd);
+            if(!Shell.rootAccess()){
+                Shell.sh(cmd).submit();
+            } else {
+                Shell.su(cmd).submit();
+            }
+        }).start();
+    }
+  
+
+    @SuppressLint("InflateParams")
+    void createOver(){
+        //getting the widget layout from xml using layout inflater
+        mFloatingView = LayoutInflater.from(this).inflate(R.layout.float_logo, null);
+
+        player = mFloatingView.findViewById(R.id.players);
+        logoView = mFloatingView.findViewById(R.id.relativeLayoutParent);
+        espView = mFloatingView.findViewById(R.id.espView);
+
+        int LAYOUT_FLAG;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+
+        } else {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+        }
+        //setting the layout parameters
+        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                LAYOUT_FLAG,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.RGBA_8888);
+
+
+        //getting windows services and adding the floating view to it
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        windowManager.addView(mFloatingView, params);
+
+
+        final GestureDetector gestureDetector = new GestureDetector(this, new SingleTapConfirm());
+
+        //window function
+        ImageView closeBtn=mFloatingView.findViewById(R.id.closeBtn);
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                espView.setVisibility(View.GONE);
+                logoView.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        final LinearLayout safelayout = mFloatingView.findViewById(R.id.safelayout);
+        final LinearLayout items =mFloatingView.findViewById(R.id.items);
+        final LinearLayout vehicle =mFloatingView.findViewById(R.id.vehicles);
+        final ImageView playerBtn=mFloatingView.findViewById(R.id.playerBtn);
+        final ImageView itemBtn=mFloatingView.findViewById(R.id.itemBtn);
+        final ImageView vehicleBtn=mFloatingView.findViewById(R.id.vehicleBtn);
+        final LinearLayout specialTab = mFloatingView.findViewById(R.id.specialTab);
+        final TextView Special = mFloatingView.findViewById(R.id.Special);
+        final LinearLayout HealthTab = mFloatingView.findViewById(R.id.HealthTab);
+        final TextView Health = mFloatingView.findViewById(R.id.Health);
+        final LinearLayout ArmorsTab = mFloatingView.findViewById(R.id.ArmorsTab);
+        final TextView Armors = mFloatingView.findViewById(R.id.Armors);
+        final LinearLayout MiscTab = mFloatingView.findViewById(R.id.MiscTab);
+        final TextView Misc = mFloatingView.findViewById(R.id.Misc);
+        final LinearLayout ScopesTab = mFloatingView.findViewById(R.id.ScopesTab);
+        final TextView Scopes = mFloatingView.findViewById(R.id.scops);
+        final LinearLayout WeaponTab = mFloatingView.findViewById(R.id.WeaponTab);
+        final TextView Weapon = mFloatingView.findViewById(R.id.weapons);
+        final LinearLayout choice = mFloatingView.findViewById(R.id.choice);
+        final LinearLayout AmmoTab = mFloatingView.findViewById(R.id.AmmoTab);
+        final TextView Ammo = mFloatingView.findViewById(R.id.Ammo);
+        final ImageView Safefeatures = mFloatingView.findViewById(R.id.safeicon);
+        final TextView Display = mFloatingView.findViewById(R.id.textView4);
+        final LinearLayout MTP = mFloatingView.findViewById(R.id.mtptab);
+        Weapon.setBackgroundColor(getResources().getColor((R.color.color4)));
+
+        Ammo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Ammo.setBackgroundColor(getResources().getColor((R.color.color4)));
+                Weapon.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Armors.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Scopes.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Health.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Misc.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                AmmoTab.setVisibility(View.VISIBLE);
+                ScopesTab.setVisibility(View.GONE);
+                WeaponTab.setVisibility(View.GONE);
+                HealthTab.setVisibility(View.GONE);
+                MiscTab.setVisibility(View.GONE);
+                ArmorsTab.setVisibility(View.GONE);
+                specialTab.setVisibility(View.GONE);
+            }
+        });
+
+
+
+        Scopes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Scopes.setBackgroundColor(getResources().getColor((R.color.color4)));
+                Weapon.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Armors.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Health.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Misc.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
+
+                ScopesTab.setVisibility(View.VISIBLE);
+                WeaponTab.setVisibility(View.GONE);
+                HealthTab.setVisibility(View.GONE);
+                MiscTab.setVisibility(View.GONE);
+                AmmoTab.setVisibility(View.GONE);
+                ArmorsTab.setVisibility(View.GONE);
+                specialTab.setVisibility(View.GONE);
+            }
+        });
+
+
+
+        Weapon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Weapon.setBackgroundColor(getResources().getColor((R.color.color4)));
+                Armors.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Health.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Misc.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Scopes.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                WeaponTab.setVisibility(View.VISIBLE);
+                ScopesTab.setVisibility(View.GONE);
+                HealthTab.setVisibility(View.GONE);
+                MiscTab.setVisibility(View.GONE);
+                AmmoTab.setVisibility(View.GONE);
+                ArmorsTab.setVisibility(View.GONE);
+                specialTab.setVisibility(View.GONE);
+            }
+        });
+
+        Scopes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Weapon.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Armors.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Health.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Misc.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Scopes.setBackgroundColor(getResources().getColor((R.color.color4)));
+
+
+
+                ScopesTab.setVisibility(View.VISIBLE);
+                HealthTab.setVisibility(View.GONE);
+                MiscTab.setVisibility(View.GONE);
+                ArmorsTab.setVisibility(View.GONE);
+                WeaponTab.setVisibility(View.GONE);
+                AmmoTab.setVisibility(View.GONE);
+                specialTab.setVisibility(View.GONE);
+            }
+        });
+
+
+        Misc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Weapon.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Armors.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Health.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Misc.setBackgroundColor(getResources().getColor((R.color.color4)));
+                Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Scopes.setBackgroundColor(getResources().getColor((R.color.blueij)));
+
+
+
+                MiscTab.setVisibility(View.VISIBLE);
+                WeaponTab.setVisibility(View.GONE);
+                HealthTab.setVisibility(View.GONE);
+                ArmorsTab.setVisibility(View.GONE);
+                AmmoTab.setVisibility(View.GONE);
+                ScopesTab.setVisibility(View.GONE);
+                specialTab.setVisibility(View.GONE);
+            }
+        });
+
+
+
+        Armors.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Weapon.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Armors.setBackgroundColor(getResources().getColor((R.color.color4)));
+                Health.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Misc.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Scopes.setBackgroundColor(getResources().getColor((R.color.blueij)));
+
+
+                ArmorsTab.setVisibility(View.VISIBLE);
+                WeaponTab.setVisibility(View.GONE);
+                MiscTab.setVisibility(View.GONE);
+                AmmoTab.setVisibility(View.GONE);
+                HealthTab.setVisibility(View.GONE);
+                ScopesTab.setVisibility(View.GONE);
+                specialTab.setVisibility(View.GONE);
+            }
+        });
+
+
+
+        Health.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Weapon.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Armors.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Health.setBackgroundColor(getResources().getColor((R.color.color4)));
+                Misc.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Scopes.setBackgroundColor(getResources().getColor((R.color.blueij)));
+
+
+                HealthTab.setVisibility(View.VISIBLE);
+                WeaponTab.setVisibility(View.GONE);
+                ArmorsTab.setVisibility(View.GONE);
+                MiscTab.setVisibility(View.GONE);
+                AmmoTab.setVisibility(View.GONE);
+                ScopesTab.setVisibility(View.GONE);
+                specialTab.setVisibility(View.GONE);
+            }
+        });
+
+        Special.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Weapon.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Armors.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Health.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Misc.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Special.setBackgroundColor(getResources().getColor((R.color.color4)));
+                Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                Scopes.setBackgroundColor(getResources().getColor((R.color.blueij)));
+                specialTab.setVisibility(View.VISIBLE);
+                WeaponTab.setVisibility(View.GONE);
+                ArmorsTab.setVisibility(View.GONE);
+                MiscTab.setVisibility(View.GONE);
+                AmmoTab.setVisibility(View.GONE);
+                ScopesTab.setVisibility(View.GONE);
+                HealthTab.setVisibility(View.GONE);
+            }
+        });
+
+        playerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choice.setVisibility(View.GONE);
+                items.setVisibility(View.GONE);
+                player.setVisibility(View.VISIBLE);
+                safelayout.setVisibility(View.GONE);
+                vehicle.setVisibility(View.GONE);
+            }
+        });
+
+        itemBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                WeaponTab.setVisibility(View.VISIBLE);
+                items.setVisibility(View.VISIBLE);
+                player.setVisibility(View.GONE);
+                vehicle.setVisibility(View.GONE);
+                choice.setVisibility(View.VISIBLE);
+                safelayout.setVisibility(View.GONE);
+            }
+        });
+
+        vehicleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choice.setVisibility(View.GONE);
+                items.setVisibility(View.GONE);
+                player.setVisibility(View.GONE);
+                safelayout.setVisibility(View.GONE);
+                vehicle.setVisibility(View.VISIBLE);
+            }
+        });
+        //     Log.d("check", String.valueOf(safecheck));
+        
+        
+        //floating window setting
+        mFloatingView.findViewById(R.id.relativeLayoutParent).setOnTouchListener(new View.OnTouchListener() {
+            private int initialX;
+            private int initialY;
+            private float initialTouchX;
+            private float initialTouchY;
+
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (gestureDetector.onTouchEvent(event)) {
+                    espView.setVisibility(View.VISIBLE);
+                    return true;
+                } else {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            initialX = params.x;
+                            initialY = params.y;
+                            initialTouchX = event.getRawX();
+                            initialTouchY = event.getRawY();
+                            return true;
+
+
+                        case MotionEvent.ACTION_MOVE:
+                            //this code is helping the widget to move around the screen with fingers
+                            params.x = initialX + (int) (event.getRawX() - initialTouchX);
+                            params.y = initialY + (int) (event.getRawY() - initialTouchY);
+                            windowManager.updateViewLayout(mFloatingView, params);
+                            return true;
+                    }
+                    return false;
+                }
+            }
+        });
+
+
+    }
+    @Override
+    public void onDestroy() {
+        LiteStop();
+        isRunning = false;
+        if (mFloatingView != null) {
+            windowManager.removeView(mFloatingView);
+            mFloatingView = null;
+        }
+
+        if(overlayView != null){
+            windowManager.removeView(overlayView);
+            overlayView = null;
+        }
+        stopSelf();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onClick(View v) {
+       /* switch (v.getId()) {
+            case R.id.floatLogo:
+                //switching views
+                espView.setVisibility(View.VISIBLE);
+                logoView.setVisibility(View.GONE);
+                break;
+
+            case R.id.closeBtn:
+                espView.setVisibility(View.GONE);
+                logoView.setVisibility(View.VISIBLE);
+                break;
+        }*/
+    }
+
+
+
+
+
+    private String getType(){
+        SharedPreferences sp=this.getSharedPreferences("espValue",Context.MODE_PRIVATE);
+        return sp.getString("type","1");
+    }
+    private void  setValue(String key,boolean b) {
+        SharedPreferences sp=this.getSharedPreferences("espValue",Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed= sp.edit();
+        ed.putBoolean(key,b);
+        ed.apply();
+
+    }
+
+    boolean getConfig(String key){
+        SharedPreferences sp=this.getSharedPreferences("espValue",Context.MODE_PRIVATE);
+        return  sp.getBoolean(key,false);
+        // return !key.equals("");
+    }
+    void setFps(int fps){
+        SharedPreferences sp=this.getSharedPreferences("espValue",Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed= sp.edit();
+        ed.putInt("fps",fps);
+        ed.apply();
+    }
+    int getFps(){
+        SharedPreferences sp=this.getSharedPreferences("espValue",Context.MODE_PRIVATE);
+        return sp.getInt("fps",100);
+    }
+
+    public static void HideFloat() {
+
+        if (Instance != null)
+        {
+            Instance.Hide();
+        }
+    }
+    public void Hide(){
+        stopSelf();
+        exit(-1);
+        /*Instance = null;
+        try {
+            mWindowManager.removeView(mFloatingView);
+        }catch (Exception e){
+            System.out.println("-->"+e);
+        }
+        try {
+        stopSelf();
+        }catch (Exception e){
+            System.out.println("-->"+e);
+        }
+            try {
+        this.onDestroy();
+            }catch (Exception e) {
+                System.out.println("-->" + e);
+            }*/
+    }
+    @TargetApi(Build.VERSION_CODES.CUPCAKE)
+    public void ipstartcheat(){
+        class load extends AsyncTask<Void, Void, String> {
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                //           Log.d("data",data);
+                new Thread(() -> {
+                    String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                    for (int i = 0; i < lines.length; i++) {
+
+                        //      Log.d("testlines", lines[i]);
+                        try {
+                            ShellUtils.SU(lines[i]);
+                            TimeUnit.MILLISECONDS.sleep(300);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+
+            @Override
+            protected String doInBackground(Void... voids) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put(TAG_VERSION,version);
+                params.put(TAG_DEVICEID,deviceid);
+                params.put("g",AESUtils.DarKnight.getEncrypted("ip"));
+                params.put("s",AESUtils.DarKnight.getEncrypted("start"));
+                data =AESUtils.DarKnight.getDecrypted(reader.getUrlContents(CheatL,params));
+                return data;
+            }
+        }
+        new load().execute();
+
+    }
+    public void ipstopcheat(){
+        class load extends AsyncTask<Void, Void, String> {
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                //       Log.d("data",data);
+                new Thread(() -> {
+                    String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                    for (int i = 0; i < lines.length; i++) {
+
+                        //      Log.d("testlines", lines[i]);
+                        try {
+                            ShellUtils.SU(lines[i]);
+                            TimeUnit.MILLISECONDS.sleep(300);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+            @Override
+            protected String doInBackground(Void... voids) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put(TAG_VERSION,version);
+                params.put(TAG_DEVICEID,deviceid);
+                params.put("g",AESUtils.DarKnight.getEncrypted("ip"));
+                params.put("s",AESUtils.DarKnight.getEncrypted("stop"));
+                data =AESUtils.DarKnight.getDecrypted(reader.getUrlContents(CheatL,params));
+                return data;
+            }
+        }
+        new load().execute();
+
+    }
+    void CInit() {
+        //vehicals
+        final Switch Ip = mFloatingView.findViewById(R.id.iptable);
+        Ip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(Ip.isChecked()){
+                    ShellUtils.SU(myDaemon+" 20001");
+                    ipstartcheat();
+                }else{
+                    ipstopcheat();
+                }
+            }
+        });
+
+        ////////////////////////////////////////////////// safe Features//////////////////////////////////////////////////
+        final Switch HeadBot = mFloatingView.findViewById(R.id.HeadBot);
+        HeadBot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(HeadBot.isChecked()) {
+                    ShellUtils.SU(myDaemon+" 20002");
+                }else{
+                    ShellUtils.SU(myDaemon+" 20003");
+                }
+            }
+        });
+        final Switch magicbullet = mFloatingView.findViewById(R.id.magicbullet);
+        magicbullet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(magicbullet.isChecked()) {
+                    ShellUtils.SU(myDaemon+" 20004");
+                }else{
+                    ShellUtils.SU(myDaemon+" 20005");
+                }
+            }
+        });
+
+        final RadioButton crossoff = mFloatingView.findViewById(R.id.crossoff);
+        final RadioButton graphicross = mFloatingView.findViewById(R.id.graphicross);
+        final RadioButton MemCross = mFloatingView.findViewById(R.id.memorycross);
+        crossoff.setChecked(true);
+        crossoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LitePremiumValue(597,false);
+                ShellUtils.SU(myDaemon+" 20008");
+            }
+        });
+        graphicross.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                LitePremiumValue(597,true);
+
+            }
+        });
+
+        MemCross.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                ShellUtils.SU(myDaemon+" 20007");
+            }
+        });
+
+
+        final RadioButton aimoff = mFloatingView.findViewById(R.id.Aimoff);
+        final RadioButton aimon = mFloatingView.findViewById(R.id.Aimon);
+        aimoff.setChecked(true);
+        aimoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LitePremiumValue(598,false);
+                ShellUtils.SU(myDaemon+" 20006");
+            }
+        });
+        aimon.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                LitePremiumValue(598,true);
+                ShellUtils.SU(myDaemon+" 20005");
+            }
+        });
+
+
+
+        final CheckBox Buggy = mFloatingView.findViewById(R.id.Buggy);
+        Buggy.setChecked(getConfig((String) Buggy.getText()));
+        LitePremiumVehicalValue(20,Buggy.isChecked());
+        Buggy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Buggy.getText()), Buggy.isChecked());
+                LitePremiumVehicalValue(20,Buggy.isChecked());
+            }
+        });
+        final CheckBox UAZ = mFloatingView.findViewById(R.id.UAZ);
+        UAZ.setChecked(getConfig((String) UAZ.getText()));
+        LitePremiumVehicalValue(21,UAZ.isChecked());
+        UAZ.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(UAZ.getText()), UAZ.isChecked());
+                LitePremiumVehicalValue(21,UAZ.isChecked());
+            }
+        });
+        final CheckBox Trike = mFloatingView.findViewById(R.id.Trike);
+        Trike.setChecked(getConfig((String) Trike.getText()));
+        LitePremiumVehicalValue(31,Trike.isChecked());
+        Trike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Trike.getText()), Trike.isChecked());
+                LitePremiumVehicalValue(31,Trike.isChecked());
+            }
+        });
+        final CheckBox Bike = mFloatingView.findViewById(R.id.Bike);
+        Bike.setChecked(getConfig((String) Bike.getText()));
+        LitePremiumVehicalValue(25,Bike.isChecked());
+        Bike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Bike.getText()), Bike.isChecked());
+                LitePremiumVehicalValue(25,Bike.isChecked());;
+            }
+        });
+        final CheckBox Dacia = mFloatingView.findViewById(R.id.Dacia);
+        Dacia.setChecked(getConfig((String) Dacia.getText()));
+        LitePremiumVehicalValue(22,Dacia.isChecked());
+        Dacia.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Dacia.getText()), Dacia.isChecked());
+                LitePremiumVehicalValue(22,Dacia.isChecked());
+            }
+        });
+        final CheckBox Jet = mFloatingView.findViewById(R.id.Jet);
+        LitePremiumVehicalValue(27,Jet.isChecked());
+        Jet.setChecked(getConfig((String) Jet.getText()));
+        Jet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Jet.getText()), Jet.isChecked());
+                LitePremiumVehicalValue(27,Jet.isChecked());
+            }
+        });
+        final CheckBox Boat = mFloatingView.findViewById(R.id.Boat);
+        Boat.setChecked(getConfig((String) Boat.getText()));
+        LitePremiumVehicalValue(26,Boat.isChecked());
+        Boat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Boat.getText()), Boat.isChecked());
+                LitePremiumVehicalValue(26,Boat.isChecked());
+
+            }
+        });
+        final CheckBox Scooter = mFloatingView.findViewById(R.id.Scooter);
+        Scooter.setChecked(getConfig((String) Scooter.getText()));
+        LitePremiumVehicalValue(30,Scooter.isChecked());
+        Scooter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Scooter.getText()), Scooter.isChecked());
+                LitePremiumVehicalValue(30,Scooter.isChecked());
+            }
+        });
+        final CheckBox Bus = mFloatingView.findViewById(R.id.Bus);
+        Bus.setChecked(getConfig((String) Bus.getText()));
+        LitePremiumVehicalValue(28,Bus.isChecked());
+        Bus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Bus.getText()), Bus.isChecked());
+                LitePremiumVehicalValue(28,Bus.isChecked());}
+        });
+        final CheckBox Mirado = mFloatingView.findViewById(R.id.Mirado);
+        Mirado.setChecked(getConfig((String) Mirado.getText()));
+        LitePremiumVehicalValue(34,Mirado.isChecked());
+        Mirado.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Mirado.getText()), Mirado.isChecked());
+                LitePremiumVehicalValue(34,Mirado.isChecked());
+            }
+        });
+
+
+        final CheckBox Rony = mFloatingView.findViewById(R.id.Rony);
+        Rony.setChecked(getConfig((String) Rony.getText()));
+        LitePremiumVehicalValue(24,Rony.isChecked());
+        Rony.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Rony.getText()), Rony.isChecked());
+                LitePremiumVehicalValue(24,Rony.isChecked());
+            }
+        });
+        final CheckBox Snowbike = mFloatingView.findViewById(R.id.Snowbike);
+        Snowbike.setChecked(getConfig((String) Snowbike.getText()));
+        LitePremiumVehicalValue(36,Snowbike.isChecked());
+        Snowbike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Snowbike.getText()), Snowbike.isChecked());
+                LitePremiumVehicalValue(36,Snowbike.isChecked());
+            }
+        });
+        final CheckBox Snowmobile = mFloatingView.findViewById(R.id.Snowmobile);
+        Snowmobile.setChecked(getConfig((String) Snowmobile.getText()));
+        LitePremiumVehicalValue(36,Snowmobile.isChecked());
+        Snowmobile.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Snowmobile.getText()), Snowmobile.isChecked());
+                LitePremiumVehicalValue(36,Snowmobile.isChecked());
+
+            }
+        });
+        final CheckBox Tempo = mFloatingView.findViewById(R.id.Tempo);
+        Tempo.setChecked(getConfig((String) Tempo.getText()));
+        LitePremiumVehicalValue(23,Tempo.isChecked());
+        Tempo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Tempo.getText()), Tempo.isChecked());
+                LitePremiumVehicalValue(23,Tempo.isChecked());
+            }
+        });
+        final CheckBox Truck = mFloatingView.findViewById(R.id.Truck);
+        Truck.setChecked(getConfig((String) Truck.getText()));
+        LitePremiumVehicalValue(37,Truck.isChecked());
+        Truck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Truck.getText()), Truck.isChecked());
+                LitePremiumVehicalValue(37,Truck.isChecked());
+            }
+        });
+        final CheckBox MonsterTruck = mFloatingView.findViewById(R.id.MonsterTruck);
+        MonsterTruck.setChecked(getConfig((String) MonsterTruck.getText()));
+        LitePremiumVehicalValue(29,MonsterTruck.isChecked());
+        MonsterTruck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(MonsterTruck.getText()), MonsterTruck.isChecked());
+                LitePremiumVehicalValue(29,MonsterTruck.isChecked());
+            }
+        });
+        final CheckBox BRDM = mFloatingView.findViewById(R.id.BRDM);
+        BRDM.setChecked(getConfig((String) BRDM.getText()));
+        LitePremiumVehicalValue(33,BRDM.isChecked());
+        BRDM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(BRDM.getText()), BRDM.isChecked());
+                LitePremiumVehicalValue(33,BRDM.isChecked());
+            }
+        });
+        final CheckBox LadaNiva = mFloatingView.findViewById(R.id.LadaNiva);
+        LadaNiva.setChecked(getConfig((String) LadaNiva.getText()));
+        LitePremiumVehicalValue(32,LadaNiva.isChecked());
+        LadaNiva.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(LadaNiva.getText()), LadaNiva.isChecked());
+                LitePremiumVehicalValue(32,LadaNiva.isChecked());
+            }
+        });
+// Heath
+
+        final CheckBox Medkit = mFloatingView.findViewById(R.id.Medkit);
+        Medkit.setChecked(getConfig((String) Medkit.getText()));
+        LitePremiumValue(50,Medkit.isChecked());
+        Medkit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Medkit.getText()), Medkit.isChecked());
+                LitePremiumValue(50,Medkit.isChecked());
+            }
+        });
+
+        final CheckBox Bandage = mFloatingView.findViewById(R.id.Bandage);
+        Bandage.setChecked(getConfig((String) Bandage.getText()));
+        LitePremiumValue(51,Bandage.isChecked());
+        Bandage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Bandage.getText()), Bandage.isChecked());
+                LitePremiumValue(51,Bandage.isChecked());
+            }
+        });
+
+        final CheckBox FirstAid = mFloatingView.findViewById(R.id.FirstAidKit);
+        FirstAid.setChecked(getConfig((String) FirstAid.getText()));
+        LitePremiumValue(52,FirstAid.isChecked());
+        FirstAid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(FirstAid.getText()), FirstAid.isChecked());
+                LitePremiumValue(52,FirstAid.isChecked());
+            }
+        });
+        final CheckBox Injection = mFloatingView.findViewById(R.id.Adrenaline);
+        Injection.setChecked(getConfig((String) Injection.getText()));
+        LitePremiumValue(53,Injection.isChecked());
+        Injection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Injection.getText()), Injection.isChecked());
+                LitePremiumValue(53,Injection.isChecked());
+            }
+        });
+
+
+        final CheckBox EnergyDrink = mFloatingView.findViewById(R.id.EnergyDrink);
+        EnergyDrink.setChecked(getConfig((String) EnergyDrink.getText()));
+        LitePremiumValue(55,EnergyDrink.isChecked());
+        EnergyDrink.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(EnergyDrink.getText()), EnergyDrink.isChecked());
+                LitePremiumValue(55,EnergyDrink.isChecked());
+            }
+        });
+        final CheckBox Painkiller = mFloatingView.findViewById(R.id.Painkiller);
+        Painkiller.setChecked(getConfig((String) Painkiller.getText()));
+        LitePremiumValue(54,Painkiller.isChecked());
+        Painkiller.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Painkiller.getText()), Painkiller.isChecked());
+                LitePremiumValue(54,Painkiller.isChecked());
+            }
+        });
+
+        /*
+         *
+         *
+         *
+         *
+         *    Weapons
+         *
+         *
+         *
+         *
+         *  */
+
+
+
+        final CheckBox canted = mFloatingView.findViewById(R.id.canted);
+        canted.setChecked(getConfig((String) canted.getText()));
+        LitePremiumValue(97,canted.isChecked());
+        canted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(canted.getText()),canted.isChecked());
+                LitePremiumValue(97,canted.isChecked());
+            }
+        });
+
+        final CheckBox reddot = mFloatingView.findViewById(R.id.reddot);
+        reddot.setChecked(getConfig((String) reddot.getText()));
+        LitePremiumValue(98,reddot.isChecked());
+        reddot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(reddot.getText()),reddot.isChecked());
+                LitePremiumValue(98,reddot.isChecked());
+            }
+        });
+
+        final CheckBox hollow = mFloatingView.findViewById(R.id.hollow);
+        hollow.setChecked(getConfig((String) hollow.getText()));
+        LitePremiumValue(96,hollow.isChecked());
+        hollow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(hollow.getText()),hollow.isChecked());
+                LitePremiumValue(96,hollow.isChecked());
+            }
+        });
+
+        final CheckBox twox = mFloatingView.findViewById(R.id.twox);
+        twox.setChecked(getConfig((String) twox.getText()));
+        LitePremiumValue(101,twox.isChecked());
+        twox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(twox.getText()),twox.isChecked());
+                LitePremiumValue(101,twox.isChecked());
+            }
+        });
+
+        final CheckBox threex = mFloatingView.findViewById(R.id.threex);
+        threex.setChecked(getConfig((String) threex.getText()));
+        LitePremiumValue(102,threex.isChecked());
+        threex.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(threex.getText()),threex.isChecked());
+                LitePremiumValue(102,threex.isChecked());
+            }
+        });
+
+        final CheckBox fourx = mFloatingView.findViewById(R.id.fourx);
+        fourx.setChecked(getConfig((String) fourx.getText()));
+        LitePremiumValue(100,fourx.isChecked());
+        fourx.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(fourx.getText()),fourx.isChecked());
+                LitePremiumValue(100,fourx.isChecked());
+            }
+        });
+
+        final CheckBox sixx = mFloatingView.findViewById(R.id.sixx);
+        sixx.setChecked(getConfig((String) sixx.getText()));
+        LitePremiumValue(103,sixx.isChecked());
+        sixx.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(sixx.getText()),sixx.isChecked());
+                LitePremiumValue(103,sixx.isChecked());
+            }
+        });
+
+        final CheckBox eightx = mFloatingView.findViewById(R.id.eightx);
+        eightx.setChecked(getConfig((String) eightx.getText()));
+        LitePremiumValue(99,eightx.isChecked());
+        eightx.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(eightx.getText()),eightx.isChecked());
+                LitePremiumValue(99,eightx.isChecked());
+
+            }
+        });
+
+        final CheckBox AWM = mFloatingView.findViewById(R.id.AWM);
+        AWM.setChecked(getConfig((String) AWM.getText()));
+        LitePremiumValue(76,AWM.isChecked());
+        AWM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(AWM.getText()),AWM.isChecked());
+                LitePremiumValue(76,AWM.isChecked());
+            }
+        });
+
+        final CheckBox QBU = mFloatingView.findViewById(R.id.QBU);
+        QBU.setChecked(getConfig((String) QBU.getText()));
+        LitePremiumValue(77,QBU.isChecked());
+        QBU.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(QBU.getText()),QBU.isChecked());
+                LitePremiumValue(77,QBU.isChecked());
+            }
+        });
+
+        final CheckBox SLR = mFloatingView.findViewById(R.id.SLR);
+        SLR.setChecked(getConfig((String) SLR.getText()));
+        LitePremiumValue(78,SLR.isChecked());
+        SLR.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(SLR.getText()),SLR.isChecked());
+                LitePremiumValue(78,SLR.isChecked());
+            }
+        });
+
+        final CheckBox SKS = mFloatingView.findViewById(R.id.SKS);
+        SKS.setChecked(getConfig((String) SKS.getText()));
+        LitePremiumValue(61,SKS.isChecked());
+
+        SKS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(SKS.getText()),SKS.isChecked());
+                LitePremiumValue(61,SKS.isChecked());
+            }
+        });
+
+        final CheckBox Mini14 = mFloatingView.findViewById(R.id.Mini14);
+        Mini14.setChecked(getConfig((String) Mini14.getText()));
+        LitePremiumValue(79,Mini14.isChecked());
+        Mini14.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Mini14.getText()),Mini14.isChecked());
+                LitePremiumValue(79,Mini14.isChecked());
+            }
+        });
+
+        final CheckBox M24 = mFloatingView.findViewById(R.id.M24);
+        M24.setChecked(getConfig((String) M24.getText()));
+        LitePremiumValue(80,M24.isChecked());
+        M24.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(M24.getText()),M24.isChecked());
+                LitePremiumValue(80,M24.isChecked());
+            }
+        });
+
+        final CheckBox Kar98k = mFloatingView.findViewById(R.id.Kar98k);
+        Kar98k.setChecked(getConfig((String) Kar98k.getText()));
+        LitePremiumValue(63,Kar98k.isChecked());
+        Kar98k.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Kar98k.getText()),Kar98k.isChecked());
+                LitePremiumValue(63,Kar98k.isChecked());
+            }
+        });
+
+        final CheckBox VSS = mFloatingView.findViewById(R.id.VSS);
+        VSS.setChecked(getConfig((String) VSS.getText()));
+        LitePremiumValue(81,VSS.isChecked());
+        VSS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(VSS.getText()),VSS.isChecked());
+                LitePremiumValue(81,VSS.isChecked());
+            }
+        });
+
+        final CheckBox Win94 = mFloatingView.findViewById(R.id.Win94);
+        Win94.setChecked(getConfig((String) Win94.getText()));
+        LitePremiumValue(82,Win94.isChecked());
+        Win94.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Win94.getText()),Win94.isChecked());
+                LitePremiumValue(82,Win94.isChecked());
+            }
+        });
+
+        final CheckBox AUG = mFloatingView.findViewById(R.id.AUG);
+        AUG.setChecked(getConfig((String) AUG.getText()));
+        LitePremiumValue(58,AUG.isChecked());
+        AUG.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(AUG.getText()),AUG.isChecked());
+                LitePremiumValue(58,AUG.isChecked());
+            }
+        });
+
+        final CheckBox M762 = mFloatingView.findViewById(R.id.M762);
+        M762.setChecked(getConfig((String) M762.getText()));
+        LitePremiumValue(112,M762.isChecked());
+        M762.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(M762.getText()),M762.isChecked());
+                LitePremiumValue(112,M762.isChecked());
+            }
+        });
+
+        final CheckBox SCARL = mFloatingView.findViewById(R.id.SCARL);
+        SCARL.setChecked(getConfig((String) SCARL.getText()));
+        LitePremiumValue(62,SCARL.isChecked());
+        SCARL.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(SCARL.getText()),SCARL.isChecked());
+                LitePremiumValue(62,SCARL.isChecked());
+            }
+        });
+
+        final CheckBox M416 = mFloatingView.findViewById(R.id.M416);
+        M416.setChecked(getConfig((String) M416.getText()));
+        LitePremiumValue(57,M416.isChecked());
+        M416.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(M416.getText()),M416.isChecked());
+                LitePremiumValue(57,M416.isChecked());
+            }
+        });
+
+        final CheckBox M16A4 = mFloatingView.findViewById(R.id.M16A4);
+        M16A4.setChecked(getConfig((String) M16A4.getText()));
+        LitePremiumValue(64,M16A4.isChecked());
+        M16A4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(M16A4.getText()),M16A4.isChecked());
+                LitePremiumValue(64,M16A4.isChecked());
+            }
+        });
+
+        final CheckBox Mk47Mutant = mFloatingView.findViewById(R.id.Mk47Mutant);
+        Mk47Mutant.setChecked(getConfig((String) Mk47Mutant.getText()));
+        LitePremiumValue(60,Mk47Mutant.isChecked());
+        Mk47Mutant.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Mk47Mutant.getText()),Mk47Mutant.isChecked());
+                LitePremiumValue(60,Mk47Mutant.isChecked());
+            }
+        });
+
+        final CheckBox G36C = mFloatingView.findViewById(R.id.G36C);
+        G36C.setChecked(getConfig((String) G36C.getText()));
+        LitePremiumValue(65,G36C.isChecked());
+        G36C.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(G36C.getText()),G36C.isChecked());
+                LitePremiumValue(65,G36C.isChecked());
+            }
+        });
+
+        final CheckBox QBZ = mFloatingView.findViewById(R.id.QBZ);
+        QBZ.setChecked(getConfig((String) QBZ.getText()));
+        LitePremiumValue(66,QBZ.isChecked());
+        QBZ.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(QBZ.getText()),QBZ.isChecked());
+                LitePremiumValue(66,QBZ.isChecked());
+            }
+        });
+
+        final CheckBox AKM = mFloatingView.findViewById(R.id.AKM);
+        AKM.setChecked(getConfig((String) AKM.getText()));
+        LitePremiumValue(56,AKM.isChecked());
+        AKM.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(AKM.getText()),AKM.isChecked());
+                LitePremiumValue(56,AKM.isChecked());
+            }
+        });
+
+        final CheckBox Groza = mFloatingView.findViewById(R.id.Groza);
+        Groza.setChecked(getConfig((String) Groza.getText()));
+        LitePremiumValue(67,Groza.isChecked());
+        Groza.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Groza.getText()),Groza.isChecked());
+                LitePremiumValue(67,Groza.isChecked());
+            }
+        });
+
+        final CheckBox S12K = mFloatingView.findViewById(R.id.S12K);
+        S12K.setChecked(getConfig((String) S12K.getText()));
+        S12K.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(S12K.getText()),S12K.isChecked());
+            }
+        });
+
+        final CheckBox DBS = mFloatingView.findViewById(R.id.DBS);
+        DBS.setChecked(getConfig((String) DBS.getText()));
+        DBS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(DBS.getText()),DBS.isChecked());
+            }
+        });
+
+        final CheckBox S686 = mFloatingView.findViewById(R.id.S686);
+        S686.setChecked(getConfig((String) S686.getText()));
+        S686.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(S686.getText()),S686.isChecked());
+            }
+        });
+
+        final CheckBox S1897 = mFloatingView.findViewById(R.id.S1897);
+        S1897.setChecked(getConfig((String) S1897.getText()));
+        S1897.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(S1897.getText()),S1897.isChecked());
+            }
+        });
+
+        final CheckBox SawedOff = mFloatingView.findViewById(R.id.SawedOff);
+        SawedOff.setChecked(getConfig((String) SawedOff.getText()));
+        SawedOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(SawedOff.getText()),SawedOff.isChecked());
+            }
+        });
+
+        final CheckBox TommyGun = mFloatingView.findViewById(R.id.TommyGun);
+        TommyGun.setChecked(getConfig((String) TommyGun.getText()));
+        LitePremiumValue(117,TommyGun.isChecked());
+        TommyGun.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(TommyGun.getText()),TommyGun.isChecked());
+                LitePremiumValue(117,TommyGun.isChecked());
+            }
+        });
+
+        final CheckBox MP5K = mFloatingView.findViewById(R.id.MP5K);
+        MP5K.setChecked(getConfig((String) MP5K.getText()));
+        LitePremiumValue(70,MP5K.isChecked());
+        MP5K.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(MP5K.getText()),MP5K.isChecked());
+                LitePremiumValue(70,MP5K.isChecked());
+            }
+        });
+
+        final CheckBox Vector = mFloatingView.findViewById(R.id.Vector);
+        Vector.setChecked(getConfig((String) Vector.getText()));
+        LitePremiumValue(74,Vector.isChecked());
+        Vector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Vector.getText()),Vector.isChecked());
+                LitePremiumValue(74,Vector.isChecked());
+            }
+        });
+
+        final CheckBox Uzi = mFloatingView.findViewById(R.id.Uzi);
+        Uzi.setChecked(getConfig((String) Uzi.getText()));
+        LitePremiumValue(69,Uzi.isChecked());
+        Uzi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Uzi.getText()),Uzi.isChecked());
+                LitePremiumValue(69,Uzi.isChecked());
+            }
+        });
+
+        final CheckBox R1895 = mFloatingView.findViewById(R.id.R1895);
+        R1895.setChecked(getConfig((String) R1895.getText()));
+        R1895.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(R1895.getText()),R1895.isChecked());
+            }
+        });
+
+        final CheckBox Vz61 = mFloatingView.findViewById(R.id.Vz61);
+        Vz61.setChecked(getConfig((String) Vz61.getText()));
+        Vz61.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Vz61.getText()),Vz61.isChecked());
+            }
+        });
+
+        final CheckBox P92 = mFloatingView.findViewById(R.id.P92);
+        P92.setChecked(getConfig((String) P92.getText()));
+        P92.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(P92.getText()),P92.isChecked());
+            }
+        });
+
+        final CheckBox P18C = mFloatingView.findViewById(R.id.P18C);
+        P18C.setChecked(getConfig((String) P18C.getText()));
+        P18C.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(P18C.getText()),P18C.isChecked());
+            }
+        });
+
+        final CheckBox R45 = mFloatingView.findViewById(R.id.R45);
+        R45.setChecked(getConfig((String) R45.getText()));
+        R45.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(R45.getText()),R45.isChecked());
+            }
+        });
+
+        final CheckBox P1911 = mFloatingView.findViewById(R.id.P1911);
+        P1911.setChecked(getConfig((String) P1911.getText()));
+        P1911.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(P1911.getText()),P1911.isChecked());
+            }
+        });
+
+        final CheckBox DesertEagle = mFloatingView.findViewById(R.id.DesertEagle);
+        DesertEagle.setChecked(getConfig((String) DesertEagle.getText()));
+        DesertEagle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(DesertEagle.getText()),DesertEagle.isChecked());
+            }
+        });
+
+        final CheckBox Sickle = mFloatingView.findViewById(R.id.Sickle);
+        Sickle.setChecked(getConfig((String) Sickle.getText()));
+        Sickle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Sickle.getText()),Sickle.isChecked());
+            }
+        });
+
+        final CheckBox Machete = mFloatingView.findViewById(R.id.Machete);
+        Machete.setChecked(getConfig((String) Machete.getText()));
+        Machete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Machete.getText()),Machete.isChecked());
+            }
+        });
+
+        final CheckBox Pan = mFloatingView.findViewById(R.id.Pan);
+        Pan.setChecked(getConfig((String) Pan.getText()));
+        Pan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Pan.getText()),Pan.isChecked());
+            }
+        });
+
+        final CheckBox Mk14 = mFloatingView.findViewById(R.id.Mk14);
+        Mk14.setChecked(getConfig((String) Mk14.getText()));
+        Mk14.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Mk14.getText()),Mk14.isChecked());
+            }
+        });
+
+        final CheckBox sst = mFloatingView.findViewById(R.id.sst);
+        sst.setChecked(getConfig((String) sst.getText()));
+        LitePremiumValue(83,sst.isChecked());
+        sst.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(sst.getText()),sst.isChecked());
+                LitePremiumValue(83,sst.isChecked());
+            }
+        });
+
+        final CheckBox ffACP = mFloatingView.findViewById(R.id.ffACP);
+        ffACP.setChecked(getConfig((String) ffACP.getText()));
+        LitePremiumValue(85,ffACP.isChecked());
+        ffACP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ffACP.getText()),ffACP.isChecked());
+                LitePremiumValue(85,ffACP.isChecked());
+            }
+        });
+
+        final CheckBox ffs = mFloatingView.findViewById(R.id.ffs);
+        ffs.setChecked(getConfig((String) ffs.getText()));
+        LitePremiumValue(84,ffs.isChecked());
+        ffs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ffs.getText()),ffs.isChecked());
+                LitePremiumValue(84,ffs.isChecked());
+            }
+        });
+
+        final CheckBox nmm = mFloatingView.findViewById(R.id.nmm);
+        nmm.setChecked(getConfig((String) nmm.getText()));
+        LitePremiumValue(86,nmm.isChecked());
+        nmm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(nmm.getText()),nmm.isChecked());
+                LitePremiumValue(86,nmm.isChecked());
+            }
+        });
+
+        final CheckBox tzzMagnum = mFloatingView.findViewById(R.id.tzzMagnum);
+        tzzMagnum.setChecked(getConfig((String) tzzMagnum.getText()));
+        LitePremiumValue(87,tzzMagnum.isChecked());
+        tzzMagnum.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(tzzMagnum.getText()),tzzMagnum.isChecked());
+                LitePremiumValue(87,tzzMagnum.isChecked());
+            }
+        });
+
+        final CheckBox otGuage = mFloatingView.findViewById(R.id.otGuage);
+        otGuage.setChecked(getConfig((String) otGuage.getText()));
+        LitePremiumValue(89,otGuage.isChecked());
+        otGuage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(otGuage.getText()),otGuage.isChecked());
+                LitePremiumValue(89,otGuage.isChecked());
+            }
+        });
+
+        final CheckBox Choke = mFloatingView.findViewById(R.id.Choke);
+        Choke.setChecked(getConfig((String) Choke.getText()));
+        Choke.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Choke.getText()),Choke.isChecked());
+            }
+        });
+
+        final CheckBox SniperCompensator = mFloatingView.findViewById(R.id.SniperCompensator);
+        SniperCompensator.setChecked(getConfig((String) SniperCompensator.getText()));
+        SniperCompensator.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(SniperCompensator.getText()),SniperCompensator.isChecked());
+            }
+        });
+
+        final CheckBox DP28 = mFloatingView.findViewById(R.id.DP28);
+        DP28.setChecked(getConfig((String) DP28.getText()));
+        LitePremiumValue(75,DP28.isChecked());
+        DP28.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(DP28.getText()),DP28.isChecked());
+                LitePremiumValue(75,DP28.isChecked());
+            }
+        });
+
+        final CheckBox M249 = mFloatingView.findViewById(R.id.M249);
+        M249.setChecked(getConfig((String) M249.getText()));
+        LitePremiumValue(73,M249.isChecked());
+        M249.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(M249.getText()),M249.isChecked());
+                LitePremiumValue(73,M249.isChecked());
+            }
+        });
+
+        final CheckBox Grenade = mFloatingView.findViewById(R.id.Grenade);
+        Grenade.setChecked(getConfig((String) Grenade.getText()));
+        LitePremiumValue(113,Grenade.isChecked());
+        Grenade.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Grenade.getText()),Grenade.isChecked());
+                LitePremiumValue(113,Grenade.isChecked());
+            }
+        });
+
+        final CheckBox Smoke = mFloatingView.findViewById(R.id.Smoke);
+        Smoke.setChecked(getConfig((String) Smoke.getText()));
+        LitePremiumValue(114,Smoke.isChecked());
+        Smoke.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Smoke.getText()),Smoke.isChecked());
+                LitePremiumValue(114,Smoke.isChecked());
+            }
+        });
+
+        final CheckBox Molotov = mFloatingView.findViewById(R.id.Molotov);
+        Molotov.setChecked(getConfig((String) Molotov.getText()));
+        LitePremiumValue(115,Molotov.isChecked());
+        Molotov.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Molotov.getText()),Molotov.isChecked());
+                LitePremiumValue(115,Molotov.isChecked());
+            }
+        });
+
+
+
+        final CheckBox FlareGun = mFloatingView.findViewById(R.id.FlareGun);
+        FlareGun.setChecked(getConfig((String) FlareGun.getText()));
+        LitePremiumValue(104,FlareGun.isChecked());
+        FlareGun.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(FlareGun.getText()),FlareGun.isChecked());
+                LitePremiumValue(104,FlareGun.isChecked());
+            }
+        });
+
+        final CheckBox GullieSuit = mFloatingView.findViewById(R.id.GullieSuit);
+        GullieSuit.setChecked(getConfig((String) GullieSuit.getText()));
+        LitePremiumValue(105,GullieSuit.isChecked());
+        GullieSuit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(GullieSuit.getText()),GullieSuit.isChecked());
+                LitePremiumValue(105,GullieSuit.isChecked());
+            }
+        });
+
+        final CheckBox UMP = mFloatingView.findViewById(R.id.UMP);
+        UMP.setChecked(getConfig((String) UMP.getText()));
+        LitePremiumValue(71,UMP.isChecked());
+        UMP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(UMP.getText()),UMP.isChecked());
+                LitePremiumValue(71,UMP.isChecked());
+            }
+        });
+
+        final CheckBox Bizon = mFloatingView.findViewById(R.id.Bizon);
+        Bizon.setChecked(getConfig((String) Bizon.getText()));
+        LitePremiumValue(68,Bizon.isChecked());
+        Bizon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Bizon.getText()),Bizon.isChecked());
+                LitePremiumValue(68,Bizon.isChecked());
+            }
+        });
+
+        final CheckBox CompensatorSMG = mFloatingView.findViewById(R.id.CompensatorSMG);
+        CompensatorSMG.setChecked(getConfig((String) CompensatorSMG.getText()));
+        CompensatorSMG.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(CompensatorSMG.getText()),CompensatorSMG.isChecked());
+            }
+        });
+
+        final CheckBox FlashHiderSMG = mFloatingView.findViewById(R.id.FlashHiderSMG);
+        FlashHiderSMG.setChecked(getConfig((String) FlashHiderSMG.getText()));
+        FlashHiderSMG.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(FlashHiderSMG.getText()),FlashHiderSMG.isChecked());
+            }
+        });
+
+        final CheckBox FlashHiderAr = mFloatingView.findViewById(R.id.FlashHiderAr);
+        FlashHiderAr.setChecked(getConfig((String) FlashHiderAr.getText()));
+        FlashHiderAr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(FlashHiderAr.getText()),FlashHiderAr.isChecked());
+            }
+        });
+
+        final CheckBox ArCompensator = mFloatingView.findViewById(R.id.ArCompensator);
+        ArCompensator.setChecked(getConfig((String) ArCompensator.getText()));
+        ArCompensator.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ArCompensator.getText()),ArCompensator.isChecked());
+            }
+        });
+
+        final CheckBox TacticalStock = mFloatingView.findViewById(R.id.TacticalStock);
+        TacticalStock.setChecked(getConfig((String) TacticalStock.getText()));
+        TacticalStock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(TacticalStock.getText()),TacticalStock.isChecked());
+            }
+        });
+
+        final CheckBox Duckbill = mFloatingView.findViewById(R.id.Duckbill);
+        Duckbill.setChecked(getConfig((String) Duckbill.getText()));
+        Duckbill.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Duckbill.getText()),Duckbill.isChecked());
+            }
+        });
+
+        final CheckBox FlashHiderSniper = mFloatingView.findViewById(R.id.FlashHiderSniper);
+        FlashHiderSniper.setChecked(getConfig((String) FlashHiderSniper.getText()));
+        FlashHiderSniper.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(FlashHiderSniper.getText()),FlashHiderSniper.isChecked());
+            }
+        });
+
+        final CheckBox SuppressorSMG = mFloatingView.findViewById(R.id.SuppressorSMG);
+        SuppressorSMG.setChecked(getConfig((String) SuppressorSMG.getText()));
+        SuppressorSMG.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(SuppressorSMG.getText()),SuppressorSMG.isChecked());
+            }
+        });
+
+        final CheckBox HalfGrip = mFloatingView.findViewById(R.id.HalfGrip);
+        HalfGrip.setChecked(getConfig((String) HalfGrip.getText()));
+        HalfGrip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(HalfGrip.getText()),HalfGrip.isChecked());
+            }
+        });
+
+        final CheckBox StockMicroUZI = mFloatingView.findViewById(R.id.StockMicroUZI);
+        StockMicroUZI.setChecked(getConfig((String) StockMicroUZI.getText()));
+        StockMicroUZI.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(StockMicroUZI.getText()),StockMicroUZI.isChecked());
+            }
+        });
+
+        final CheckBox SuppressorSniper = mFloatingView.findViewById(R.id.SuppressorSniper);
+        SuppressorSniper.setChecked(getConfig((String) SuppressorSniper.getText()));
+        SuppressorSniper.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(SuppressorSniper.getText()),SuppressorSniper.isChecked());
+            }
+        });
+
+        final CheckBox SuppressorAr = mFloatingView.findViewById(R.id.SuppressorAr);
+        SuppressorAr.setChecked(getConfig((String) SuppressorAr.getText()));
+        SuppressorAr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(SuppressorAr.getText()),SuppressorAr.isChecked());
+            }
+        });
+
+        final CheckBox ExQdSniper = mFloatingView.findViewById(R.id.ExQdSniper);
+        ExQdSniper.setChecked(getConfig((String) ExQdSniper.getText()));
+        ExQdSniper.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ExQdSniper.getText()),ExQdSniper.isChecked());
+            }
+        });
+
+        final CheckBox QdSMG = mFloatingView.findViewById(R.id.QdSMG);
+        QdSMG.setChecked(getConfig((String) QdSMG.getText()));
+        QdSMG.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(QdSMG.getText()),QdSMG.isChecked());
+            }
+        });
+
+        final CheckBox ExSMG = mFloatingView.findViewById(R.id.ExSMG);
+        ExSMG.setChecked(getConfig((String) ExSMG.getText()));
+        ExSMG.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ExSMG.getText()),ExSMG.isChecked());
+            }
+        });
+
+        final CheckBox QdSniper = mFloatingView.findViewById(R.id.QdSniper);
+        QdSniper.setChecked(getConfig((String) QdSniper.getText()));
+        QdSniper.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(QdSniper.getText()),QdSniper.isChecked());
+            }
+        });
+
+        final CheckBox ExSniper = mFloatingView.findViewById(R.id.ExSniper);
+        ExSniper.setChecked(getConfig((String) ExSniper.getText()));
+        ExSniper.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ExSniper.getText()),ExSniper.isChecked());
+            }
+        });
+
+        final CheckBox ExAr = mFloatingView.findViewById(R.id.ExAr);
+        ExAr.setChecked(getConfig((String) ExAr.getText()));
+        ExAr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ExAr.getText()),ExAr.isChecked());
+            }
+        });
+
+        final CheckBox ExQdAr = mFloatingView.findViewById(R.id.ExQdAr);
+        ExQdAr.setChecked(getConfig((String) ExQdAr.getText()));
+        ExQdAr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ExQdAr.getText()),ExQdAr.isChecked());
+            }
+        });
+
+        final CheckBox QdAr = mFloatingView.findViewById(R.id.QdAr);
+        QdAr.setChecked(getConfig((String) QdAr.getText()));
+        QdAr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(QdAr.getText()),QdAr.isChecked());
+            }
+        });
+
+        final CheckBox ExQdSMG = mFloatingView.findViewById(R.id.ExQdSMG);
+        ExQdSMG.setChecked(getConfig((String) ExQdSMG.getText()));
+        ExQdSMG.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ExQdSMG.getText()),ExQdSMG.isChecked());
+            }
+        });
+
+        final CheckBox QuiverCrossBow = mFloatingView.findViewById(R.id.QuiverCrossBow);
+        QuiverCrossBow.setChecked(getConfig((String) QuiverCrossBow.getText()));
+        QuiverCrossBow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(QuiverCrossBow.getText()),QuiverCrossBow.isChecked());
+            }
+        });
+
+        final CheckBox BulletLoop = mFloatingView.findViewById(R.id.BulletLoop);
+        BulletLoop.setChecked(getConfig((String) BulletLoop.getText()));
+        BulletLoop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(BulletLoop.getText()),BulletLoop.isChecked());
+            }
+        });
+
+        final CheckBox ThumbGrip = mFloatingView.findViewById(R.id.ThumbGrip);
+        ThumbGrip.setChecked(getConfig((String) ThumbGrip.getText()));
+        ThumbGrip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(ThumbGrip.getText()),ThumbGrip.isChecked());
+            }
+        });
+
+        final CheckBox LaserSight = mFloatingView.findViewById(R.id.LaserSight);
+        LaserSight.setChecked(getConfig((String) LaserSight.getText()));
+        LaserSight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(LaserSight.getText()),LaserSight.isChecked());
+            }
+        });
+
+        final CheckBox AngledGrip = mFloatingView.findViewById(R.id.AngledGrip);
+        AngledGrip.setChecked(getConfig((String) AngledGrip.getText()));
+        AngledGrip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(AngledGrip.getText()),AngledGrip.isChecked());
+            }
+        });
+
+        final CheckBox LightGrip = mFloatingView.findViewById(R.id.LightGrip);
+        LightGrip.setChecked(getConfig((String) LightGrip.getText()));
+        LightGrip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(LightGrip.getText()),LightGrip.isChecked());
+            }
+        });
+
+        final CheckBox VerticalGrip = mFloatingView.findViewById(R.id.VerticalGrip);
+        VerticalGrip.setChecked(getConfig((String) VerticalGrip.getText()));
+        VerticalGrip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(VerticalGrip.getText()),VerticalGrip.isChecked());
+            }
+        });
+
+        final CheckBox GasCan = mFloatingView.findViewById(R.id.GasCan);
+        GasCan.setChecked(getConfig((String) GasCan.getText()));
+        GasCan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(GasCan.getText()),GasCan.isChecked());
+            }
+        });
+
+        final CheckBox Arrow = mFloatingView.findViewById(R.id.Arrow);
+        Arrow.setChecked(getConfig((String) Arrow.getText()));
+        Arrow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Arrow.getText()),Arrow.isChecked());
+            }
+        });
+
+        final CheckBox CrossBow = mFloatingView.findViewById(R.id.CrossBow);
+        CrossBow.setChecked(getConfig((String) CrossBow.getText()));
+        CrossBow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(CrossBow.getText()),CrossBow.isChecked());
+            }
+        });
+
+        /*
+
+
+        Armors
+
+        */
+        final CheckBox Baglvl1 = mFloatingView.findViewById(R.id.Baglvl1);
+        Baglvl1.setChecked(getConfig((String) Baglvl1.getText()));
+        LitePremiumValue(90,Baglvl1.isChecked());
+        Baglvl1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Baglvl1.getText()),Baglvl1.isChecked());
+                LitePremiumValue(90,Baglvl1.isChecked());
+            }
+        });
+
+        final CheckBox Baglvl2 = mFloatingView.findViewById(R.id.Baglvl2);
+        Baglvl2.setChecked(getConfig((String) Baglvl2.getText()));
+        LitePremiumValue(91,Baglvl2.isChecked());
+        Baglvl2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Baglvl2.getText()),Baglvl2.isChecked());
+                LitePremiumValue(91,Baglvl2.isChecked());
+            }
+        });
+
+        final CheckBox Baglvl3 = mFloatingView.findViewById(R.id.Baglvl3);
+        Baglvl3.setChecked(getConfig((String) Baglvl3.getText()));
+        LitePremiumValue(91,Baglvl3.isChecked());
+        Baglvl3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Baglvl3.getText()),Baglvl3.isChecked());
+                LitePremiumValue(91,Baglvl3.isChecked());
+            }
+        });
+
+        final CheckBox Helmetlvl1 = mFloatingView.findViewById(R.id.Helmetlvl1);
+        Helmetlvl1.setChecked(getConfig((String) Helmetlvl1.getText()));
+        LitePremiumValue(93,Helmetlvl1.isChecked());
+        Helmetlvl1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Helmetlvl1.getText()),Helmetlvl1.isChecked());
+                LitePremiumValue(93,Helmetlvl1.isChecked());
+            }
+        });
+
+        final CheckBox Helmetlvl2 = mFloatingView.findViewById(R.id.Helmetlvl2);
+        Helmetlvl2.setChecked(getConfig((String) Helmetlvl2.getText()));
+        LitePremiumValue(94,Helmetlvl1.isChecked());
+        Helmetlvl2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Helmetlvl2.getText()),Helmetlvl2.isChecked());
+                LitePremiumValue(94,Helmetlvl2.isChecked());
+            }
+        });
+
+        final CheckBox Helmetlvl3 = mFloatingView.findViewById(R.id.Helmetlvl3);
+        Helmetlvl3.setChecked(getConfig((String) Helmetlvl3.getText()));
+        LitePremiumValue(95,Helmetlvl3.isChecked());
+        Helmetlvl3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Helmetlvl3.getText()),Helmetlvl3.isChecked());
+                LitePremiumValue(95,Helmetlvl3.isChecked());
+            }
+        });
+
+        final CheckBox Vestlvl1 = mFloatingView.findViewById(R.id.Vestlvl1);
+        Vestlvl1.setChecked(getConfig((String) Vestlvl1.getText()));
+        LitePremiumValue(109,Vestlvl1.isChecked());
+        Vestlvl1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Vestlvl1.getText()),Vestlvl1.isChecked());
+                LitePremiumValue(109,Vestlvl1.isChecked());
+            }
+        });
+
+        final CheckBox Vestlvl2 = mFloatingView.findViewById(R.id.Vestlvl2);
+        Vestlvl2.setChecked(getConfig((String) Vestlvl2.getText()));
+        LitePremiumValue(110,Vestlvl2.isChecked());
+        Vestlvl2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Vestlvl2.getText()),Vestlvl2.isChecked());
+                LitePremiumValue(110,Vestlvl2.isChecked());
+            }
+        });
+
+        final CheckBox Vestlvl3 = mFloatingView.findViewById(R.id.Vestlvl3);
+        Vestlvl3.setChecked(getConfig((String) Vestlvl3.getText()));
+        LitePremiumValue(111,Vestlvl3.isChecked());
+        Vestlvl3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Vestlvl3.getText()),Vestlvl3.isChecked());
+                LitePremiumValue(111,Vestlvl3.isChecked());
+            }
+        });
+
+        final CheckBox Stung = mFloatingView.findViewById(R.id.Stung);
+        Stung.setChecked(getConfig((String) Stung.getText()));
+        Stung.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Stung.getText()),Stung.isChecked());
+            }
+        });
+
+        final CheckBox Crowbar = mFloatingView.findViewById(R.id.Crowbar);
+        Crowbar.setChecked(getConfig((String) Crowbar.getText()));
+        Crowbar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Crowbar.getText()),Crowbar.isChecked());
+            }
+        });
+
+
+        final CheckBox Crate = mFloatingView.findViewById(R.id.Crate);
+        Crate.setChecked(getConfig((String) Crate.getText()));
+        LitePremiumValue(108,Crate.isChecked());
+        Crate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Crate.getText()),Crate.isChecked());
+                LitePremiumValue(108,Crate.isChecked());
+            }
+        });
+
+        final CheckBox AirDrop = mFloatingView.findViewById(R.id.AirDrop);
+        AirDrop.setChecked(getConfig((String) AirDrop.getText()));
+        LitePremiumValue(106,AirDrop.isChecked());
+        AirDrop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(AirDrop.getText()),AirDrop.isChecked());
+                LitePremiumValue(106,AirDrop.isChecked());
+            }
+        });
+
+        final CheckBox DropPlane = mFloatingView.findViewById(R.id.DropPlane);
+        DropPlane.setChecked(getConfig((String) DropPlane.getText()));
+        LitePremiumValue(107,DropPlane.isChecked());
+        DropPlane.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(DropPlane.getText()),DropPlane.isChecked());
+                LitePremiumValue(107,DropPlane.isChecked());
+            }
+        });
+        final CheckBox isGrenadeWarning = mFloatingView.findViewById(R.id.isGrenadeWarning);
+        isGrenadeWarning.setChecked(getConfig((String) isGrenadeWarning.getText()));
+        LitePremiumValue(116,isGrenadeWarning.isChecked());
+        isGrenadeWarning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(isGrenadeWarning.getText()),isGrenadeWarning.isChecked());
+                LitePremiumValue(116,isGrenadeWarning.isChecked());
+            }
+        });
+
+//        final Switch isEnemyWeapon = mFloatingView.findViewById(R.id.isEnemyWeapon);
+//        isEnemyWeapon.setChecked(getConfig((String) isEnemyWeapon.getText()));
+//        SettingValue(10,getConfig((String) isEnemyWeapon.getText()));
+//        isEnemyWeapon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                setValue(String.valueOf(isEnemyWeapon.getText()), isEnemyWeapon.isChecked());
+//                SettingValue(10,isEnemyWeapon.isChecked());
+//            }
+//        });
+//        final Switch isGrenadeWarning = mFloatingView.findViewById(R.id.isGrenadeWarning);
+//        isGrenadeWarning.setChecked(getConfig((String) isGrenadeWarning.getText()));
+//        SettingValue(0,getConfig((String) isGrenadeWarning.getText()));
+//        isGrenadeWarning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                setValue(String.valueOf(isGrenadeWarning.getText()), isGrenadeWarning.isChecked());
+//                SettingValue(0,isGrenadeWarning.isChecked());
+//            }
+//        });
+        final CheckBox isSkelton = mFloatingView.findViewById(R.id.isSkelton);
+        isSkelton.setChecked(getConfig((String) isSkelton.getText()));
+        LitePremiumValue(614, getConfig((String) isSkelton.getText()));
+        isSkelton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(isSkelton.getText()), isSkelton.isChecked());
+                LitePremiumValue(614, isSkelton.isChecked());
+            }
+        });
+//        final CheckBox isHead = mFloatingView.findViewById(R.id.isHead);
+//        isHead.setChecked(getConfig((String) isHead.getText()));
+//        LitePremiumValue(6,getConfig((String) isHead.getText()));
+//        isHead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                setValue(String.valueOf(isHead.getText()), isHead.isChecked());
+//                LitePremiumValue(6,isHead.isChecked());
+//            }
+//        });
+
+        final RadioButton boxoff = mFloatingView.findViewById(R.id.boxoff);
+        final RadioButton box2d = mFloatingView.findViewById(R.id.box2d);
+        final RadioButton box3d = mFloatingView.findViewById(R.id.box3d);
+        boxoff.setChecked(true);
+
+        boxoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LitePremiumValue(606, false);
+            }
+        });
+        box2d.setChecked(getConfig((String) box2d.getText()));
+        box2d.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setValue(String.valueOf(box2d.getText()), box2d.isChecked());
+                LitePremiumValue(606, box2d.isChecked());
+            }
+        });
+
+        box3d.setChecked(getConfig((String) box3d.getText()));
+        box3d.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setValue(String.valueOf(box3d.getText()), box3d.isChecked());
+                LitePremiumValue(606, box3d.isChecked());
+            }
+        });
+        final CheckBox isteamid = mFloatingView.findViewById(R.id.isteamid);
+        isteamid.setChecked(getConfig((String) isteamid.getText()));
+        LitePremiumValue(616, getConfig((String) isteamid.getText()));
+        isteamid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(isteamid.getText()), isteamid.isChecked());
+                LitePremiumValue(616, isteamid.isChecked());
+            }
+        });
+        final CheckBox isLine = mFloatingView.findViewById(R.id.isLine);
+        isLine.setChecked(getConfig((String) isLine.getText()));
+        LitePremiumValue(605, getConfig((String) isLine.getText()));
+        isLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(isLine.getText()), isLine.isChecked());
+                LitePremiumValue(605, isLine.isChecked());
+            }
+        });
+
+        final CheckBox isBack = mFloatingView.findViewById(R.id.isBack);
+        isBack.setChecked(getConfig((String) isBack.getText()));
+        LitePremiumValue(607, getConfig((String) isBack.getText()));
+        isBack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(isBack.getText()), isBack.isChecked());
+                LitePremiumValue(607, isBack.isChecked());
+            }
+        });
+
+        final CheckBox isHealth = mFloatingView.findViewById(R.id.isHealth);
+        isHealth.setChecked(getConfig((String) isHealth.getText()));
+        LitePremiumValue(602, getConfig((String) isHealth.getText()));
+        isHealth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(isHealth.getText()), isHealth.isChecked());
+                LitePremiumValue(602, isHealth.isChecked());
+            }
+        });
+
+        final CheckBox isName = mFloatingView.findViewById(R.id.isName);
+        isName.setChecked(getConfig((String) isName.getText()));
+        LitePremiumValue(601, getConfig((String) isName.getText()));
+        isName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(isName.getText()), isName.isChecked());
+                LitePremiumValue(601, isName.isChecked());
+            }
+        });
+        final CheckBox isDist = mFloatingView.findViewById(R.id.isDist);
+        isDist.setChecked(getConfig((String) isDist.getText()));
+        LitePremiumValue(603, getConfig((String) isDist.getText()));
+        isDist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(isDist.getText()), isDist.isChecked());
+                LitePremiumValue(603, isDist.isChecked());
+            }
+        });
+        final CheckBox itemname = mFloatingView.findViewById(R.id.itemname);
+        itemname.setChecked(getConfig((String) itemname.getText()));
+        LitePremiumValue(609, getConfig((String) itemname.getText()));
+        itemname.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(itemname.getText()), itemname.isChecked());
+                LitePremiumValue(609, itemname.isChecked());
+            }
+        });
+        final CheckBox itemdistance = mFloatingView.findViewById(R.id.itemDistance);
+        itemdistance.setChecked(getConfig((String) itemdistance.getText()));
+        LitePremiumValue(610, getConfig((String) itemdistance.getText()));
+        itemdistance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(itemdistance.getText()), itemdistance.isChecked());
+                LitePremiumValue(610, itemdistance.isChecked());
+            }
+        });
+
+        final CheckBox Granade = mFloatingView.findViewById(R.id.Granade);
+        Granade.setChecked(getConfig((String) Granade.getText()));
+        LitePremiumValue(113, getConfig((String) Granade.getText()));
+        Granade.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Granade.getText()), Granade.isChecked());
+                LitePremiumValue(113, Granade.isChecked());
+            }
+        });
+
+
+
+
+        final Switch showall = mFloatingView.findViewById(R.id.showall);
+        showall.setChecked(getConfig((String) showall.getText()));
+        LitePremiumValue(609,getConfig((String)showall.getText()));
+        LitePremiumValue(610,getConfig((String) showall.getText()));
+        LitePremiumValue(613,getConfig((String) showall.getText()));
+        showall.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(showall.getText()), showall.isChecked());
+                LitePremiumValue(609, getConfig((String)showall.getText()));
+                LitePremiumValue(610, getConfig((String)showall.getText()));
+                LitePremiumValue(613, getConfig((String)showall.getText()));
+            }
+        });
+
+
+
+        final int max = 30;
+        final int min = 10;
+        final int total = max - min;
+
+        final FluidSlider slider = mFloatingView.findViewById(R.id.playersize);
+        slider.setBeginTrackingListener(new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                return Unit.INSTANCE;
+            }
+        });
+
+        slider.setEndTrackingListener(new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                return Unit.INSTANCE;
+            }
+        });
+
+        // Java 8 lambda
+        slider.setPositionListener(pos -> {
+            final String value = String.valueOf((int) (min + total * pos));
+            slider.setBubbleText(value);
+            LiteSize(999, (min + total * pos) + 4.0f);
+            //    ESPView.ChangeFps(Integer.parseInt(value));
+            //Log.d("slider", value);
+            return Unit.INSTANCE;
+        });
+
+
+        slider.setPosition(0.3f);
+        slider.setStartText(String.valueOf(min));
+        slider.setEndText(String.valueOf(max));
+
+
+        final FluidSlider itemslider = mFloatingView.findViewById(R.id.itemsize);
+        itemslider.setBeginTrackingListener(new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                return Unit.INSTANCE;
+            }
+        });
+
+        itemslider.setEndTrackingListener(new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                return Unit.INSTANCE;
+            }
+        });
+
+        // Java 8 lambda
+        itemslider.setPositionListener(pos -> {
+            final String value = String.valueOf( (int)(min + total * pos) );
+            slider.setBubbleText(value);
+            LiteSize(1000, (min + total * pos) + 4.0f);
+            //    ESPView.ChangeFps(Integer.parseInt(value));
+            //Log.d("slider", value);
+            return Unit.INSTANCE;
+        });
+
+
+        itemslider.setPosition(0.3f);
+        itemslider.setStartText(String.valueOf(min));
+        itemslider.setEndText(String.valueOf(max));
+    }
+//        final SeekBar fps = mFloatingView.findViewById(R.id.fps);
+    // fps.setProgress(getFps());
+//        ESPView.ChangeFps(getFps());
+//        fps.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                int fpsms=fps.getProgress();
+//                setFps(fpsms);
+//                ESPView.ChangeFps(fpsms);
+//            }
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//                //write custom code to on start progress
+//            }
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
+//
+//    }
+
+
+
+    public native int LiteInit();
+
+    public native void LiteStop();
+
+    public native void LiteSize(int setting_code, float value);
+
+    public native void LitePremiumValue(int setting_code, boolean value);
+
+    public native void LitePremiumVehicalValue(int setting_code, boolean value);
+
+    public static native void LiteDrawOn(LiteESPView espView, Canvas canvas);
+
+    private LinearLayout.LayoutParams setParams() {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        params.gravity = Gravity.CENTER_VERTICAL;
+        return params;
+    }
+
+
+}
+
+class SingleTapConfirm extends GestureDetector.SimpleOnGestureListener {
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent event) {
+        return true;
+    }
+}

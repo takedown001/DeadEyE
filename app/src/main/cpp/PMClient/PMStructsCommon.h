@@ -9,7 +9,7 @@ using namespace std;
 
 #define maxplayerCount 30
 #define maxitemsCount 40
-
+#define maxvehicalCount 40
 enum Mode {
 	InitMode = 1,
 	ESPMode = 2,
@@ -27,6 +27,7 @@ struct PlayerData {
 	wchar_t PlayerName[30];
 	bool isBot;
 	int TeamID;
+//	int PlayerID;
 	float Health;
 	float Distance;
 	PMVector2 Body;
@@ -48,7 +49,11 @@ struct PlayerData {
 	PMVector2 LAnkle;
 	PMVector2 RAnkle;
 };
-
+struct VehicalData{
+	char Name[20];
+	float Distance;
+	PMVector2 Location;
+};
 struct ItemData {
 	char Name[20];
 	bool isVehicle;
@@ -60,13 +65,15 @@ struct ItemData {
 };
 
 struct Response {
-	bool Success;
-	int NearEnemy;
-	int MyTeamID;
-	int PlayerCount;
-	int ItemsCount;
-	PlayerData Players[maxplayerCount];
-	ItemData Items[maxitemsCount];
+    bool Success;
+    int NearEnemy;
+    int MyTeamID;
+    int PlayerCount;
+    int ItemsCount;
+    int VehicalCount;
+    VehicalData Vehical[maxvehicalCount];
+    PlayerData Players[maxplayerCount];
+    ItemData Items[maxitemsCount];
 };
 
 #endif

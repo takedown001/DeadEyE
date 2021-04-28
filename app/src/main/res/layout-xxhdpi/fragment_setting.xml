@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.Gcc.Deadeye.Fragment.SettingFragment"
+    tools:context="mobisocial.arcade.Fragment.SettingFragment"
     android:background="@color/blue">
 
     <!-- TODO: Update blank fragment layout -->
@@ -73,6 +73,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="5dp"
+                android:visibility="gone"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/playstore64back"
                 android:text="playstore 64 "
@@ -198,7 +199,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

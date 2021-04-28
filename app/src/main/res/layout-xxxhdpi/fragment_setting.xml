@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.Gcc.Deadeye.Fragment.SettingFragment"
+    tools:context="mobisocial.arcade.Fragment.SettingFragment"
     android:background="@color/blue">
 
     <!-- TODO: Update blank fragment layout -->
@@ -36,7 +36,7 @@
             android:background="@drawable/choosegamversionback"
             app:layout_constraintBottom_toTopOf="@+id/relativeLayout2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.459"
+            app:layout_constraintHorizontal_bias="0.437"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/updateCheat">
 
@@ -74,6 +74,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="20dp"
+                android:visibility="gone"
                 android:background="@drawable/playstore64back"
                 android:text="playstore 64 "
                 android:textColor="@color/black"
@@ -190,7 +191,7 @@
             android:layout_width="295dp"
             android:layout_height="49dp"
             android:layout_marginStart="49dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="100dp"
             android:layout_marginEnd="49dp"
             android:layout_marginBottom="1dp"
             android:src="@drawable/updateservers"

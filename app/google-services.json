@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1040561492356:android:233f7a35ed6120464d0dd1",
+        "mobilesdk_app_id": "1:1040561492356:android:05bfb0e6895792174d0dd1",
         "android_client_info": {
-          "package_name": "com.Gcc.Deadeye"
+          "package_name": "mobisocial.arcade"
         }
       },
       "oauth_client": [

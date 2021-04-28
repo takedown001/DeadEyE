@@ -34,6 +34,14 @@
 
 
     <item
+        android:id="@+id/settings"
+        android:enabled="true"
+        android:icon="@drawable/settingic"
+        android:title="Settings"
+        app:cnb_backgroundColor="@color/lefit"
+        app:cnb_iconColor="@color/iconcolor"
+        app:cnb_iconTintMode="src_in" />
+    <item
         android:id="@+id/logout"
         android:enabled="true"
         android:icon="@drawable/logout"
