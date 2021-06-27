@@ -49,6 +49,7 @@ import mobisocial.arcade.activityMaintain;
 import mobisocial.arcade.imgLoad;
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.yeyint.customalertdialog.CustomAlertDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -306,50 +307,44 @@ public class FHomeActivity extends AppCompatActivity {
         }
 
     }
+
+
     @Override
     public void onBackPressed() {
-
+        CustomAlertDialog Androidcheck = new CustomAlertDialog(this,  CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
         if (backbackexit >= 2) {
-
-            // Creating alert Dialog with three Buttons
-
-            android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(
-                    FHomeActivity.this);
-
-            // Setting Dialog Title
-            alertDialog.setTitle(getResources().getString(R.string.app_name));
-
-            // Setting Dialog Message
-            alertDialog.setMessage("Are you sure you want to exit??");
-
-            // Setting Icon to Dialog
-            alertDialog.setIcon(R.drawable.icon);
-
-            // Setting Positive Yes Button
-            alertDialog.setPositiveButton("YES",
-                    new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                            finish();
-                        }
-                    });
-            // Setting Positive Yes Button
-            alertDialog.setNeutralButton("NO",
-                    new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                        }
-                    });
-            // Showing Alert Message
-            alertDialog.show();
+            Androidcheck.setCancelable(false);
+            Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
+            Androidcheck.setAlertTitle("Exit");
+            Androidcheck.setImageSize(150,150);
+            Androidcheck.setAlertMessage("Are you sure you want to exit back ?");
+            Androidcheck.create();
+            Androidcheck.show();
+            Androidcheck.setPositiveButton("Yes", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    Androidcheck.dismiss();
+                }
+            });
+            Androidcheck.setNegativeButton("NO", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                    Androidcheck.cancel();
+                }
+            });
 //					super.onBackPressed();
         } else {
             backbackexit++;
             Toast.makeText(getBaseContext(), "Press again to Exit", Toast.LENGTH_SHORT).show();
         }
     }
+
     void Init() {
         SharedPreferences sp = getApplicationContext().getSharedPreferences("espValue", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();

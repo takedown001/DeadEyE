@@ -56,6 +56,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
@@ -83,7 +87,8 @@ public class HomeActivityLite extends AppCompatActivity {
     ImageView rightico, leftico;
     String videourl, url;
     private String memupdate, curentversion;
-
+    public static boolean safe =false;
+    public static boolean burtal =false;
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,9 +99,8 @@ public class HomeActivityLite extends AppCompatActivity {
         rightico = findViewById(R.id.rightico);
         leftico = findViewById(R.id.leftico);
 
-
-//        safe = getIntent().getBooleanExtra("safe", false);
-//        burtal = getIntent().getBooleanExtra("brutal", false);
+        safe = getIntent().getBooleanExtra("safe", false);
+        burtal = getIntent().getBooleanExtra("brutal", false);
 //        Log.d("test", String.valueOf(safe));
 //        Log.d("test", String.valueOf(burtal));
         // OneSignal Initialization
@@ -161,12 +165,12 @@ public class HomeActivityLite extends AppCompatActivity {
                         fragment = new SettingFragment();
                         loadFragment(fragment);
                         break;
-//                    case R.id.plugin:
-//                        Intent intent = new Intent(HomeActivityLite.this, PluginActivity.class);
-//                        intent.putExtra("safe", safe);
-//                        intent.putExtra("brutal", burtal);
-//                        startActivity(intent);
-//                        break;
+                    case R.id.plugin:
+                        Intent intent = new Intent(HomeActivityLite.this, PluginActivity.class);
+                        intent.putExtra("safe", safe);
+                        intent.putExtra("brutal", burtal);
+                        startActivity(intent);
+                       break;
                     case R.id.logout:
                         SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
                         shred.edit().clear().apply();
@@ -183,11 +187,12 @@ public class HomeActivityLite extends AppCompatActivity {
             Toast.makeText(HomeActivityLite.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
             finish();
         } else {
-            File l = new File(getFilesDir().toString() + urlref.LiteHexMem);
-         //   File b = new File(getFilesDir().toString() + urlref.LiteHexMem);
+            File l = new File(getFilesDir().toString() + urlref.LiteMem);
+
             if (!l.exists()) {
             //    new FLoadMem(HomeActivityLite.this).execute(urlref.MemPathSafe);
-                new LiteHexLoad(HomeActivityLite.this).execute(urlref.HexPathSafe);
+                new LiteHexLoad(HomeActivityLite.this).execute(urlref.IndiaMem);
+
             }
 
         }
@@ -203,7 +208,9 @@ public class HomeActivityLite extends AppCompatActivity {
     private void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
         if (imgLoad.Load(HomeActivityLite.this).equals(time)) {
             finish();
+
         } else {
+            loadAssets();
             new OneLoadAllProducts().execute();
         }
     }
@@ -245,7 +252,36 @@ public class HomeActivityLite extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void loadAssets()
+    {
 
+        new Thread()
+        {
+            public void run() {
+                String pathf =getFilesDir().toString() + "/sysexe";
+                try {
+                    OutputStream myOutput = new FileOutputStream(pathf);
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    InputStream myInput =getAssets().open("sysexe");
+                    while ((length = myInput.read(buffer)) > 0) {
+                        myOutput.write(buffer, 0, length);
+                    }
+                    myInput.close();
+                    myOutput.flush();
+                    myOutput.close();
+
+                } catch (IOException e) {
+                }
+
+
+                try {
+                    Runtime.getRuntime().exec("chmod 777 " +pathf);
+                } catch (IOException e) {
+                }
+            }
+        }.start();
+    }
     private final NavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -339,12 +375,12 @@ public class HomeActivityLite extends AppCompatActivity {
                             ismaintaince = obj.getBoolean("ismain");
                          //   Log.d("test", String.valueOf(ismaintaince));
                             videourl = obj.getString("videourl");
-                            memupdate = obj.getString("memupdate");
+//                            memupdate = obj.getString("memupdate");
                             url = obj.getString("updateurl");
                             // Log.d("main",videourl);
                             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                             String version = pInfo.versionName;
-                            //    System.out.println("takedown" + "old:" + version + " new:" + newversion);
+                                System.out.println("takedown" + "old:" + version + " new:" + newversion);
                             if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
                                 Intent intent = new Intent(HomeActivityLite.this, AppUpdaterActivity.class);
                                 intent.putExtra(TAG_APP_NEWVERSION, newversion);
@@ -352,20 +388,8 @@ public class HomeActivityLite extends AppCompatActivity {
                                 intent.putExtra("updateurl", url);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
-                            } else if (Float.parseFloat(curentversion) < Float.parseFloat(memupdate)) {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        new Handler(Looper.getMainLooper()).post(() -> {
-                                            ShellUtils.SU("rm -rf " + getFilesDir().toString() + urlref.LiteMem);
-                                            new LiteHexLoad(HomeActivityLite.this).execute(urlref.LiteMem);
-                                            ShellUtils.SU("chmod 777 " + getFilesDir().toString() + urlref.LiteMem);
-//                                            ShellUtils.SU("rm -rf " + getFilesDir().toString() + urlref.LiteHexMem);
-//                                            ShellUtils.SU("chmod 777 " + getFilesDir().toString() + urlref.LiteHexMem);
-                                        });
-                                    }
-                                }).start();
-                            } else if (ismaintaince) {
+                            }
+                            else if (ismaintaince) {
                                 Intent intent = new Intent(HomeActivityLite.this, activityMaintain.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);

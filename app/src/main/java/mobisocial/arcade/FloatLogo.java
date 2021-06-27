@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.telephony.VisualVoicemailService;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -27,6 +28,8 @@ import android.widget.CompoundButton;;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +49,13 @@ import java.util.concurrent.TimeUnit;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import mobisocial.arcade.GccConfig.urlref;
+import mobisocial.arcade.lite.HomeActivityLite;
 
 import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
 import static java.lang.System.exit;
+import static mobisocial.arcade.GccConfig.urlref.canary;
+import static mobisocial.arcade.GccConfig.urlref.defaltversion;
+import static mobisocial.arcade.Helper.givenToFile;
 
 public class FloatLogo extends Service implements View.OnClickListener {
 
@@ -68,7 +75,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
     private static FloatLogo Instance;
     public static boolean isRunning = false;
     private WindowManager windowManager;
-
     static{
         System.loadLibrary("sysload");
     }
@@ -81,6 +87,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
 //  String CheatB = urlref.Betaserver + "cheat.php";
     private boolean safecheck,brutalcheck;
     private String data,gameName;
+    private   int stickyvalue;
     private int Gametype;
     @SuppressLint("CutPasteId")
     @Override
@@ -88,22 +95,14 @@ public class FloatLogo extends Service implements View.OnClickListener {
         super.onCreate();
         Instance = this;
         SharedPreferences shred =getSharedPreferences("userdetails", MODE_PRIVATE);
-        version = shred.getString("version", "32");
+        version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
         deviceid = AESUtils.DarKnight.getEncrypted(LoginActivity.getDeviceId(getApplicationContext()));
-        windowManager = (WindowManager) Instance.getSystemService(Context.WINDOW_SERVICE);
-        try {
-            overlayView = new ESPView(Instance);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        windowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        overlayView = new ESPView(Instance);
         SharedPreferences ga = Instance.getSharedPreferences("game", MODE_PRIVATE);
         safecheck = ga.getBoolean("safecheck",false);
         brutalcheck = ga.getBoolean("brutalcheck",false);
-        hexDaemon = "."+Instance.getFilesDir().toString()+urlref.HexMem;
-        myDaemon =  "."+Instance.getFilesDir().toString()+ urlref.SafeMem;
-        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+urlref.HexMem);
-        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.SafeMem);
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -111,18 +110,24 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     try {
                         Check();
-                        Shell.su("setenforce 0").submit();
                         ShellUtils.SU("setenforce 0");
                         gamerun();
-
+//                        if (gameName.equals("com.pubg.imobile")) {
+//                            hexDaemon = "." + Instance.getFilesDir().toString() + urlref.HexMem;
+//                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.LiteMem;
+//                        }else{
+                            hexDaemon = "." + Instance.getFilesDir().toString() + urlref.HexMem;
+                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.SafeMem;
+                     //   }
+                     //   Log.d("test",myDaemon);
+                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+urlref.HexMem);
+                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.SafeMem);
                     } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException | IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
-
                 });
             }
         }).start();
-
 
     }
     private int getLayoutType() {
@@ -136,9 +141,9 @@ public class FloatLogo extends Service implements View.OnClickListener {
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
-//        if(imgLoad.Load(Instance).equals(time)){
-//            stopSelf();
-//        }
+        if(imgLoad.Load(Instance).equals(urlref.time)){
+            stopSelf();
+        }
     }
 
     private void DrawCanvas() {
@@ -162,18 +167,15 @@ public class FloatLogo extends Service implements View.OnClickListener {
     public int onStartCommand (Intent intent, int flags, int startId) {
         gameName = intent.getStringExtra("gamename");
         Gametype = intent.getIntExtra("gametype",1);
-        // do something with the value here
-    //    ShellUtils.SU("am start --user 0 -n " + gameName + "/com.epicgames.ue4.SplashActivity &>/dev/null");
         return START_NOT_STICKY;
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void gamerun() throws IOException, InterruptedException {
-        boolean finalCheck =Helper.checkmd5(Instance, gameName);
+        boolean finalCheck = Helper.checkmd5(Instance, gameName);
         new Thread(() -> {
-       // Log.d("check", String.valueOf(finalCheck));
+      // Log.d("check12312312312", String.valueOf(finalCheck));
             new Handler(Looper.getMainLooper()).post(() -> {
                 if (Gametype == 1) {
                        if (finalCheck) {
@@ -209,9 +211,12 @@ public class FloatLogo extends Service implements View.OnClickListener {
                     } else {
                         PremiumValue(599, false);
                         Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
-                        Stop();
-                        isRunning = false;
-                        stopSelf();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Start(Instance, 2, 1);
+                            }
+                        }).start();
                     }
                 }
 
@@ -258,17 +263,33 @@ public class FloatLogo extends Service implements View.OnClickListener {
                             stopSelf();
                             Stop();
                         }
-
+                }
+                else if (Gametype == 5) {
+                    if (finalCheck) {
+                        PremiumValue(599, true);
+                        Toast.makeText(Instance, "Daemon Load Successfully", Toast.LENGTH_LONG).show();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Start(Instance, 5, 1);
+                            }
+                        }).start();
+                    } else {
+                        PremiumValue(599, false);
+                        Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
+                        isRunning = false;
+                        stopSelf();
+                        Stop();
+                    }
                 }
                 //        else if (MainActivity.gameType == 4 && MainActivity.is64) {
 //            Start(ctx,4,2);
 //        }
             });
             //  Log.d("game",ESPMainActivity.gameName);
-
             //    ShellUtils.SU("rm -rf " +ctx.getExternalFilesDir(DIRECTORY_PICTURES).getAbsolutePath() );
-
         }).start();
+
 
     }
     private void Start(Context ctx,int game ,int bit) {
@@ -281,7 +302,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
                  * PUG VNG = 3
                  * PUG Taiwan = 4
                  */
-                     Log.d("game", String.valueOf(game));
+                 //    Log.d("game", String.valueOf(game));
                 startDaemon(game);
                 try {
                     Thread.sleep(2000);
@@ -294,18 +315,16 @@ public class FloatLogo extends Service implements View.OnClickListener {
                         Toast.makeText(Instance, "Game Not Detected!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(Instance, "Rescanning...", Toast.LENGTH_SHORT).show();
                         Rescan(ctx,game,bit);
-                        Stop();
                     });
                     //     Rescan(ctx,game,bit);
                 } else {
                     isRunning = true;
-                          Log.d("check", String.valueOf(safecheck));
+  //                        Log.d("check", String.valueOf(safecheck));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 ShellUtils.SU(hexDaemon + urlref.HexMemArg);
-                                PremiumValue(600,false);
                                 PremiumValue(608,true);
                                 createOver();
                                 CInit();
@@ -321,11 +340,13 @@ public class FloatLogo extends Service implements View.OnClickListener {
     private void startDaemon(int mode){
         new Thread(() -> {
             String cmd = getFilesDir() + "/sysexe " + mode;
-      //      Log.d("log",cmd);
+        //    Log.d("test", String.valueOf(mode));
             if(!Shell.rootAccess()){
                 Shell.sh(cmd).submit();
             } else {
-                Shell.su(cmd).submit();
+                ShellUtils.SU("setenforce 0");
+                ShellUtils.SU(cmd);
+
             }
         }).start();
     }
@@ -350,15 +371,12 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 if (Init() < 0) {
                     new Handler(Looper.getMainLooper()).post(() -> {
                         Toast.makeText(Instance, "Have A Patience...", Toast.LENGTH_SHORT).show();
-                        Stop();
                         Rescan2(ctx,game,bit);
                     });
                 } else {
                     isRunning = true;
-                    //       Log.d("check", String.valueOf(safecheck));
                     new Handler(Looper.getMainLooper()).post(() -> {
                         ShellUtils.SU(hexDaemon + urlref.HexMemArg);
-                        PremiumValue(600,false);
                         PremiumValue(608,true);
                         createOver();
                         CInit();
@@ -390,7 +408,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
                     new Handler(Looper.getMainLooper()).post(() -> {
                         Toast.makeText(Instance, "Game Not Detected!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(Instance, "Service Stopped", Toast.LENGTH_SHORT).show();
-                        Stop();
                         stopSelf();
                     });
                 } else {
@@ -400,7 +417,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
                         public void run() {
                             new Handler(Looper.getMainLooper()).post(() -> {
                                 ShellUtils.SU(hexDaemon + urlref.HexMemArg);
-                                PremiumValue(600,false);
                                 PremiumValue(608,true);
                                 createOver();
                                 CInit();
@@ -561,9 +577,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
                 Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
                 Scopes.setBackgroundColor(getResources().getColor((R.color.color4)));
-
-
-
                 ScopesTab.setVisibility(View.VISIBLE);
                 HealthTab.setVisibility(View.GONE);
                 MiscTab.setVisibility(View.GONE);
@@ -585,9 +598,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
                 Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
                 Scopes.setBackgroundColor(getResources().getColor((R.color.blueij)));
-
-
-
                 MiscTab.setVisibility(View.VISIBLE);
                 WeaponTab.setVisibility(View.GONE);
                 HealthTab.setVisibility(View.GONE);
@@ -635,8 +645,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
                 Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
                 Scopes.setBackgroundColor(getResources().getColor((R.color.blueij)));
-
-
                 HealthTab.setVisibility(View.VISIBLE);
                 WeaponTab.setVisibility(View.GONE);
                 ArmorsTab.setVisibility(View.GONE);
@@ -703,20 +711,24 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 vehicle.setVisibility(View.VISIBLE);
             }
         });
-   //     Log.d("check", String.valueOf(safecheck));
+
+
+
+
         if (safecheck) {
             MTP.setVisibility(View.VISIBLE);
             Safefeatures.setVisibility(View.VISIBLE);
             Safefeatures.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Display.setText("Memory");
-                    safelayout.setVisibility(View.VISIBLE);
+                   Display.setText("Memory");
+                   safelayout.setVisibility(View.VISIBLE);
                     player.setVisibility(View.GONE);
-                    choice.setVisibility(View.GONE);
-                    vehicle.setVisibility(View.GONE);
-                }
-            });
+                   choice.setVisibility(View.GONE);
+                  vehicle.setVisibility(View.GONE);
+                    items.setVisibility(View.GONE);
+              }
+           });
         }
 
 
@@ -757,7 +769,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
         });
 
 
-  }
+    }
     @Override
     public void onDestroy() {
         Stop();
@@ -766,7 +778,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
             windowManager.removeView(mFloatingView);
             mFloatingView = null;
         }
-
         if(overlayView != null){
             windowManager.removeView(overlayView);
             overlayView = null;
@@ -790,9 +801,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 break;
         }*/
     }
-
-
-
 
 
     private String getType(){
@@ -850,25 +858,26 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 System.out.println("-->" + e);
             }*/
     }
+
+
+
     @TargetApi(Build.VERSION_CODES.CUPCAKE)
     public void ipstartcheat(){
         class load extends AsyncTask<Void, Void, String> {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-         //           Log.d("data",data);
+                //   Log.d("data",data);
                 new Thread(() -> {
-                    String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                    for (int i = 0; i < lines.length; i++) {
-
-                        //      Log.d("testlines", lines[i]);
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                    //    ShellUtils.SU("rm -rf" + Instance.getFilesDir().toString() + "/scheat.sh");
                         try {
-                            ShellUtils.SU(lines[i]);
-                            TimeUnit.MILLISECONDS.sleep(300);
-                        } catch (InterruptedException e) {
+                            givenToFile(Instance, s);
+
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
+                    });
                 }).start();
             }
 
@@ -891,19 +900,16 @@ public class FloatLogo extends Service implements View.OnClickListener {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-            //       Log.d("data",data);
+                //    Log.d("data",data);
                 new Thread(() -> {
-                    String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                    for (int i = 0; i < lines.length; i++) {
-
-                        //      Log.d("testlines", lines[i]);
+                    new Handler(Looper.getMainLooper()).post(() -> {
                         try {
-                            ShellUtils.SU(lines[i]);
-                            TimeUnit.MILLISECONDS.sleep(300);
-                        } catch (InterruptedException e) {
+                            givenToFile(Instance, s);
+
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
+                    });
                 }).start();
             }
             @Override
@@ -918,57 +924,40 @@ public class FloatLogo extends Service implements View.OnClickListener {
             }
         }
         new load().execute();
-
     }
     void CInit() {
-        //vehicals
-        final Switch Ip = mFloatingView.findViewById(R.id.iptable);
-        Ip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                if(Ip.isChecked()){
-                    ShellUtils.SU(myDaemon+" 20001");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ipstartcheat();
-                        }
-                    }).start();
-
-                }else{
-                    ShellUtils.SU("iptables --flush");
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ipstopcheat();
-                        }
-                    }).start();
-
-                    ShellUtils.SU(myDaemon+" 20003");// HEad bot off
-                    PremiumValue(597,false); // fov off
-                    ShellUtils.SU(myDaemon+" 20005");// magic off
-                    ShellUtils.SU(myDaemon+" 20006"); // Aim off
-                    PremiumValue(598,false); //cross off
-                    ShellUtils.SU(myDaemon+" 20008"); // memcross off
-                    ShellUtils.SU(myDaemon +" 200010"); //recoil off
-                    ShellUtils.SU(myDaemon + " 333"); //safe mem off
-                }
-            }
-        });
 
         ////////////////////////////////////////////////// safe Features//////////////////////////////////////////////////
-        final Switch HeadBot = mFloatingView.findViewById(R.id.HeadBot);
-        HeadBot.setOnClickListener(new View.OnClickListener() {
+
+        final RadioGroup Aimbot = mFloatingView.findViewById(R.id.aimbot);
+        Aimbot.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if(HeadBot.isChecked()) {
-                    ShellUtils.SU(myDaemon+" 20002");
-                }else{
-                    ShellUtils.SU(myDaemon+" 20003");
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+
+                    case R.id.Aimoff :
+                        ShellUtils.SU(myDaemon+" 20003");
+                        PremiumValue(598,false);
+                        ShellUtils.SU(myDaemon+" 20006");
+                        Toast.makeText(Instance,"Aim Deactivated",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.aimbody:
+                        PremiumValue(598,true);
+                        ShellUtils.SU(myDaemon+" 200015");
+                        Toast.makeText(Instance,"Aim With Body Priority Activated",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.aimhead:
+                        PremiumValue(598,true);
+                        ShellUtils.SU(myDaemon+" 20002");
+                        Toast.makeText(Instance,"Aim With Head Priority Activated",Toast.LENGTH_SHORT).show();
+                        break;
+
                 }
             }
         });
+
+
 
         final Switch magicbullet = mFloatingView.findViewById(R.id.magicbullet);
         magicbullet.setOnClickListener(new View.OnClickListener() {
@@ -976,8 +965,10 @@ public class FloatLogo extends Service implements View.OnClickListener {
             public void onClick(View v) {
                 if(magicbullet.isChecked()) {
                     ShellUtils.SU(myDaemon+" 10029");
+                    Toast.makeText(Instance," Magic Bullet Activated",Toast.LENGTH_SHORT).show();
                 }else{
                     ShellUtils.SU(myDaemon+" 10030");
+                    Toast.makeText(Instance,"Magic Bullet Deactivated",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -991,6 +982,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
             public void onClick(View v) {
                 PremiumValue(597,false);
                 ShellUtils.SU(myDaemon+" 20008");
+                Toast.makeText(Instance,"Crosshair Deactivated",Toast.LENGTH_SHORT).show();
             }
         });
         graphicross.setOnClickListener(new View.OnClickListener() {
@@ -999,7 +991,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
             public void onClick(View v) {
                 ShellUtils.SU(myDaemon+" 20008");
                 PremiumValue(597,true);
-
+                Toast.makeText(Instance,"Grapical Crosshair Activated",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -1008,40 +1000,214 @@ public class FloatLogo extends Service implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 ShellUtils.SU(myDaemon+" 20007");
+                PremiumValue(597,false);
+                Toast.makeText(Instance," Memory Crosshair Activated",Toast.LENGTH_SHORT).show();
             }
         });
 
-        final Switch Recoil = mFloatingView.findViewById(R.id.recoil);
+        final CheckBox Recoil = mFloatingView.findViewById(R.id.recoil);
+        final CheckBox HRecoil = mFloatingView.findViewById(R.id.hrecoil);
         Recoil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(Recoil.isChecked()) {
                     ShellUtils.SU(myDaemon+" 20009");
-                        //  Log.d("cheat",myDaemon +" 20009");
+                Toast.makeText(Instance," Vertical Recoil Compensation Activated",Toast.LENGTH_SHORT).show();
+
+                  //  Log.d("tets",myDaemon+" 20009");
+
                 }else{
                     ShellUtils.SU(myDaemon+" 200010");
+                    Toast.makeText(Instance," Vertical Recoil Compensation DeActivated",Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        HRecoil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(HRecoil.isChecked()){
+                    ShellUtils.SU(myDaemon+" 200011");
+                    Toast.makeText(Instance," Horizontal Recoil Compensation Activated",Toast.LENGTH_SHORT).show();
+                }else{
+                    ShellUtils.SU(myDaemon+" 200012");
+                    Toast.makeText(Instance," Horizontal Recoil Compensation DeActivated",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        final RadioGroup Graphicic = mFloatingView.findViewById(R.id.graphice);
+        Graphicic.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.goff :
+                        ShellUtils.SU(myDaemon+" 200014");
+                        ShellUtils.SU(myDaemon+" 200016");
+                        Toast.makeText(Instance,"Restored Graphics To Normal",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.midnight:
+                        ShellUtils.SU(myDaemon+" 200015");
+                        ShellUtils.SU(myDaemon+" 200014");
+                        Toast.makeText(Instance,"Night Sky Patch Applied",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.dawnenv:
+                        ShellUtils.SU(myDaemon+" 200013");
+                        ShellUtils.SU(myDaemon+" 200016");
+                        Toast.makeText(Instance,"Dawn Environment Patch Applied",Toast.LENGTH_SHORT).show();
+                    case R.id.both:
+                        ShellUtils.SU(myDaemon+" 200013");
+                        ShellUtils.SU(myDaemon+" 200015");
+                        Toast.makeText(Instance,"Available Graphics Patch Applied",Toast.LENGTH_SHORT).show();
+                      break;
+                }
+            }
+        });
+
+
+        final Switch CarFly = mFloatingView.findViewById(R.id.carfly);
+        CarFly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(CarFly.isChecked())   {
+                 Instance.startService(new Intent(Instance,logo.class));
+                }else{
+                    Instance.stopService(new Intent(Instance,logo.class));
+                }
+
+            }
+        });
+
+        final Switch Flash = mFloatingView.findViewById(R.id.flash);
+        Flash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Flash.isChecked())   {
+                    Instance.startService(new Intent(Instance,flogo.class));
+                }else{
+                  Instance.stopService(new Intent(Instance,flogo.class));
+                }
+            }
+        });
+
+        final Switch Instanthit = mFloatingView.findViewById(R.id.instanthit);
+        Instanthit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Instanthit.isChecked())   {
+                    ShellUtils.SU(myDaemon+" 200027");
+                    Toast.makeText(Instance,"Instant Hit Activated",Toast.LENGTH_SHORT).show();
+
+                }else{
+                    ShellUtils.SU(myDaemon+" 200028");
+                    Toast.makeText(Instance,"Instant Hit Deactivated",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        final Switch Carspeed = mFloatingView.findViewById(R.id.carspeed);
+        Carspeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Carspeed.isChecked())   {
+                    ShellUtils.SU(myDaemon+" 200029");
+                }else{
+                    ShellUtils.SU(myDaemon+" 200030");
+                }
+            }
+        });
+
+        SeekBar seekbar_Lessrecoil = mFloatingView.findViewById(R.id.seekbar_aimbot);
+        final TextView textview_seekbar1 = mFloatingView.findViewById(R.id.textview_aimbot);
+        seekbar_Lessrecoil.incrementProgressBy(50);
+        seekbar_Lessrecoil.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar p1, int progress, boolean p3) {
+                progress = progress / 50;
+                progress = progress * 50;
+                textview_seekbar1.setText(String.valueOf(progress));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar p1) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar p1) {
+                int progress = p1.getProgress();
+                progress = progress / 50;
+                progress = progress * 50;
+                if (progress == 100){
+                    stickyvalue  = 1;
+                } else if(progress == 150){
+                    stickyvalue = 2;
+                }
+            }
+        });
+   //     seekbar_Lessrecoil.setProgress(100);
+        textview_seekbar1.setText(String.valueOf(seekbar_Lessrecoil.getProgress()));
+        final Switch StickyAim = mFloatingView.findViewById(R.id.stickyaimm);
+        StickyAim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(StickyAim.isChecked())  {
+                    if(stickyvalue==1){
+                        ShellUtils.SU(myDaemon+" 200023");
+                        Toast.makeText(Instance,"Sticky Aim Activated On 100m Range Targets",Toast.LENGTH_SHORT).show();
+                    }else {
+                        ShellUtils.SU(myDaemon+" 200024");
+                        Toast.makeText(Instance,"Sticky Aim Activated On 150m Range Targets",Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    ShellUtils.SU(myDaemon+" 200025");
+                    ShellUtils.SU(myDaemon+" 200026");
+                    Toast.makeText(Instance,"Sticky Aim Deactivated",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //vehicals
         final RadioButton aimoff = mFloatingView.findViewById(R.id.Aimoff);
-        final RadioButton aimon = mFloatingView.findViewById(R.id.Aimon);
-        aimoff.setChecked(true);
-        aimoff.setOnClickListener(new View.OnClickListener() {
+        final RadioButton goff = mFloatingView.findViewById(R.id.goff);
+        final Switch Ip = mFloatingView.findViewById(R.id.iptable);
+        Ip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PremiumValue(598,false);
-                ShellUtils.SU(myDaemon+" 20006");
+
+                if(Ip.isChecked()){
+                    ShellUtils.SU(myDaemon+" 20001");
+                    new Thread(() -> {
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            ipstartcheat();
+                            Toast.makeText(Instance,"Make Sure To Disable After Chicken Or Match End",Toast.LENGTH_LONG).show();
+
+                        });
+                    }).start();
+
+                }else{
+                    new Thread(() -> {
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            PremiumValue(597,false); // fov off
+                            PremiumValue(598,false); //cross off
+                            ShellUtils.SU(myDaemon+" 404404"); // memcross off
+                            Recoil.setChecked(false);
+                            HRecoil.setChecked(false);
+                            magicbullet.setChecked(false);
+                            Instanthit.setChecked(false);
+                            crossoff.setChecked(true);
+                            aimoff.setChecked(true);
+                            goff.setChecked(true);
+                            ShellUtils.SU("iptables -F");
+                            ShellUtils.SU("iptables --flush");
+                            ipstopcheat();
+                            Toast.makeText(Instance,"Make Sure To Enable MTP Protection Again In Spawn Island",Toast.LENGTH_LONG).show();
+                        });
+                    }).start();
+                }
             }
         });
-        aimon.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                PremiumValue(598,true);
-                ShellUtils.SU(myDaemon+" 200015");
-            }
-        });
-
 
 
         final CheckBox Buggy = mFloatingView.findViewById(R.id.Buggy);
@@ -1177,6 +1343,8 @@ public class FloatLogo extends Service implements View.OnClickListener {
 
             }
         });
+
+
         final CheckBox Tempo = mFloatingView.findViewById(R.id.Tempo);
         Tempo.setChecked(getConfig((String) Tempo.getText()));
         PremiumVehicalValue(23,Tempo.isChecked());
@@ -2424,6 +2592,66 @@ public class FloatLogo extends Service implements View.OnClickListener {
             }
         });
 
+        final CheckBox MotorGlider = mFloatingView.findViewById(R.id.MotorGlider);
+        MotorGlider.setChecked(getConfig((String) MotorGlider.getText()));
+        PremiumItemValue(38,MotorGlider.isChecked());
+        MotorGlider.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(MotorGlider.getText()),MotorGlider.isChecked());
+                PremiumItemValue(38,MotorGlider.isChecked());
+            }
+        });
+        final CheckBox FerrisCar = mFloatingView.findViewById(R.id.FerrisCar);
+        FerrisCar.setChecked(getConfig((String) FerrisCar.getText()));
+        PremiumItemValue(39,FerrisCar.isChecked());
+        FerrisCar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(FerrisCar.getText()),FerrisCar.isChecked());
+                PremiumItemValue(39,FerrisCar.isChecked());
+            }
+        });
+        final CheckBox FAMAS = mFloatingView.findViewById(R.id.FAMAS);
+        FAMAS.setChecked(getConfig((String) FAMAS.getText()));
+        PremiumItemValue(118,FAMAS.isChecked());
+        FAMAS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(FAMAS.getText()),FAMAS.isChecked());
+                PremiumItemValue(118,FAMAS.isChecked());
+            }
+        });
+        final CheckBox Mosin = mFloatingView.findViewById(R.id.Mosin);
+        Mosin.setChecked(getConfig((String) Mosin.getText()));
+        PremiumItemValue(119,Mosin.isChecked());
+        Mosin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(Mosin.getText()),Mosin.isChecked());
+                PremiumItemValue(119,Mosin.isChecked());
+            }
+        });
+        final CheckBox stickeybomb = mFloatingView.findViewById(R.id.stickeybomb);
+        stickeybomb.setChecked(getConfig((String) stickeybomb.getText()));
+        PremiumItemValue(120,stickeybomb.isChecked());
+        stickeybomb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(stickeybomb.getText()),stickeybomb.isChecked());
+                PremiumItemValue(120,stickeybomb.isChecked());
+            }
+        });
+        final CheckBox spike = mFloatingView.findViewById(R.id.spike);
+        spike.setChecked(getConfig((String) spike.getText()));
+        PremiumItemValue(120,spike.isChecked());
+        spike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setValue(String.valueOf(spike.getText()),spike.isChecked());
+                PremiumItemValue(121,spike.isChecked());
+            }
+        });
 //        final Switch isEnemyWeapon = mFloatingView.findViewById(R.id.isEnemyWeapon);
 //        isEnemyWeapon.setChecked(getConfig((String) isEnemyWeapon.getText()));
 //        SettingValue(10,getConfig((String) isEnemyWeapon.getText()));
@@ -2444,6 +2672,9 @@ public class FloatLogo extends Service implements View.OnClickListener {
 //                SettingValue(0,isGrenadeWarning.isChecked());
 //            }
 //        });
+
+
+
         final CheckBox isSkelton = mFloatingView.findViewById(R.id.isSkelton);
         isSkelton.setChecked(getConfig((String) isSkelton.getText()));
         PremiumValue(614, getConfig((String) isSkelton.getText()));
@@ -2464,35 +2695,50 @@ public class FloatLogo extends Service implements View.OnClickListener {
 //                PremiumValue(6,isHead.isChecked());
 //            }
 //        });
-
-        final RadioButton boxoff = mFloatingView.findViewById(R.id.boxoff);
-        final RadioButton box2d = mFloatingView.findViewById(R.id.box2d);
-        final RadioButton box3d = mFloatingView.findViewById(R.id.box3d);
-        boxoff.setChecked(true);
-
-        boxoff.setOnClickListener(new View.OnClickListener() {
+        final RadioGroup BoxGroup = mFloatingView.findViewById(R.id.boxgroup);
+        BoxGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                PremiumValue(606, false);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.box2d :
+                        PremiumValue(612,false);
+                        PremiumValue(606,true);
+                        break;
+                    case R.id.box3d:
+                        PremiumValue(612,true);
+                        PremiumValue(606,false);
+                        break;
+                    default:
+                        PremiumValue(612,false);
+                        PremiumValue(606,false);
+                        break;
+
+                }
             }
         });
-        box2d.setChecked(getConfig((String) box2d.getText()));
-        box2d.setOnClickListener(new View.OnClickListener() {
+        final RadioGroup helathGroup = mFloatingView.findViewById(R.id.healthgroup);
+        helathGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                setValue(String.valueOf(box2d.getText()), box2d.isChecked());
-                PremiumValue(606, box2d.isChecked());
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.healthhori :
+                        PremiumValue(617,false);
+                        PremiumValue(602,true);
+                        break;
+                    case R.id.healthverti:
+                        PremiumValue(617,true);
+                        PremiumValue(602,false);
+                        break;
+                    case R.id.healthoff:
+                        PremiumValue(602,false);
+                        PremiumValue(617,false);
+                        break;
+
+                }
             }
         });
 
-        box3d.setChecked(getConfig((String) box3d.getText()));
-        box3d.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setValue(String.valueOf(box3d.getText()), box3d.isChecked());
-                PremiumValue(606, box3d.isChecked());
-            }
-        });
+
         final CheckBox isteamid = mFloatingView.findViewById(R.id.isteamid);
         isteamid.setChecked(getConfig((String) isteamid.getText()));
         PremiumValue(616, getConfig((String) isteamid.getText()));
@@ -2503,14 +2749,32 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 PremiumValue(616, isteamid.isChecked());
             }
         });
-        final CheckBox isLine = mFloatingView.findViewById(R.id.isLine);
-        isLine.setChecked(getConfig((String) isLine.getText()));
-        PremiumValue(605, getConfig((String) isLine.getText()));
-        isLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        final RadioGroup linegroup = mFloatingView.findViewById(R.id.linegroup);
+        linegroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setValue(String.valueOf(isLine.getText()), isLine.isChecked());
-                PremiumValue(605, isLine.isChecked());
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.lineoff:
+                        PremiumValue(605,false);
+                        PremiumValue(615,false);
+                        PremiumValue(611,false);
+                        break;
+                    case R.id.linecenter:
+                        PremiumValue(605,true);
+                        PremiumValue(615,true);
+                        PremiumValue(611,false);
+                        break;
+                    case R.id.linedown:
+                        PremiumValue(605,true);
+                        PremiumValue(611,true);
+                        PremiumValue(615,false);
+                        break;
+                    case R.id.lineup:
+                        PremiumValue(605,true);
+                        PremiumValue(611,false);
+                        PremiumValue(615,false);
+                        break;
+                }
             }
         });
 
@@ -2522,17 +2786,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setValue(String.valueOf(isBack.getText()), isBack.isChecked());
                 PremiumValue(607, isBack.isChecked());
-            }
-        });
-
-        final CheckBox isHealth = mFloatingView.findViewById(R.id.isHealth);
-        isHealth.setChecked(getConfig((String) isHealth.getText()));
-        PremiumValue(602, getConfig((String) isHealth.getText()));
-        isHealth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setValue(String.valueOf(isHealth.getText()), isHealth.isChecked());
-                PremiumValue(602, isHealth.isChecked());
             }
         });
 

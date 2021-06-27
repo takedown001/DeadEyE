@@ -60,7 +60,6 @@ public class DetailActivity extends AppCompatActivity {
         SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
         Img = findViewById(R.id.image);
         key = shred.getString(TAG_KEY, "null");
-
         price = findViewById(R.id.price);
         Upgraded = findViewById(R.id.Upgraded);
         customtxt = findViewById(R.id.cusomtxt);
@@ -71,9 +70,7 @@ public class DetailActivity extends AppCompatActivity {
         ordernow = findViewById(R.id.ordernow);
         customupgrade = findViewById(R.id.customupgrade);
 
-
         if(!key.equals("null")) {
-
             if (Title.equals("Premium Plan") && !HomeActivity.safe) {
                 new AlertDialog.Builder(this)
                         .setTitle("Alert")
@@ -86,14 +83,13 @@ public class DetailActivity extends AppCompatActivity {
                                 // Continue with delete operation
                             }
                         })
-
                         // A null listener allows the button to dismiss the dialog and take no further action.
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
                 // Specifying a listener allows you to take an action before dismissing the dialog.
                 // The dialog is automatically dismissed when a dialog button is clicked.
             }
-            if (Title.equals("Basci Plan") && HomeActivity.safe || HomeActivity.burtal) {
+            if (Title.equals("Basic Plan") && HomeActivity.safe || HomeActivity.burtal) {
                 new AlertDialog.Builder(this)
                         .setTitle("Alert")
                         .setMessage("If You Are Downgrading Your Time Will Be Extended and Added Features Are Limited To Your Selected Plan")
@@ -174,8 +170,6 @@ public class DetailActivity extends AppCompatActivity {
                 oneday.setChecked(false);
                 fday.setChecked(false);
                 price.setText(TDay);
-
-
             }
         });
 
@@ -229,14 +223,11 @@ public class DetailActivity extends AppCompatActivity {
             params.put(TAG_KEY,AESUtils.DarKnight.getEncrypted(key));
             params.put("14",AESUtils.DarKnight.getEncrypted(Title)); //store listing title
             params.put(TAG_DEVICEID,AESUtils.DarKnight.getEncrypted(deviceid));
-//            Log.d("allarray",AESUtils.DarKnight.getEncrypted(key));
-//            Log.d("allarray",AESUtils.DarKnight.getEncrypted(Title));
-//            Log.d("allarray",AESUtils.DarKnight.getEncrypted(deviceid));
             String rq = null;
 
                 try {
                     rq = jsonParserString.makeHttpRequest(url, params);
-                    // Log.d("allarray",rq);
+
                 } catch (KeyStoreException | IOException e) {
                     e.printStackTrace();
                 }
@@ -253,42 +244,46 @@ public class DetailActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     lottieDialog.dismiss();
-                    try {
+                    if (s == null || s.isEmpty()) {
+                        Toast.makeText(DetailActivity.this, "Server Error", Toast.LENGTH_LONG).show();
+                        return;
+                    } else {
+                        try {
 
-                        JSONObject obj = new JSONObject(s);
-                        //    Log.d("login", obj.toString());
-                        //checking for error to authenticate
-                        if(Helper.checkVPN(DetailActivity.this)){
-                            Toast.makeText(DetailActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                            finish();
-                        }else {
-
-                            boolean error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-                            //      Log.d("asa", Boolean.toString(error));
-                            //    Log.d("asa",AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)));
-                            if (!error) {
-
-                                FDay = AESUtils.DarKnight.getDecrypted(obj.getString("102"));
-                                TDay = AESUtils.DarKnight.getDecrypted(obj.getString("103"));
-                                descrip = AESUtils.DarKnight.getDecrypted(obj.getString("104"));
-                                OneDay = AESUtils.DarKnight.getDecrypted(obj.getString("105"));
-                                Dollar = AESUtils.DarKnight.getDecrypted(obj.getString("106"));
-
-                                price.setText(OneDay);
-                                description.setText(descrip);
-
-                            } else {
-                                //saving to prefrences m
-
-                                //getting the user from the response.
-                                //starting the profile activity
-
-                                Toast.makeText(getApplicationContext(), "SomeThing Went Wrong", Toast.LENGTH_SHORT).show();
+                            JSONObject obj = new JSONObject(s);
+                            //    Log.d("login", obj.toString());
+                            //checking for error to authenticate
+                            if (Helper.checkVPN(DetailActivity.this)) {
+                                Toast.makeText(DetailActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                                 finish();
+                            } else {
+
+                                boolean error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
+                                //      Log.d("asa", Boolean.toString(error));
+                                //    Log.d("asa",AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)));
+                                if (!error) {
+
+                                    FDay = AESUtils.DarKnight.getDecrypted(obj.getString("102"));
+                                    TDay = AESUtils.DarKnight.getDecrypted(obj.getString("103"));
+                                    descrip = AESUtils.DarKnight.getDecrypted(obj.getString("104"));
+                                    OneDay = AESUtils.DarKnight.getDecrypted(obj.getString("105"));
+                                    Dollar = AESUtils.DarKnight.getDecrypted(obj.getString("106"));
+                                    price.setText(OneDay);
+                                    description.setText(descrip);
+                                    if (Title.equals("Premium Plan")) {
+                                        price.setText(FDay);
+                                        fday.setChecked(true);
+                                        oneday.setVisibility(View.GONE);
+                                        tday.setVisibility(View.GONE);
+                                    }
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "SomeThing Went Wrong", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
             }, 2000);

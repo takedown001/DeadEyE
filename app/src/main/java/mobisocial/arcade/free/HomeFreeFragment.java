@@ -1,8 +1,8 @@
 package mobisocial.arcade.free;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -11,21 +11,26 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import mobisocial.arcade.Adapter.SectionPagerAdapter;
+import mobisocial.arcade.GccConfig.urlref;
+import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.imgLoad;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.gms.ads.AdView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 
+import static android.content.Context.MODE_PRIVATE;
 import static mobisocial.arcade.GccConfig.urlref.time;
 
 
@@ -35,23 +40,29 @@ public class HomeFreeFragment extends Fragment {
 
     ViewPager viewPager;
     TabLayout tabLayout;
+    private static final String TAG_DURATION = urlref.TAG_DURATION;
+    private TextView txtDay, txtHour, txtMinute, txtSecond;
+    private long getduration;
 
+    long secondsInMilli = 1000;
+    long minutesInMilli = secondsInMilli * 60;
+    long hoursInMilli = minutesInMilli * 60;
+    long daysInMilli = hoursInMilli * 24;
     public HomeFreeFragment() {
         // Required empty public constructor
     }
-    LottieAnimationView tg;
+
     public static HomeFreeFragment getInstance()    {
         return new HomeFreeFragment();
     }
-    private AdView mAdView;
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        myFragment = inflater.inflate(R.layout.fragment_freehome, container, false);
-        tg =myFragment.findViewById(R.id.telegram);
+        myFragment = inflater.inflate(R.layout.fragment_home, container, false);
         try {
             Check();
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
@@ -59,43 +70,43 @@ public class HomeFreeFragment extends Fragment {
         }
         viewPager = myFragment.findViewById(R.id.viewPager);
         tabLayout = myFragment.findViewById(R.id.tabLayout);
+        SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
+        getduration = shred.getLong(TAG_DURATION,0);
+        txtDay =  myFragment.findViewById(R.id.viewdays);
+        txtHour =  myFragment.findViewById(R.id.viewhours);
+        txtMinute =  myFragment.findViewById(R.id.viewminutes);
+        txtSecond = myFragment.findViewById(R.id.viewseconds);
 
-        tg.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/DeadEYe_TG"));
-            startActivity(browserIntent);
-        });
-//       // mAdView = myFragment.findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                // Check the LogCat to get your test device ID
-//                .addTestDevice("a9af9e3bb9e8e354")
-//                .build();
-//
-//        mAdView.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int errorCode) {
-//            }
-//
-//            @Override
-//            public void onAdLeftApplication() {
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                super.onAdOpened();
-//            }
-//        });
-//
-//        mAdView.loadAd(adRequest);
+
+        new CountDownTimer(getduration,1000){
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                NumberFormat f = new DecimalFormat("00");
+                long days = (millisUntilFinished / daysInMilli);
+                millisUntilFinished = millisUntilFinished % daysInMilli;
+                long hour = (millisUntilFinished / hoursInMilli);
+                millisUntilFinished = millisUntilFinished % hoursInMilli;
+                long min = (millisUntilFinished / minutesInMilli);
+                millisUntilFinished = millisUntilFinished % minutesInMilli;
+                long sec = (millisUntilFinished / secondsInMilli);
+
+
+                txtDay.setText(f.format(days));
+                txtHour.setText(f.format(hour));
+                txtMinute.setText(f.format(min));
+                txtSecond.setText(f.format(sec));
+            }
+
+            @Override
+            public void onFinish() {
+                Toast.makeText(getActivity(),"Subcription Expired",Toast.LENGTH_SHORT).show();
+                shred.edit().clear().apply();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+
+            }
+        }.start();
 
 
         return myFragment;
@@ -133,29 +144,7 @@ public class HomeFreeFragment extends Fragment {
             }
         });
     }
-    @Override
-    public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
-        super.onPause();
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
-        super.onDestroy();
-    }
     private void setUpViewPager(ViewPager viewPager) {
         SectionPagerAdapter adapter = new SectionPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new GlobalFreeFragment(),"Global");

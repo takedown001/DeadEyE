@@ -30,11 +30,14 @@ import androidx.core.app.ActivityCompat;
 
 import mobisocial.arcade.free.FHomeActivity;
 import mobisocial.arcade.GccConfig.urlref;
+import mobisocial.arcade.free.FLoginActivity;
 import mobisocial.arcade.lite.HomeActivityLite;
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.onesignal.OneSignal;
 import com.scottyab.rootbeer.RootBeer;
+import com.topjohnwu.superuser.Shell;
+import com.yeyint.customalertdialog.CustomAlertDialog;
 
 import org.json.JSONObject;
 
@@ -80,30 +83,18 @@ public class LoginActivity extends AppCompatActivity {
     // long  timeMilli;
      long reqtime, restime,diff;
     Handler handler = new Handler();
-     LottieAnimationView free;
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         editTextUsername = findViewById(R.id.username);
-        PackageInfo pInfo = null;
+
         context = this ;
         time = new Date();
         formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
 
       //  Log.d("time", String.valueOf(time));
-free = findViewById(R.id.free);
-free.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        startActivity(new Intent(LoginActivity.this, FHomeActivity.class));
-    }
-});
-        try {
-            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+
         OneSignal.idsAvailable((userId, registrationId) -> {
        //     String text = "OneSignal UserID:\n" + userId + "\n\n";
            UUID = userId;
@@ -112,7 +103,7 @@ free.setOnClickListener(new View.OnClickListener() {
 
      //   Log.d("key",UUID);
         version = findViewById(R.id.verisondisplay);
-        String setversion = pInfo.versionName;
+        String setversion = SplashScreenActivity.pInfo.versionName;
         version.setText("version "+setversion);
         findViewById(R.id.signinbtn).setOnClickListener(view -> {
             if(Helper.checkVPN(LoginActivity.this)) {
@@ -138,67 +129,97 @@ free.setOnClickListener(new View.OnClickListener() {
         findViewById(R.id.GetkeyButton).setOnClickListener(v -> {
             Intent i = new Intent(LoginActivity.this,StoreActivity.class);
             startActivity(i);
-
-
         });
 
-//       if(Helper.isEmulator()){
-//           ShellUtils.SU("chmod 777 /");
-//           ShellUtils.SU(remove);
-//           new AlertDialog.Builder(LoginActivity.this)
-//                   .setTitle("Warning")
-//                   .setMessage("Emulator Detected")
-//                   .setCancelable(false)
-//                   .setPositiveButton("ok", (dialog, which) -> finish()).show();
-//
-//       }
+
 
         checkandroid();
     }
 
     private void checkandroid(){
+        CustomAlertDialog Androidcheck = new CustomAlertDialog(this,  CustomAlertDialog.DialogStyle.FILL_STYLE);
+        Androidcheck.setCancelable(false);
         isStoragePermissionGranted();
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-            new AlertDialog.Builder(LoginActivity.this)
-                    .setTitle("Alert")
-                    .setMessage("Android 7 Detected.App Support Might Be Unstable")
-                    .setCancelable(false)
-                    .setNegativeButton("Continue",((dialog, which) -> {
-                        try {
-                            finalize();
-                        } catch (Throwable throwable) {
-                            throwable.printStackTrace();
-                        }
-                    }))
-                    .setPositiveButton("Exit", (dialog, which) -> finish()).show();
-
+            Androidcheck.setDialogType(CustomAlertDialog.DialogType.WARNING);
+            Androidcheck.setDialogImage(getDrawable(R.drawable.alert),0); // no tint
+            Androidcheck.setImageSize(150,150);
+            Androidcheck.setAlertMessage("Android 7 Detected.App Support Might Be Unstable");
+            Androidcheck.create();
+            Androidcheck.show();
+            Androidcheck.setPositiveButton("Continue", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                    Androidcheck.dismiss();
+                }
+            });
+            Androidcheck.setNegativeButton("Exit", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    Androidcheck.cancel();
+                }
+            });
         }
         else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-            new AlertDialog.Builder(LoginActivity.this)
-                    .setTitle("Alert")
-                    .setMessage("Greater Than Android 10 Detected.App Support Might Be Unstable")
-                    .setCancelable(true)
-                    .setNegativeButton("Continue",((dialog, which) -> {
-                        try {
-                            finalize();
-                        } catch (Throwable throwable) {
-                            throwable.printStackTrace();
-                        }
-                    }))
-                    .setPositiveButton("Exit", (dialog, which) -> finish()).show();
+            Androidcheck.setAlertTitle("Warning");
+            Androidcheck.setDialogType(CustomAlertDialog.DialogType.WARNING);
+            Androidcheck.setAlertMessage("Greater Than Android 10 Detected.App Support Might Be Unstable");
+            Androidcheck.create();
+            Androidcheck.show();
+            Androidcheck.setPositiveButton("Continue", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                    Androidcheck.dismiss();
+                }
+            });
+            Androidcheck.setNegativeButton("Exit", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    Androidcheck.cancel();
+                }
+            });
+        }else if(!new RootBeer(LoginActivity.this).isRooted() && !Shell.rootAccess()){
+            Androidcheck.setDialogType(CustomAlertDialog.DialogType.WARNING);
+            Androidcheck.setDialogImage(getDrawable(R.drawable.alert),0); // no tint
+            Androidcheck.setImageSize(150,150);
+            Androidcheck.setAlertMessage("Root Access Was Not Granted");
+            Androidcheck.create();
+            Androidcheck.show();
+            Androidcheck.setPositiveButton("Grant", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShellUtils.SU("su");
+                    Androidcheck.dismiss();
+                }
+            });
+            Androidcheck.setNegativeButton("Exit", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                    Androidcheck.cancel();
+                }
+            });
+        }else{
+            ShellUtils.SU("su");
         }
-        else{
-            RootBeer rootBeer = new RootBeer(LoginActivity.this);
-            //   Log.d("root", String.valueOf(rootBeer.isRooted()));
-            if(!rootBeer.isRooted()){
-                new AlertDialog.Builder(LoginActivity.this)
-                        .setTitle("Alert")
-                        .setMessage("Root Access Was Not Granted Or Your Device is Not Currently Rooted.")
-                        .setPositiveButton("ok", (dialog, which) -> finish()).show();
-            }else{
-                ShellUtils.SU("su");
-            }
             new Thread(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void run() {
                     try {
@@ -210,7 +231,8 @@ free.setOnClickListener(new View.OnClickListener() {
             }).start();
         }
 
-    }
+
+
 
      @RequiresApi(api = Build.VERSION_CODES.N)
      private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
@@ -262,44 +284,36 @@ free.setOnClickListener(new View.OnClickListener() {
      }
 
 
+
     @Override
     public void onBackPressed() {
-
+        CustomAlertDialog Androidcheck = new CustomAlertDialog(this,  CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
         if (backbackexit >= 2) {
-
-            // Creating alert Dialog with three Buttons
-
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                    LoginActivity.this);
-
-            // Setting Dialog Title
-            alertDialog.setTitle(getResources().getString(R.string.app_name));
-
-            // Setting Dialog Message
-            alertDialog.setMessage("Are you sure you want to exit??");
-
-            // Setting Icon to Dialog
-            alertDialog.setIcon(R.drawable.icon);
-
-            // Setting Positive Yes Button
-            alertDialog.setPositiveButton("YES",
-                    new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                            finish();
-                        }
-                    });
-            // Setting Positive Yes Button
-            alertDialog.setNeutralButton("NO",
-                    new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                        }
-                    });
-            // Showing Alert Message
-            alertDialog.show();
+            Androidcheck.setCancelable(false);
+            Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
+            Androidcheck.setAlertTitle("Exit");
+            Androidcheck.setImageSize(150,150);
+            Androidcheck.setAlertMessage("Are you sure you want to exit back ?");
+            Androidcheck.create();
+            Androidcheck.show();
+            Androidcheck.setPositiveButton("Yes", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        finish();
+                    Androidcheck.dismiss();
+                }
+            });
+            Androidcheck.setNegativeButton("NO", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                    Androidcheck.cancel();
+                }
+            });
 //					super.onBackPressed();
         } else {
             backbackexit++;
@@ -356,7 +370,6 @@ free.setOnClickListener(new View.OnClickListener() {
                 String rq = null;
                 try {
                     rq = jsonParserString.makeHttpRequest(url, params);
-
                 } catch (KeyStoreException | IOException e) {
                     e.printStackTrace();
                 }
@@ -376,70 +389,74 @@ free.setOnClickListener(new View.OnClickListener() {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    try {
+                                    if (s == null || s.isEmpty()) {
+                                        Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_LONG).show();
+                                        return;
+                                    } else {
+                                        try {
 
-                                        JSONObject obj = new JSONObject(s);
-                                        //   Log.d("login", obj.toString());
-                                        // checking for error to authenticate
-                                        error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-                                        restime = Long.parseLong(String.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_TIME))));
-                                        diff = restime - reqtime;
-                                        //  Log.d("test", String.valueOf(diff));
-                                        if (Helper.checkVPN(LoginActivity.this)) {
-                                            Toast.makeText(LoginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                                            finish();
-                                        } else {
-                                            if (diff == urlref.logindiff) {
-                                                if (!error) {
-                                                    islite = Boolean.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_LITE)));
-                                                    getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
-                                                    //     Log.d("test", String.valueOf(getduration));
-                                                    if (getduration == 0) {
-                                                        Toast.makeText(getApplicationContext(), "SubscriptionExpired", Toast.LENGTH_LONG).show();
-                                                    } else {
-                                                        if (islite) {
-                                                            //saving to prefrences m
-                                                            editor.putBoolean(TAG_ISFIRSTSTART, false).apply();
-                                                            editor.putLong(TAG_DURATION, getduration).apply();
-                                                            editor.putString(TAG_KEY, key);
-                                                            editor.apply();
-                                                            Toast.makeText(getApplicationContext(), AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
-                                                            Intent intent = new Intent(LoginActivity.this, HomeActivityLite.class);
-                                                            intent.putExtra("safe", safe);
-                                                            intent.putExtra("brutal", brutal);
-                                                            startActivity(intent);
+                                            JSONObject obj = new JSONObject(s);
+                                            //   Log.d("login", obj.toString());
+                                            // checking for error to authenticate
+                                            error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
+                                            restime = Long.parseLong(String.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_TIME))));
+                                            diff = restime - reqtime;
+                                            //  Log.d("test", String.valueOf(diff));
+                                            if (Helper.checkVPN(LoginActivity.this)) {
+                                                Toast.makeText(LoginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+                                                finish();
+                                            } else {
+                                                if (diff == urlref.logindiff) {
+                                                    if (!error) {
+                                                        islite = Boolean.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_LITE)));
+                                                        getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
+//                                                    Log.d("test", String.valueOf(islite));
+//                                                       Log.d("test", String.valueOf(getduration));
+                                                        if (getduration == 0) {
+                                                            Toast.makeText(getApplicationContext(), "SubscriptionExpired", Toast.LENGTH_LONG).show();
                                                         } else {
-                                                            //saving to prefrences m
-                                                            editor.putBoolean(TAG_ISFIRSTSTART, false).apply();
-                                                            editor.putLong(TAG_DURATION, getduration).apply();
-                                                            editor.putString(TAG_KEY, key);
-                                                            editor.apply();
-                                                            //      Log.d("test", String.valueOf(obj.getBoolean("sf")));
-                                                            //   Log.d("test", String.valueOf(obj.getBoolean("br")));
-                                                            //    Log.d("date",getcurrentdate);
-                                                            safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
-                                                            brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
-                                                            Toast.makeText(getApplicationContext(), AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
-                                                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                                            intent.putExtra("safe", safe);
-                                                            intent.putExtra("brutal", brutal);
-                                                            startActivity(intent);
+                                                            if (islite) {
+                                                                //saving to prefrences m
+                                                                editor.putBoolean(TAG_ISFIRSTSTART, false).apply();
+                                                                editor.putLong(TAG_DURATION, getduration).apply();
+                                                                editor.putString(TAG_KEY, key);
+                                                                editor.apply();
+                                                                Toast.makeText(getApplicationContext(), AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
+                                                                Intent intent = new Intent(LoginActivity.this, HomeActivityLite.class);
+                                                                intent.putExtra("safe", safe);
+                                                                intent.putExtra("brutal", brutal);
+                                                                startActivity(intent);
+                                                            } else {
+                                                                //saving to prefrences m
+                                                                editor.putBoolean(TAG_ISFIRSTSTART, false).apply();
+                                                                editor.putLong(TAG_DURATION, getduration).apply();
+                                                                editor.putString(TAG_KEY, key);
+                                                                editor.apply();
+                                                                //      Log.d("test", String.valueOf(obj.getBoolean("sf")));
+                                                                //   Log.d("test", String.valueOf(obj.getBoolean("br")));
+                                                                //    Log.d("date",getcurrentdate);
+                                                                safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
+                                                                brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
+                                                                Toast.makeText(getApplicationContext(), AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
+                                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                                                intent.putExtra("safe", safe);
+                                                                intent.putExtra("brutal", brutal);
+                                                                startActivity(intent);
+                                                            }
+                                                            //getting the user from the response.
+                                                            //starting the profile activity
+                                                            finish();
+                                                        //    finalize();
                                                         }
-                                                        //getting the user from the response.
-                                                        //starting the profile activity
-                                                        finish();
-                                                        finalize();
+                                                    } else {
+                                                        String msg = AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG));
+                                                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                                                     }
-
-
-                                                } else {
-                                                    String msg = AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG));
-                                                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                                                 }
                                             }
+                                        } catch (Throwable e) {
+                                            e.printStackTrace();
                                         }
-                                    } catch (Throwable e) {
-                                        e.printStackTrace();
                                     }
                                 }
 
@@ -448,8 +465,6 @@ free.setOnClickListener(new View.OnClickListener() {
                 }, 2000);
             }
         }
-
-
         UserLogin ul = new UserLogin();
         ul.execute();
     }

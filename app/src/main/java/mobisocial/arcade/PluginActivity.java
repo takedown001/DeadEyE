@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.yeyint.customalertdialog.CustomAlertDialog;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -36,6 +37,8 @@ public class PluginActivity extends AppCompatActivity {
         espupgrade = findViewById(R.id.lottie);
         switchsafe = findViewById(R.id.switchsafe);
         switchbrutal = findViewById(R.id.switchbrutal);
+        CustomAlertDialog Androidcheck = new CustomAlertDialog(this,  CustomAlertDialog.DialogStyle.FILL_STYLE);
+        Androidcheck.setCancelable(false);
         isvalidsafe= getIntent().getBooleanExtra("safe",false);
         isIsvalidbrutal = getIntent().getBooleanExtra("brutal",false);
         safecheck = ga.getBoolean("safecheck",false);
@@ -57,33 +60,72 @@ public class PluginActivity extends AppCompatActivity {
 
 
         switchsafe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(safecheck){
-                    switchsafe.setMinAndMaxProgress(0.5f,1.0f);
-                    switchsafe.playAnimation();
-                    safecheck=false;
-                    editor.putBoolean("safecheck",safecheck).apply();
+                                          @Override
+                                          public void onClick(View v) {
+                                              if (safecheck) {
+                                                  switchsafe.setMinAndMaxProgress(0.5f, 1.0f);
+                                                  switchsafe.playAnimation();
+                                                  safecheck = false;
+                                                  editor.putBoolean("safecheck", safecheck).apply();
+                                                  Androidcheck.setDialogType(CustomAlertDialog.DialogType.ERROR);
+                                                  Androidcheck.setDialogImage(getDrawable(R.drawable.alert), 0); // no tint
+                                                  Androidcheck.setImageSize(150, 150);
+                                                  Androidcheck.setTitle("Re-Login Required");
+                                                  Androidcheck.setAlertMessage("Change in Plugin Detected. Please Login Again To Apply The Changes");
+                                                  Androidcheck.create();
+                                                  Androidcheck.show();
+                                                  Androidcheck.setPositiveButton("ok", new View.OnClickListener() {
+                                                      @Override
+                                                      public void onClick(View v) {
+                                                          Androidcheck.cancel();
+                                                          Intent i = new Intent(PluginActivity.this, LoginActivity.class);
+                                                          startActivity(i);
+                                                      }
 
-                }else{
-                    switchsafe.setMinAndMaxProgress(0.0f,0.5f);
-                    switchsafe.playAnimation();
-                    safecheck=true;
-                    editor.putBoolean("safecheck",safecheck).apply();
-                    new AlertDialog.Builder(PluginActivity.this)
-                            .setTitle("Refresh")
-                            .setMessage("Settings Changes, App Needs To restart")
-                            .setCancelable(false)
-                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent i = new Intent(PluginActivity.this, LoginActivity.class);
-                                    startActivity(i);
-                                }
-                            }).show();
-                }
-            }
-        });
+                                                  });
+                                                  Androidcheck.setNegativeButton("Cancel", new View.OnClickListener() {
+                                                      @Override
+                                                      public void onClick(View v) {
+                                                          Androidcheck.cancel();
+                                                        finishAndRemoveTask();
+                                                        safecheck =true;
+                                                      }
+
+                                                  });
+                                              } else {
+                                                  switchsafe.setMinAndMaxProgress(0.0f, 0.5f);
+                                                  switchsafe.playAnimation();
+                                                  safecheck = true;
+                                                  editor.putBoolean("safecheck", safecheck).apply();
+                                                  Androidcheck.setDialogType(CustomAlertDialog.DialogType.ERROR);
+                                                  Androidcheck.setDialogImage(getDrawable(R.drawable.alert), 0); // no tint
+                                                  Androidcheck.setImageSize(150, 150);
+                                                  Androidcheck.setTitle("Re-Login Required");
+                                                  Androidcheck.setAlertMessage("Change in Plugin Detected. Please Login Again To Apply The Changes");
+                                                  Androidcheck.create();
+                                                  Androidcheck.show();
+                                                  Androidcheck.setPositiveButton("ok", new View.OnClickListener() {
+                                                      @Override
+                                                      public void onClick(View v) {
+                                                          Androidcheck.cancel();
+                                                          Intent i = new Intent(PluginActivity.this, LoginActivity.class);
+                                                          startActivity(i);
+
+                                                      }
+
+                                                  });
+                                                  Androidcheck.setNegativeButton("Cancel", new View.OnClickListener() {
+                                                      @Override
+                                                      public void onClick(View v) {
+                                                          Androidcheck.cancel();
+                                                          finishAndRemoveTask();
+                                                          safecheck =false;
+                                                      }
+
+                                                  });
+                                              }
+                                          }
+                                      });
 
         switchbrutal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,9 +166,6 @@ public class PluginActivity extends AppCompatActivity {
             switchbrutal.setVisibility(View.GONE);
             brutalupgrade.setVisibility(View.VISIBLE);
         }
-
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -137,5 +176,6 @@ public class PluginActivity extends AppCompatActivity {
     }
 
 }
+
 
 

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,16 +21,22 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.TrustManagerFactory;
 
 public class JSONParser {
 
     private static InputStream is = null;
     private static JSONObject jObj = null;
     private static String json = "";
-
     private Integer status = 0;
 
     // constructor
@@ -62,12 +69,10 @@ public class JSONParser {
             i++;
         }
 
-        System.out.println("string"+result.toString());
+     //   System.out.println("string"+result.toString());
 
         // Making HTTP request
         try {
-
-
             // check for request method
                 // request method is POST
                 // defaultHttpClient
@@ -77,22 +82,17 @@ public class JSONParser {
                 conn.setConnectTimeout(15000);
                 /* for Get request */
                 conn.setRequestMethod("POST");
-
                 conn.setDoInput(true);
-
                 // You need to set it to true if you want to send (output) a request body,
                 //for example with POST or PUT requests.
                 //Sending the request body itself is done via the connection's output stream
                 conn.setDoOutput(true);
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
                 writer.write(result.toString());
                 writer.flush();
                 writer.close();
                 os.close();
-
                 int statusCode = conn.getResponseCode();
                 /* 200 represents HTTP OK */
                 if (statusCode ==  200) {
@@ -102,11 +102,8 @@ public class JSONParser {
                 }else{
                     status = 0; //"Failed to fetch data!";
                 }
-
                 conn.connect();
                 is = conn.getInputStream();
-
-
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -126,14 +123,12 @@ public class JSONParser {
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }
-
         // try parse the string to a JSON object
         try {
             jObj = new JSONObject(json);
         } catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
-
         // return JSON String
         return jObj;
 

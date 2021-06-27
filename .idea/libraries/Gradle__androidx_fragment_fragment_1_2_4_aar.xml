@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.fragment:fragment:1.2.4@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/eb2113de26a0fec071f18de6e15fd98e/fragment-1.2.4/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/eb2113de26a0fec071f18de6e15fd98e/fragment-1.2.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/eb2113de26a0fec071f18de6e15fd98e/fragment-1.2.4/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/eb2113de26a0fec071f18de6e15fd98e/fragment-1.2.4/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/androidx.fragment/fragment/1.2.4/bfa66119813f2997ac526678b7ed354312c83fc/fragment-1.2.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

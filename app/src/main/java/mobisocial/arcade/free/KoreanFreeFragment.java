@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.topjohnwu.superuser.Shell;
+
 import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.ESPView;
 import mobisocial.arcade.FloatLogo;
@@ -32,18 +36,25 @@ import mobisocial.arcade.JavaUrlConnectionReader;
 import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 import mobisocial.arcade.ShellUtils;
+import mobisocial.arcade.imgLoad;
 
 import static android.content.Context.MODE_PRIVATE;
 import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
+import static mobisocial.arcade.GccConfig.urlref.defaltversion;
+import static mobisocial.arcade.GccConfig.urlref.time;
+import static mobisocial.arcade.Helper.givenToFile;
 
 
-public class KoreanFreeFragment extends Fragment {
+public class KoreanFreeFragment extends Fragment implements View.OnClickListener {
 
     public KoreanFreeFragment() {
         // Required empty public constructor
@@ -83,7 +94,7 @@ public class KoreanFreeFragment extends Fragment {
         }
         View rootViewone = inflater.inflate(R.layout.fragment_korean, container, false);
         SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
-        version = shred.getString("version", "32");
+        version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
         deviceid = LoginActivity.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
@@ -114,14 +125,28 @@ public class KoreanFreeFragment extends Fragment {
                 if (Helper.checkVPN(getActivity())) {
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
-                } else {
+                }
+                else if (Helper.appInstalledOrNot(gameName,getActivity())){
+                    Toast.makeText(getActivity(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                }
+                else {
                     antiban.show(getActivity().getFragmentManager(), "StartCheatGl");
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             antiban.dismiss();
-                            betastartcheat();
-                            Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                            if  (Shell.rootAccess()) {
+                                try {
+                                    Helper.unzip(getActivity());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                betastartcheat();
+                                Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(getContext(), "Root Access Was Not Granted", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }, 4000);
                 }
@@ -136,14 +161,18 @@ public class KoreanFreeFragment extends Fragment {
                 if (Helper.checkVPN(getActivity())) {
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
-                } else {
+                }
+                else if (Helper.appInstalledOrNot(gameName,getActivity())){
+                    Toast.makeText(getActivity(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                }else {
                     antiban.show(getActivity().getFragmentManager(), "StopCheatGl");
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             antiban.dismiss();
-                            betastopcheat();
+                            ShellUtils.SU("iptables -F");
                             ShellUtils.SU("iptables --flush");
+                            betastopcheat();
                             ctx.stopService(new Intent(ctx,FreeFloatLogo.class));
                         }
                     }, 4000);
@@ -277,30 +306,30 @@ public class KoreanFreeFragment extends Fragment {
         });
         return rootViewone;
     }
+
+
     public void betastartcheat(){
 
 
         class load extends AsyncTask<Void, Void, String> {
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                //       Log.d("data",data);
+                 //      Log.d("data",s);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                        for (int i = 0; i < lines.length; i++) {
+                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() +"/scheat.sh");
+                        try {
+                            givenToFile(getActivity(),s);
 
-                            //      Log.d("testlines", lines[i]);
-                            try {
-                                ShellUtils.SU(lines[i]);
-                                TimeUnit.MILLISECONDS.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                         startPatcher();
                     });
+
                 }).start();
 
             }
@@ -327,28 +356,19 @@ public class KoreanFreeFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                if (Helper.checkVPN(getActivity())) {
-                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                } else {
+                //    Log.d("data",data);
+                new Thread(() -> {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
+                        try {
+                            givenToFile(getActivity(), s);
 
-                    //    Log.d("data",data);
-                    new Thread(() -> {
-                        String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                        for (int i = 0; i < lines.length; i++) {
-                            //      Log.d("testlines", lines[i]);
-                            try {
-                                ShellUtils.SU(lines[i]);
-                                TimeUnit.MILLISECONDS.sleep(80);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                       ShellUtils.SU("iptables --flush");
-
-                    }).start();
-
-                }
+                        getActivity().stopService(new Intent(getActivity(),FloatLogo.class));
+                    });
+                }).start();
             }
             @Override
             protected String doInBackground(Void... voids) {
@@ -382,7 +402,50 @@ public class KoreanFreeFragment extends Fragment {
 
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        if(imgLoad.Load(getActivity()).equals(time)){
+            getActivity().finish();
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+
+            case R.id.taptoactivatekr:
+                try {
+                    Check();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+                if(Helper.checkVPN(getActivity())){
+                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                }
+                else {
+                    lottieDialog.show(getActivity().getFragmentManager(), "loo");
+                    lottieDialog.setCancelable(false);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            lottieDialog.dismiss();
+                            startPatcher();
+                        }
+                    }, 2000);
+                }
+                break;
+        }
+    }
 }
+
+
+
+
+
+
+
 
 
 

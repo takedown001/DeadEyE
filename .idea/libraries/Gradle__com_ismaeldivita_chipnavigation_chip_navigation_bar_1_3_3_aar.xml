@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.ismaeldivita.chipnavigation:chip-navigation-bar:1.3.3@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/c7d19afe130416fb3950387ee44f0048/jetified-chip-navigation-bar-1.3.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/c7d19afe130416fb3950387ee44f0048/jetified-chip-navigation-bar-1.3.3/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/c7d19afe130416fb3950387ee44f0048/jetified-chip-navigation-bar-1.3.3/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/com.ismaeldivita.chipnavigation/chip-navigation-bar/1.3.3/6c73d859d50d2b8c70dad1e08f74e8443c96ff3b/chip-navigation-bar-1.3.3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/com.ismaeldivita.chipnavigation/chip-navigation-bar/1.3.3/8396d8dea8e2d777a5433de5ecc61eb7b8e2c1c0/chip-navigation-bar-1.3.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.android.gms:play-services-location:15.0.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/b2717d977c2c9fa608645cc4a6ab3268/jetified-play-services-location-15.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/b2717d977c2c9fa608645cc4a6ab3268/jetified-play-services-location-15.0.1/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/b2717d977c2c9fa608645cc4a6ab3268/jetified-play-services-location-15.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/b9864e24d7e6aa3eeb0581c7126a7b02/jetified-play-services-location-15.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/b9864e24d7e6aa3eeb0581c7126a7b02/jetified-play-services-location-15.0.1/res" />
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/b9864e24d7e6aa3eeb0581c7126a7b02/jetified-play-services-location-15.0.1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -30,7 +30,6 @@ public class MemLoad extends AsyncTask<String, Integer, String>
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setCancelable(false);
     }
-
     protected String doInBackground(String... url_download)
     {
         InputStream input = null;

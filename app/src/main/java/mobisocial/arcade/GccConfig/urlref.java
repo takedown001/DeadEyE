@@ -14,9 +14,10 @@ public class urlref {
     public static final String Image = "https://gcc-org.com/deadeyeesp/Image/";
     public static final String gen = "https://gcc-org.com/deadeyeesp/Keys/";
     public static final String TAG_TIME = "999";
-
-
+    public static final String FreeGen = "https://gcc-org.com/DeadEyE/testdone.php";
+    public static final String Phome = "9166253127";
     public static final int logindiff = 1000;
+
 
     //auth
     public static final String TAG_DEVICEID = "2";
@@ -28,14 +29,11 @@ public class urlref {
     public static final String TAG_ONESIGNALID="404";
     public static final String TAG_LITE = "566";
 
-
-
     //Reseller
     public static final String TAG_RESELLER = "reseller";
     public static final String TAG_RNAME = "rname";
     public static final String TAG_RDESC = "rdesc";
     public static final String TAG_RIMG = "rimg";
-
 
     //official
     public static final String TAG_STORE = "store";
@@ -43,20 +41,16 @@ public class urlref {
     public static final String TAG_DESC = "sdesc";
     public static final String TAG_IMG = "img";
 
-
-
   //News
     public static final String TAG_NTITLE = "title";
     public static final String TAG_NDESC ="description";
     public static final String TAG_NIMG = "img";
-
 
 //Download Center
     public static final String TAG_DTITLE = "title";
     public static final String TAG_DDESC ="description";
     public static final String TAG_DIMG = "img";
     public static final String TAG_DURL = "downurl";
-
 
     // Paumoney Salt
     public static final String MerchantId = "7396527";
@@ -74,6 +68,7 @@ public class urlref {
     //free
     public static final String MemPathPublic = "https://gcc-org.com/deadeyeesp/beta/Downloads/libsys.so";//public Memory and Memory antiban
     public static final String HexPublicLib = "https://gcc-org.com/deadeyeesp/beta/Downloads/libCNR.so";//safe memory beta premium antiban
+    public static final String AnimationLoad = "https://gcc-org.com/deadeyeesp/beta/Downloads/animation.zip";//safe memory beta premium antiban
     public static final String FreeMem = "/libsys.so";
     public static final String FreeHexMem = "/libCNR.so";
     public static final String FreeHexMemArg = " 131222002";
@@ -81,11 +76,12 @@ public class urlref {
     public static final String dollar = "75";
     public static final String time = "1";
     public static final String defalkey = "null";
+    public static final String defaltversion = "32";
 
     //lite
     public static final String LiteMem = "/libsu.so";
-    public static final String LiteHexMem = "/libsha.so";
     public static final String Liteapkupdateurl = "https://gcc-org.com/deadeyeesp/app_updater.php";
+    public static final String IndiaMem = "https://gcc-org.com/deadeyeesp/live/Downloads/libsu.so";
 
 
     //encr
@@ -98,9 +94,8 @@ public class urlref {
     public static final String pcanary  = "com.guoshi.httpcanary.premium";
 
 
- //   public static final String APP_SIGNATURE = "46490ACB753B0D1DF9F14B6F1FEEC3FE32EC8508";  //release
-   public static final String APP_SIGNATURE = "37F760E29CF520940697C165525198B2D9A6D764";  //debug
-
+// public static final String APP_SIGNATURE = "46490ACB753B0D1DF9F14B6F1FEEC3FE32EC8508";  //release
+  public static final String APP_SIGNATURE = "37F760E29CF520940697C165525198B2D9A6D764";  //debug
 //zip pass
     public static final String Zippass  = "Takedown@123";
 }

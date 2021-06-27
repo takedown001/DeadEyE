@@ -23,6 +23,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.topjohnwu.superuser.Shell;
+
 import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.ESPView;
 import mobisocial.arcade.FloatLogo;
@@ -36,6 +38,7 @@ import mobisocial.arcade.ShellUtils;
 import mobisocial.arcade.imgLoad;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Objects;
@@ -45,9 +48,11 @@ import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
 import static android.content.Context.MODE_PRIVATE;
 import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
+import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.GccConfig.urlref.time;
+import static mobisocial.arcade.Helper.givenToFile;
 
-public class VeitnamFreeFragment extends Fragment {
+public class VeitnamFreeFragment extends Fragment implements View.OnClickListener {
     private String version, deviceid;
     Handler handler = new Handler();
     private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
@@ -84,7 +89,7 @@ public class VeitnamFreeFragment extends Fragment {
         View rootViewone = inflater.inflate(R.layout.fragment_veitnam, container, false);
         SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
         Context ctx=getActivity();
-        version = shred.getString("version", "32");
+        version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
         final File daemon = new File(urlref.pathoflib+urlref.SafeMem);
 
@@ -97,9 +102,6 @@ public class VeitnamFreeFragment extends Fragment {
         cleanguest = rootViewone.findViewById(R.id.veitnamcleanguest);
         fixgame = rootViewone.findViewById(R.id.veitnamfixgame);
         DeepFixGame = rootViewone.findViewById(R.id.deepfixgamevn);
-
-
-
 
 
         SharedPreferences getserver = getActivity().getSharedPreferences("server",MODE_PRIVATE);
@@ -124,14 +126,28 @@ public class VeitnamFreeFragment extends Fragment {
                     }
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
-                } else {
+                }
+                else if (Helper.appInstalledOrNot(gameName,getActivity())){
+                    Toast.makeText(getActivity(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                }
+                else {
                     antiban.show(getActivity().getFragmentManager(), "StartCheatGl");
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             antiban.dismiss();
+                            if  (Shell.rootAccess()) {
+                                try {
+                                    Helper.unzip(getActivity());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                                 betastartcheat();
                                 Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(getContext(), "Root Access Was Not Granted", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }, 4000);
 
@@ -152,6 +168,9 @@ public class VeitnamFreeFragment extends Fragment {
                 Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                 getActivity().finish();
             }
+            else if (Helper.appInstalledOrNot(gameName,getActivity())){
+                Toast.makeText(getActivity(), "Game Not Installed", Toast.LENGTH_LONG).show();
+            }
             else {
 
                 antiban.show(getActivity().getFragmentManager(), "StopCheatGl");
@@ -159,9 +178,14 @@ public class VeitnamFreeFragment extends Fragment {
                     @Override
                     public void run() {
                         antiban.dismiss();
-                        betastopcheat();
+                        ShellUtils.SU("iptables -F");
                         ShellUtils.SU("iptables --flush");
-                        ctx.stopService(new Intent(ctx,FreeFloatLogo.class));
+                        if (Shell.rootAccess()) {
+                            betastopcheat();
+                            ctx.stopService(new Intent(ctx, FreeFloatLogo.class));
+                        }else {
+                            Toast.makeText(getActivity(),"Root Access Was Not Granted ",Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 }, 4000);
@@ -299,25 +323,24 @@ public class VeitnamFreeFragment extends Fragment {
 
         class load extends AsyncTask<Void, Void, String> {
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                //       Log.d("data",data);
+                //      Log.d("data",s);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                        for (int i = 0; i < lines.length; i++) {
+                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() +"/scheat.sh");
+                        try {
+                            givenToFile(getActivity(),s);
 
-                            //      Log.d("testlines", lines[i]);
-                            try {
-                                ShellUtils.SU(lines[i]);
-                                TimeUnit.MILLISECONDS.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                         startPatcher();
+
                     });
+
                 }).start();
 
             }
@@ -344,28 +367,19 @@ public class VeitnamFreeFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                if (Helper.checkVPN(getActivity())) {
-                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                } else {
+                //    Log.d("data",data);
+                new Thread(() -> {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
+                        try {
+                            givenToFile(getActivity(), s);
 
-                    //    Log.d("data",data);
-                    new Thread(() -> {
-                        String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                        for (int i = 0; i < lines.length; i++) {
-                            //      Log.d("testlines", lines[i]);
-                            try {
-                                ShellUtils.SU(lines[i]);
-                                TimeUnit.MILLISECONDS.sleep(80);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        ShellUtils.SU("iptables --flush");
-
-                    }).start();
-
-                }
+                        getActivity().stopService(new Intent(getActivity(),FloatLogo.class));
+                    });
+                }).start();
             }
             @Override
             protected String doInBackground(Void... voids) {
@@ -405,7 +419,39 @@ public class VeitnamFreeFragment extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+
+            case R.id.taptoactivatetw:
+                try {
+                    Check();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+                if(Helper.checkVPN(getActivity())){
+                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                }
+                else {
+                    lottieDialog.show(getActivity().getFragmentManager(), "loo");
+                    lottieDialog.setCancelable(false);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            lottieDialog.dismiss();
+                            startPatcher();
+                        }
+                    }, 2000);
+                }
+                break;
+        }
+    }
 }
+
+
 
 
 

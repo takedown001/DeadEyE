@@ -3,22 +3,32 @@ package mobisocial.arcade.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.GccConfig.urlref;
+import mobisocial.arcade.Helper;
+import mobisocial.arcade.JavaUrlConnectionReader;
+import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.MemLoad;
 import mobisocial.arcade.HexLoad;
 import mobisocial.arcade.R;
@@ -27,11 +37,15 @@ import com.ramotion.fluidslider.FluidSlider;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 
 import static android.content.Context.MODE_PRIVATE;
+import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
+import static mobisocial.arcade.GccConfig.urlref.defaltversion;
+import static mobisocial.arcade.Helper.givenToFile;
 import static mobisocial.arcade.HomeActivity.safe;
 
 /**
@@ -51,8 +65,13 @@ public class SettingFragment extends Fragment {
     private ImageView i;
     private Button logout,play32bit,play64bit;
     private Handler handler = new Handler();
-
-
+    private static final String TAG_VERSION = "v";
+    private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
+    private String data;
+    private boolean safecheck;
+    private String version, deviceid;
+    private Switch srcpatch;
+    String CheatL = urlref.Liveserver + "cheat.php";
     // TODO: Rename and change types and number of parameters
     public static SettingFragment newInstance(String param1, String param2) {
         SettingFragment fragment = new SettingFragment();
@@ -69,7 +88,8 @@ public class SettingFragment extends Fragment {
 
         }
 
-
+        SharedPreferences ga = getActivity().getSharedPreferences("game", MODE_PRIVATE);
+        safecheck = ga.getBoolean("safecheck",false);
     }
 
     @Override
@@ -85,14 +105,14 @@ public class SettingFragment extends Fragment {
 
         }
 
-
-
-
         View rootViewone = inflater.inflate(R.layout.fragment_setting, container, false);
         SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
 
         SharedPreferences.Editor editor = shred.edit();
-
+        version = shred.getString("version", defaltversion);
+        version = AESUtils.DarKnight.getEncrypted(version);
+        deviceid = LoginActivity.getDeviceId(getActivity());
+        deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
         minview = rootViewone.findViewById(R.id.everymin);
         seekBar = rootViewone.findViewById(R.id.seekBar);
         logout = rootViewone.findViewById(R.id.logoutbtn);
@@ -113,6 +133,8 @@ public class SettingFragment extends Fragment {
         play64bit.setBackgroundResource(bit32);
         play32bit.setTextColor(cshred.getInt("textcolor32",getResources().getColor((R.color.white))));
         play32bit.setBackgroundResource(bit64);
+
+
 
 
         play32bit.setOnClickListener(new View.OnClickListener() {
@@ -347,5 +369,4 @@ public class SettingFragment extends Fragment {
 
         return rootViewone;
     }
-
 }

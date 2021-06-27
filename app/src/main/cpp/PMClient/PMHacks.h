@@ -89,7 +89,6 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
     if(iscrosshair){
         esp.DrawCrosshair(PMColor(0, 0, 0, 255), PMVector2(screenWidth / 2, screenHeight / 2), 42);
     }
-    if (!isfree) {
         if (isdaemon) {
             esp.DrawText(PMColor(255,69,0), "Daemon Status :", PMVector2(500, 55), 20);
             esp.DrawText(PMColor::Green(), "Success", PMVector2(650, 55), 20);
@@ -98,7 +97,6 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
             esp.DrawText(PMColor(255,69,0), "Daemon Status :", PMVector2(500, 55), 20);
             esp.DrawText(PMColor::Orange(), "Failed", PMVector2(650, 55), 20);
         }
-    }
     PMVector2 screen(screenWidth, screenHeight);
     float mScale = screenHeight / (float) 1080;
     esp.DrawText(PMColor::Red(), "@DeadEye_TG", PMVector2(
@@ -136,7 +134,7 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
         int count = response.PlayerCount;
         if (count > 0) {
             for (int i = 0; i < count; i++) {
-                PlayerData player = response.Players[i];
+                 PlayerData player = response.Players[i];
                 if (!isValidPlayer(player)) { continue; }
 
                 bool isTeamMate = player.TeamID == response.MyTeamID;
@@ -220,11 +218,30 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                         esp.DrawLine(skoclr, 3, player.RKnee, player.RAnkle);
                     }
                 }
+                if (isPlayerLine) {
+                    if (player.isBot) {
 
-                if(isPlayerLine){
-                    PMColor color = (player.isBot ? PMColor::Cyan() : PMColor::Red());
-                    int thck = (player.isBot? 1:2);
-                    esp.DrawLine(color, thck, PMVector2((screenWidth / 2), (screenHeight / 2)), player.Neck);
+                        PMColor lcolor = playerInCenter ? PMColor::Alien() : PMColor::Cyan();
+                        if(islinecenter){
+                            esp.DrawLine(lcolor, 2, PMVector2((screenWidth / 2), (screenHeight / 2)), player.Neck);
+                        }else if (islinedown){
+                            esp.DrawLine(lcolor, 2,
+                                         PMVector2((screenWidth / 2), screenHeight), (player.Root));
+                        }else{
+                            esp.DrawLine(lcolor, 2, PMVector2((screenWidth / 2), 0), player.Neck);
+                        }
+                    } else {
+                        PMColor lcolor = playerInCenter ? PMColor::Alien() : PMColor::Red();
+                        if(islinecenter){
+                            esp.DrawLine(lcolor, 2, PMVector2((screenWidth / 2), (screenHeight / 2)), player.Neck);
+                        }else if (islinedown){
+                            esp.DrawLine(lcolor, 2,
+                                         PMVector2((screenWidth / 2), screenHeight), (player.Root));
+                        }else{
+                            esp.DrawLine(lcolor, 2, PMVector2((screenWidth / 2), 0), player.Neck);
+                        }
+
+                    }
                 }
 
                 if (isPlayerBox) {
@@ -239,20 +256,43 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                         esp.DrawFilledRect(bxxclr, Box);
                         esp.DrawRect(bxclr, 2, Box);
 
+
+                    }
+
+                }
+
+                PMRect Boxxx((player.Head.x - (boxWidth / 2)) + 10, (player.Head.y - 10), boxWidth, boxHeight);
+                PMRect Boxx((player.Head.x - (boxWidth / 2)) - 10, player.Head.y, boxWidth, boxHeight);
+                if(is3DPlayerBox){
+                    if (player.isBot) {
+                       PMColor bxclr = playerInCenter ? PMColor::Alien() : PMColor::Cyan();
+                         PMColor bxxclr = playerInCenter ? PMColor::AlienT() : PMColor::CyanT();
+                        esp.DrawFilledRect(bxxclr, Boxxx);
+                        esp.DrawFilledRect(bxxclr, Boxx);
+                        esp.DrawRect(bxclr, 3, Boxxx);
+                        esp.DrawRect(bxclr, 3, Boxx);
+                    } else {
+                        PMColor bxclr = playerInCenter ? PMColor::Alien() : PMColor::Red();
+                        PMColor bxxclr = playerInCenter ? PMColor::AlienT() : PMColor::RedT();
+                        esp.DrawFilledRect(bxxclr, Boxxx);
+                        esp.DrawFilledRect(bxxclr, Boxx);
+                        esp.DrawRect(bxclr, 3, Boxxx);
+                        esp.DrawRect(bxclr, 3, Boxx);
                     }
                 }
 
                 if (isPlayerHealth) {
-//                            esp.DrawHorizontalHealthBar(
-//                                    PMVector2(Box.x + (Box.width / 2) - 40, Box.y - 20),
-//                                    (100 * mScale),
-//                                    100, player.Health);
                     esp.DrawHealthBar(
-                            PMVector2(Box.x + (Box.width / 2) - 55, Box.y - 30),
+                            PMVector2(Box.x + (Box.width / 2) - 65, Box.y - 30),
                             (115 * mScale),
                             100, player.Health);
                 }
-
+                if(isverticlhealth){
+                    esp.DrawVerticalHealthBar(
+                            PMVector2(Box.x + Box.width, Box.y),
+                            boxHeight,
+                            100, player.Health);
+                }
                 if(isPlayerName) {
                     wstring pname = player.PlayerName;
                     wstring bname = L" AI ";
@@ -260,11 +300,11 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
 
                     if(player.isBot) {
                         esp.DrawPlayerText(PMColor::White(), bname.c_str(),
-                                           PMVector2(Box.x + (Box.width / 2) + 20, Box.y -18),
+                                           PMVector2(Box.x + (Box.width / 2), Box.y -18),
                                            ((30 * mScale)) / 2);
                     } else {
                         esp.DrawPlayerText(PMColor::White(), pname.c_str(),
-                                           PMVector2(Box.x + (Box.width / 2) + 20, Box.y -18),
+                                           PMVector2(Box.x + (Box.width / 2) , Box.y -18),
                                            ((30 * mScale)) / 2);
 
                     }
@@ -272,10 +312,12 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                 if (isteamid) {
                     wstring teamid = L" " + to_wstring(player.TeamID) ;
                     esp.DrawPlayerText(PMColor::Orange(), teamid.c_str(),
-                                       PMVector2(Box.x + (Box.width / 2) - 70,
-                                                 Box.y - 27),
-                                       ((32 * mScale)) / 2);
+                                       PMVector2((Box.x + (Box.width / 2)) - 75,
+                                                 Box.y - 30),
+                                       ((35 * mScale)) / 2);
                 }
+
+
 //                if (isplayeruid) {
 //                   wstring playerid = L" " + to_wstring(player.PlayerID);
 //                    esp.DrawPlayerText(PMColor::White(), playerid.c_str(),
@@ -348,7 +390,7 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                             location.x, location.y + (40 * mScale)), itemTextSize);
                 }
                 if ((strstr(item.Name, "HoloSignt") && hollow) ||
-                    (strstr(item.Name, "Canted") && Caneted) ||
+                    (strstr(item.Name, "Canted Sight") && Caneted) ||
                     (strstr(item.Name, "RedDot") && Reddot) ||
                     (strstr(item.Name, "8x") && is8x) ||
                     (strstr(item.Name, "4x") && is4x) ||
@@ -370,7 +412,6 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                     esp.DrawText(PMColor::White(), dist.c_str(), PMVector2(
                             location.x, location.y + (40 * mScale)), itemTextSize);
                 }
-
                 if ((strstr(item.Name, "AKM") && isakm) ||
                     (strstr(item.Name, "M416") && ism416) ||
                     (strstr(item.Name, "QBZ") && isQBZ) ||
@@ -398,7 +439,9 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                     (strstr(item.Name, "Mini14") && isMini14 ) ||
                     (strstr(item.Name, "UMP9") && isUmp ) ||
                     (strstr(item.Name, "MP5K") && ismp5k ) ||
-                    (strstr(item.Name, "Tommy Gun") && istommy )
+                    (strstr(item.Name, "Tommy Gun") && istommy ) ||
+                    (strstr(item.Name, "Mosin Nagant") && isMosin ) ||
+                    (strstr(item.Name, "FAMAS")  )
                         ){
                     esp.DrawText(PMColor(108,31,146), item.Name, PMVector2(
                             location.x, location.y + (20 * mScale)), itemTextSize);
@@ -447,7 +490,37 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                                  itemTextSize);
 
                 }
-                if ((strstr(item.Name, "Grenade") && isgranade) || (strstr(item.Name, "Molotov") && ismolo) || (strstr(item.Name, "Smoke") && issmoke)){
+                if(strstr(item.Name, "Sticky BombW") && iswarning){
+                    if(item.Distance < 15) {
+                        esp.DrawText(PMColor::Red(), "Warning : There is Sticky Bomb near You",
+                                     PMVector2(screenWidth / 2, (screenHeight /8 ) + 9),
+                                     30);
+                    }    esp.DrawText(PMColor::Red(),"Sticky Bomb", PMVector2(
+                            location.x, location.y + (20 * mScale)),
+                                      itemTextSize);
+                    esp.DrawText(PMColor::Red(), dist.c_str(),
+                                 PMVector2(
+                                         location.x,
+                                         location.y + (40 * mScale)),
+                                 itemTextSize);
+
+                }
+                if(strstr(item.Name, "Spike TrapW") && iswarning){
+                    if(item.Distance < 15) {
+                        esp.DrawText(PMColor::Red(), "Warning : There is Spike Trap near You",
+                                     PMVector2(screenWidth / 2, (screenHeight /8 ) + 9),
+                                     30);
+                    }    esp.DrawText(PMColor::Red(),"Spike Trap", PMVector2(
+                            location.x, location.y + (20 * mScale)),
+                                      itemTextSize);
+                    esp.DrawText(PMColor::Red(), dist.c_str(),
+                                 PMVector2(
+                                         location.x,
+                                         location.y + (40 * mScale)),
+                                 itemTextSize);
+
+                }
+                if ((strstr(item.Name, "Grenade") && isgranade) || (strstr(item.Name, "Molotov") && ismolo) || (strstr(item.Name, "Smoke") && issmoke) || (strstr(item.Name, "Sticky Bomb") && isstickeybomb) || (strstr(item.Name, "Spike Trap") && isspiketrap) ){
 
                     esp.DrawText(PMColor::Almond(),item.Name, PMVector2(
                             location.x, location.y + (20 * mScale)),
@@ -504,7 +577,8 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
 
                 if ((strstr(vehical.Name, "Bike") && isBike) ||
                     (strstr(vehical.Name, "Trike") && istrick) ||
-                    (strstr(vehical.Name, "Tuk Tuk") && isTukTuk)) {
+                    (strstr(vehical.Name, "Tuk Tuk") && isTukTuk) ||
+                        (strstr(vehical.Name, "Motor Glider") && ismotarglider) ||(strstr(vehical.Name, "Ferris Car") && isFerrisCar)) {
                     esp.DrawText(PMColor::Orange(), vehical.Name, PMVector2(
                             location.x, location.y + (20 * mScale)), itemTextSize);
                     esp.DrawText(PMColor::Alien(), dist.c_str(), PMVector2(

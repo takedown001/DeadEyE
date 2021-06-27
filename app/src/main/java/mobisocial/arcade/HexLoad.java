@@ -94,7 +94,7 @@ public class HexLoad extends AsyncTask<String, Integer, String>
         super.onProgressUpdate(progress);
         mProgressDialog.setIndeterminate(false);
         mProgressDialog.setMax(100);
-        mProgressDialog.setProgress(progress[0]);
+       mProgressDialog.setProgress(progress[0]);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class HexLoad extends AsyncTask<String, Integer, String>
         ShellUtils.SU("chmod 777 "+ instance.getFilesDir().toString() + urlref.HexMem);
         if (result != null) {
             new AlertDialog.Builder(instance)
-                    .setMessage("Download file is failed, please try again!")
+                    .setMessage("Something Went Wrong , Restart App")
                     .setPositiveButton("OK", null)
                     .show();
         }

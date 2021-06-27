@@ -2,7 +2,7 @@
 #include <PMESP.h>
 #include <PMSocketClient.h>
 #include "PMHacks.h"
-
+#include "Security/enc.h"
 using namespace std;
 
 PMSocketClient client;
@@ -314,6 +314,19 @@ Java_mobisocial_arcade_FloatLogo_PremiumItemValue(JNIEnv *env, jclass clazz,
             break;
         case 117:
             istommy = flag;
+            break;
+        case 118:
+            isFAMAS =flag;
+            break;
+        case 119:
+            isMosin =flag;
+            break;
+        case 120:
+            isstickeybomb =flag;
+            break;
+        case 121:
+            isspiketrap =flag;
+            break;
         default:
             break;
 
@@ -379,6 +392,12 @@ extern "C"
                 break;
             case 37:
                 istruck = flag;
+            case 38:
+                ismotarglider =flag;
+                break;
+            case 39:
+                isFerrisCar = flag;
+                break;
             default:
                 break;
         }
@@ -396,9 +415,6 @@ Java_mobisocial_arcade_FloatLogo_PremiumValue(JNIEnv *env, jclass clazz, jint nu
             break;
         case 599:
             isdaemon = flag;
-            break;
-        case 600:
-            isfree = flag;
             break;
         case 601:
             isPlayerName = flag;
@@ -431,22 +447,23 @@ Java_mobisocial_arcade_FloatLogo_PremiumValue(JNIEnv *env, jclass clazz, jint nu
             isItemDist = flag;
             break;
         case 611:
-            isVehicle = flag;
+            islinedown = flag;
             break;
         case 612:
-            isLootBox = flag;
-            break;
-        case 613:
-            isLootItems = flag;
+            is3DPlayerBox =flag;
             break;
         case 614:
             isPlayerSkel = flag;
             break;
         case 615:
-            isAirDrop = flag;
+            islinecenter = flag;
             break;
         case 616:
             isteamid = flag;
+            break;
+        case 617:
+            isverticlhealth =flag;
+            break;
         default:
             break;
     }
@@ -464,4 +481,11 @@ Java_mobisocial_arcade_FloatLogo_Size(JNIEnv *env, jclass clazz, jint num,
         default:
             break;
     }
+
+}
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_mobisocial_arcade_AESUtils_AES(JNIEnv *env, jclass thiz) {
+    return env->NewStringUTF(OBS("tAeKpEcDe6410111"));
 }

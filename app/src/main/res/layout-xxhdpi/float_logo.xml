@@ -186,7 +186,6 @@
 			android:id="@+id/contentView"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_marginStart="0dp"
 			android:layout_marginTop="45dp"
 			android:layout_toEndOf="@+id/Section"
 			android:background="@color/bgblue">
@@ -246,10 +245,12 @@
 									tools:ignore="HardcodedText" />
 
 							</TableRow>
-					</TableLayout>
+						</TableLayout>
+
 						<TableLayout
 							android:layout_width="match_parent"
 							android:layout_height="match_parent">
+
 							<TableRow
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
@@ -283,9 +284,11 @@
 
 							</TableRow>
 						</TableLayout>
+
 						<TableLayout
 							android:layout_width="match_parent"
 							android:layout_height="match_parent">
+
 							<TableRow
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
@@ -307,22 +310,33 @@
 									android:text="Bus"
 									android:textColor="@color/white"
 									tools:ignore="HardcodedText" />
+
 								<CheckBox
 									android:id="@+id/MonsterTruck"
 									android:layout_width="match_parent"
 									android:layout_height="match_parent"
 									android:checked="true"
-									android:visibility="gone"
 									android:text="Monster Truck"
+									android:textColor="@color/white"
+									android:visibility="gone"
+									tools:ignore="HardcodedText" />
+
+								<CheckBox
+									android:id="@+id/Truck"
+									android:layout_width="match_parent"
+									android:layout_height="match_parent"
+									android:checked="true"
+									android:text="Pickup"
 									android:textColor="@color/white"
 									tools:ignore="HardcodedText" />
 
-
 							</TableRow>
 						</TableLayout>
+
 						<TableLayout
 							android:layout_width="match_parent"
 							android:layout_height="match_parent">
+
 							<TableRow
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
@@ -356,9 +370,11 @@
 
 							</TableRow>
 						</TableLayout>
+
 						<TableLayout
 							android:layout_width="match_parent"
 							android:layout_height="match_parent">
+
 							<TableRow
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
@@ -381,20 +397,13 @@
 									android:textColor="@color/white"
 									tools:ignore="HardcodedText" />
 
-								<CheckBox
-									android:id="@+id/Truck"
-									android:layout_width="match_parent"
-									android:layout_height="match_parent"
-									android:checked="true"
-									android:text="Pickup"
-									android:textColor="@color/white"
-									tools:ignore="HardcodedText" />
 
 							</TableRow>
 						</TableLayout>
 						<TableLayout
 							android:layout_width="match_parent"
 							android:layout_height="match_parent">
+
 							<TableRow
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
@@ -429,15 +438,48 @@
 
 							</TableRow>
 						</TableLayout>
+						<TableLayout
+							android:layout_width="match_parent"
+							android:layout_height="match_parent">
+
+							<TableRow
+								android:layout_width="match_parent"
+								android:layout_height="match_parent">
+
+								<CheckBox
+									android:id="@+id/MotorGlider"
+									android:layout_width="match_parent"
+									android:layout_height="match_parent"
+									android:checked="true"
+									android:text="Motor Glider"
+									android:textColor="@color/white"
+									tools:ignore="HardcodedText" />
+
+
+								<CheckBox
+									android:id="@+id/FerrisCar"
+									android:layout_width="match_parent"
+									android:layout_height="match_parent"
+									android:checked="true"
+									android:text="Ferris Car"
+									android:textColor="@color/white"
+									tools:ignore="HardcodedText" />
+
+
+							</TableRow>
+						</TableLayout>
 					</LinearLayout>
 
 					<LinearLayout
+
+
+
 						android:id="@+id/safelayout"
 						android:layout_width="match_parent"
-						android:orientation="vertical"
+						android:layout_height="match_parent"
 						android:layout_marginTop="@dimen/dimen_5dp"
-						android:visibility="gone"
-						android:layout_height="match_parent">
+						android:orientation="vertical"
+						android:visibility="gone">
 
 						<TextView
 							android:layout_width="match_parent"
@@ -460,6 +502,7 @@
 							android:textSize="@dimen/dimen_12sp" />
 
 						<RadioGroup
+							android:id="@+id/aimbot"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content">
 
@@ -467,30 +510,41 @@
 								android:id="@+id/Aimoff"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
-								android:buttonTint="#FFF"
 								android:layout_marginStart="@dimen/dimen_10dp"
+								android:buttonTint="#FFF"
 								android:checked="true"
 								android:text="OFF"
 								android:textColor="@color/white" />
 
 							<RadioButton
-								android:id="@+id/Aimon"
+								android:id="@+id/aimbody"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
-								android:buttonTint="#FFF"
 								android:layout_marginStart="@dimen/dimen_10dp"
+								android:buttonTint="#FFF"
 								android:fontFamily="@font/montserrat"
-								android:text="On"
+								android:text="Body"
+								android:textColor="@color/white" />
+
+							<RadioButton
+								android:id="@+id/aimhead"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:layout_marginStart="@dimen/dimen_10dp"
+								android:buttonTint="#FFF"
+								android:fontFamily="@font/montserrat"
+								android:text="Head"
 								android:textColor="@color/white" />
 						</RadioGroup>
+
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
 							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
 							android:layout_marginBottom="@dimen/dimen_5dp"
 							android:fontFamily="@font/montserrat_bold"
 							android:text="Recoil Compensation"
-							android:layout_marginTop="@dimen/dimen_5dp"
 							android:textColor="@color/white"
 							android:textSize="@dimen/dimen_14sp" />
 
@@ -504,26 +558,37 @@
 							android:textColor="@color/white"
 							android:textSize="@dimen/dimen_12sp" />
 
-						<Switch
+						<CheckBox
 							android:id="@+id/recoil"
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
-							android:fontFamily="@font/montserrat"
-							android:textColor="@color/white"
 							android:layout_marginStart="@dimen/dimen_10dp"
 							android:layout_marginRight="@dimen/dimen_10dp"
-							android:text="Activate Recoil"
-							/>
+							android:fontFamily="@font/montserrat"
+							android:text="Vertical Recoil"
+							android:textColor="@color/white" />
+
+						<CheckBox
+							android:id="@+id/hrecoil"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_10dp"
+							android:layout_marginRight="@dimen/dimen_10dp"
+							android:fontFamily="@font/montserrat"
+							android:text="Horizontal Recoil"
+							android:textColor="@color/white" />
+
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
 							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
 							android:layout_marginBottom="@dimen/dimen_5dp"
 							android:fontFamily="@font/montserrat_bold"
 							android:text="Custom Crosshair"
-							android:layout_marginTop="@dimen/dimen_5dp"
 							android:textColor="@color/white"
 							android:textSize="@dimen/dimen_14sp" />
+
 						<TextView
 							android:layout_width="184dp"
 							android:layout_height="wrap_content"
@@ -534,6 +599,7 @@
 							android:text="Reduces Bullet Spread On Hip Fire And Improves Raw Aim"
 							android:textColor="@color/white"
 							android:textSize="10sp" />
+
 						<RadioGroup
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content">
@@ -542,8 +608,8 @@
 								android:id="@+id/crossoff"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
-								android:buttonTint="#FFF"
 								android:layout_marginStart="@dimen/dimen_10dp"
+								android:buttonTint="#FFF"
 								android:checked="true"
 								android:text="OFF"
 								android:textColor="@color/white" />
@@ -552,10 +618,9 @@
 								android:id="@+id/graphicross"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
+								android:layout_marginStart="@dimen/dimen_10dp"
 								android:buttonTint="#FFF"
 								android:fontFamily="@font/montserrat"
-								android:layout_marginStart="@dimen/dimen_10dp"
-								android:checked="true"
 								android:text="Graphical Crosshair"
 								android:textColor="@color/white" />
 
@@ -569,71 +634,294 @@
 								android:text="Memory Crosshair"
 								android:textColor="@color/white" />
 						</RadioGroup>
+
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
-							android:layout_marginTop="@dimen/dimen_5dp"
-							android:fontFamily="@font/montserrat_bold"
 							android:layout_marginStart="@dimen/dimen_5dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
 							android:layout_marginRight="@dimen/dimen_10dp"
-							android:text="Headbot"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="Magic Bullet"
 							android:textColor="@color/white"
 							android:textSize="@dimen/dimen_15dp" />
+
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
 							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginTop="7sp"
 							android:layout_marginBottom="@dimen/dimen_5dp"
 							android:fontFamily="@font/montserrat"
-							android:text="Increases Overall Headshot Probability"
-							android:layout_marginTop="@dimen/dimen_5dp"
+							android:text="Forces Scattered Bullets On Enemies"
 							android:textColor="@color/white"
 							android:textSize="10sp" />
 
 						<Switch
-							android:id="@+id/HeadBot"
+							android:id="@+id/magicbullet"
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
-							android:fontFamily="@font/montserrat"
-							android:textColor="@color/white"
 							android:layout_marginStart="@dimen/dimen_10dp"
 							android:layout_marginRight="@dimen/dimen_10dp"
-							android:text="Activate Headbot"
-							/>
+							android:fontFamily="@font/montserrat"
+							android:text="Activate Magic Bullet"
+							android:textColor="@color/white" />
 
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
 							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
 							android:fontFamily="@font/montserrat_bold"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:layout_marginRight="@dimen/dimen_10dp"
-							android:text="Magic Bullet"
+							android:text="Graphical Elements"
 							android:textColor="@color/white"
-							android:textSize="@dimen/dimen_15dp" />
+							android:textSize="@dimen/dimen_14sp" />
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
 							android:layout_marginStart="@dimen/dimen_7dp"
 							android:layout_marginBottom="@dimen/dimen_5dp"
 							android:fontFamily="@font/montserrat"
-							android:text="Forces Scattered Bullets On Enemies"
-							android:layout_marginTop="7sp"
+							android:text="Darkens Whole Map For Better ESP View"
 							android:textColor="@color/white"
-							android:textSize="10sp"
-							/>
-						<Switch
-							android:id="@+id/magicbullet"
+							android:textSize="10sp" />
+
+						<RadioGroup
+							android:id="@+id/graphice"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content">
+
+
+							<RadioButton
+								android:id="@+id/goff"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:layout_marginStart="@dimen/dimen_10dp"
+								android:buttonTint="#FFF"
+								android:checked="true"
+								android:text="OFF"
+								android:textColor="@color/white" />
+
+							<RadioButton
+								android:id="@+id/midnight"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:layout_marginStart="@dimen/dimen_10dp"
+								android:buttonTint="#FFF"
+								android:fontFamily="@font/montserrat"
+								android:text="Night Sky"
+								android:textColor="@color/white" />
+
+							<RadioButton
+								android:id="@+id/dawnenv"
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="@dimen/dimen_10dp"
+								android:layout_marginRight="@dimen/dimen_10dp"
+								android:buttonTint="#FFF"
+								android:fontFamily="@font/montserrat"
+								android:text="Dawn Environment"
+								android:textColor="@color/white" />
+
+							<RadioButton
+								android:id="@+id/both"
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="@dimen/dimen_10dp"
+								android:layout_marginRight="@dimen/dimen_10dp"
+								android:fontFamily="@font/montserrat"
+								android:buttonTint="#FFF"
+								android:text="Both"
+								android:textColor="@color/white" />
+
+						</RadioGroup>
+
+						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
-							android:fontFamily="@font/montserrat"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="Flying Cars"
 							android:textColor="@color/white"
+							android:textSize="@dimen/dimen_14sp" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat"
+							android:text=" Fly Cars Up in The Sky For Some Duration."
+							android:textColor="@color/white"
+							android:textSize="10sp" />
+
+						<Switch
+							android:id="@+id/carfly"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
 							android:layout_marginStart="@dimen/dimen_10dp"
 							android:layout_marginRight="@dimen/dimen_10dp"
-							android:text="Activate Magic Bullet"
-							/>
+							android:fontFamily="@font/montserrat"
+							android:text="Activate"
+							android:textColor="@color/white" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="Player Velocity"
+							android:textColor="@color/white"
+							android:textSize="@dimen/dimen_14sp" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat"
+							android:text="Increases Player Velocity To Specified Custom Speed"
+							android:textColor="@color/white"
+							android:textSize="10sp" />
+
+						<Switch
+							android:id="@+id/flash"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_10dp"
+							android:layout_marginRight="@dimen/dimen_10dp"
+							android:fontFamily="@font/montserrat"
+							android:text="Activate Speed"
+							android:textColor="@color/white" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="Sticky Aim"
+							android:textColor="@color/white"
+							android:textSize="@dimen/dimen_14sp" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat"
+							android:text="Lock Your Aim Reticle On Enemy"
+							android:textColor="@color/white"
+							android:textSize="10sp" />
+
+						<LinearLayout
+							android:orientation="horizontal"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:padding="10dp">
+
+							<SeekBar
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:layout_weight="1.0"
+								android:layout_marginRight="10dp"
+								android:min="100"
+								android:max="150"
+								android:id="@+id/seekbar_aimbot"/>
+
+							<TextView
+								android:id="@+id/textview_aimbot"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:text="150"
+								android:fontFamily="@font/montserrat"
+								android:textColor="@color/white" />
+
+						</LinearLayout>
+
+						<Switch
+							android:id="@+id/stickyaimm"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_10dp"
+							android:layout_marginRight="@dimen/dimen_10dp"
+							android:fontFamily="@font/montserrat"
+							android:text="Activate Sticky Aim"
+							android:textColor="@color/white" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="Instant Hit"
+							android:textColor="@color/white"
+							android:textSize="@dimen/dimen_14sp" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat"
+							android:text="Increase Bullet Speed When Fired"
+							android:textColor="@color/white"
+							android:textSize="10sp" />
+
+						<Switch
+							android:id="@+id/instanthit"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_10dp"
+							android:layout_marginRight="@dimen/dimen_10dp"
+							android:fontFamily="@font/montserrat"
+							android:text="Activate Instant Hit"
+							android:textColor="@color/white" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="Car Speed"
+							android:visibility="gone"
+							android:textColor="@color/white"
+							android:textSize="@dimen/dimen_14sp" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_7dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat"
+							android:visibility="gone"
+							android:text="Increase Bullet Speed When Fired"
+							android:textColor="@color/white"
+							android:textSize="10sp" />
+
+						<Switch
+							android:id="@+id/carspeed"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="@dimen/dimen_10dp"
+							android:visibility="gone"
+							android:layout_marginRight="@dimen/dimen_10dp"
+							android:fontFamily="@font/montserrat"
+							android:text="Activate CarSpeed"
+							android:textColor="@color/white" />
 
 					</LinearLayout>
+
 					<LinearLayout
 						android:id="@+id/players"
 						android:layout_width="match_parent"
@@ -642,6 +930,7 @@
 						android:background="@color/bgblue"
 						android:orientation="vertical"
 						android:visibility="visible">
+
 						<LinearLayout
 							android:layout_width="345dp"
 							android:layout_height="wrap_content"
@@ -676,78 +965,62 @@
 								app:layout_constraintTop_toTopOf="parent"
 								app:size="small" />
 						</LinearLayout>
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="match_parent"
-							android:layout_marginStart="5dp"
-							android:layout_marginTop="@dimen/dimen_5dp"
-							android:layout_marginBottom="@dimen/dimen_5dp"
-							android:fontFamily="@font/montserrat_bold"
-							android:text="Instructions"
-							android:textColor="@color/white"
-							android:textSize="@dimen/dimen_14sp" />
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="match_parent"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:layout_marginBottom="@dimen/dimen_5dp"
-							android:fontFamily="@font/montserrat"
-							android:text="Select Stop Cheat-ESP After Exit Game To Force Kill Daemon Process"
-							android:textColor="@color/white"
-							android:textSize="@dimen/dimen_10dp" />
+
 						<LinearLayout
 							android:id="@+id/mtptab"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:orientation="vertical"
-							android:visibility="gone"
-							android:padding="5dp">
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="match_parent"
-							android:layout_marginStart="5dp"
-							android:layout_marginTop="@dimen/dimen_5dp"
-							android:layout_marginBottom="@dimen/dimen_5dp"
-							android:fontFamily="@font/montserrat_bold"
-							android:text="Bypass MTP Protection"
-							android:textColor="@color/white"
-							android:textSize="@dimen/dimen_14sp" />
-						<TextView
-							android:layout_width="match_parent"
-							android:layout_height="match_parent"
-							android:layout_marginStart="@dimen/dimen_5dp"
-							android:layout_marginBottom="@dimen/dimen_5dp"
-							android:fontFamily="@font/montserrat"
-							android:text="Bypasses Normal Integrity Scans And Security Patches"
-							android:textColor="@color/white"
-							android:textSize="@dimen/dimen_10dp" />
+							android:padding="5dp"
+							android:visibility="gone">
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="5dp"
+								android:layout_marginTop="@dimen/dimen_5dp"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat_bold"
+								android:text="Bypass MTP Protection"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_14sp" />
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginStart="@dimen/dimen_5dp"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat"
+								android:text="Bypasses Normal Integrity Scans And Security Patches"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_10dp" />
 
 							<Switch
 								android:id="@+id/iptable"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"
-								android:text="Inject"
-								android:textColor="@color/white"
+								android:layout_marginStart="@dimen/dimen_8dp"
 								android:fontFamily="@font/montserrat_bold"
-								android:layout_marginStart="@dimen/dimen_8dp" />
+								android:text="Inject (Spawn Island)"
+								android:textColor="@color/white" />
 
 						</LinearLayout>
+
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
-							android:layout_marginStart="5dp"
-							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginStart="7dp"
 							android:layout_marginBottom="@dimen/dimen_5dp"
 							android:fontFamily="@font/montserrat_bold"
 							android:text="Bounding Box Display"
 							android:textColor="@color/white"
-							android:textSize="@dimen/dimen_14sp" />
+							android:textSize="@dimen/dimen_12sp" />
 
 						<LinearLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:orientation="vertical"
-							android:padding="5dp">
+							android:layout_marginStart="7dp"
+							android:orientation="vertical">
 
 							<TextView
 								android:layout_width="match_parent"
@@ -759,6 +1032,7 @@
 								android:textSize="@dimen/dimen_10dp" />
 
 							<RadioGroup
+								android:id="@+id/boxgroup"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content">
 
@@ -785,10 +1059,143 @@
 									android:layout_width="match_parent"
 									android:layout_height="wrap_content"
 									android:buttonTint="#FFF"
-									android:visibility="gone"
 									android:fontFamily="@font/montserrat"
 									android:text="3-D Box"
+									android:textColor="@color/white"
+									android:visibility="visible" />
+
+
+							</RadioGroup>
+						</LinearLayout>
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="7dp"
+							android:layout_marginTop="@dimen/dimen_5dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="Line Display"
+							android:textColor="@color/white"
+							android:textSize="@dimen/dimen_12sp" />
+
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="7dp"
+							android:orientation="vertical">
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat"
+								android:text="Show The Lines To Head Of Player"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_10dp" />
+
+							<RadioGroup
+								android:id="@+id/linegroup"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content">
+
+								<RadioButton
+									android:id="@+id/lineoff"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+									android:checked="true"
+									android:text="OFF"
 									android:textColor="@color/white" />
+
+								<RadioButton
+									android:id="@+id/lineup"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+									android:fontFamily="@font/montserrat"
+									android:text="Upwards"
+									android:textColor="@color/white" />
+
+								<RadioButton
+									android:id="@+id/linecenter"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+									android:fontFamily="@font/montserrat"
+									android:text="Centered"
+									android:textColor="@color/white" />
+
+								<RadioButton
+									android:id="@+id/linedown"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+									android:fontFamily="@font/montserrat"
+									android:text="Downwards"
+									android:textColor="@color/white"
+									android:visibility="visible" />
+
+
+							</RadioGroup>
+						</LinearLayout>
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_marginStart="7dp"
+							android:layout_marginBottom="@dimen/dimen_5dp"
+							android:fontFamily="@font/montserrat_bold"
+							android:text="Health Display Adjustment"
+							android:textColor="@color/white"
+							android:textSize="@dimen/dimen_12sp" />
+
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="7dp"
+							android:orientation="vertical">
+
+							<TextView
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:fontFamily="@font/montserrat"
+								android:text="Show The HealthBar On Player"
+								android:textColor="@color/white"
+								android:textSize="@dimen/dimen_10dp" />
+
+							<RadioGroup
+								android:id="@+id/healthgroup"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content">
+
+								<RadioButton
+									android:id="@+id/healthoff"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+									android:checked="true"
+									android:text="OFF"
+									android:textColor="@color/white" />
+								<RadioButton
+									android:id="@+id/healthhori"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+									android:fontFamily="@font/montserrat"
+									android:text="Horizotal"
+									android:textColor="@color/white" />
+
+								<RadioButton
+									android:id="@+id/healthverti"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:buttonTint="#FFF"
+
+									android:fontFamily="@font/montserrat"
+									android:text="Vertical"
+									android:textColor="@color/white"
+									android:visibility="visible" />
 
 
 							</RadioGroup>
@@ -809,8 +1216,8 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginTop="3dp"
-							android:fontFamily="@font/montserrat"
 							android:background="@color/bgblue"
+							android:fontFamily="@font/montserrat"
 							android:orientation="vertical"
 							android:visibility="visible">
 
@@ -829,6 +1236,7 @@
 										android:checked="true"
 										android:text="Line"
 										android:textColor="@color/white"
+										android:visibility="gone"
 										tools:ignore="HardcodedText" />
 
 									<CheckBox
@@ -841,13 +1249,14 @@
 										tools:ignore="HardcodedText" />
 
 									<CheckBox
-										android:id="@+id/isHealth"
+										android:id="@+id/isSkelton"
 										android:layout_width="match_parent"
 										android:layout_height="match_parent"
 										android:checked="true"
-										android:text="Health"
+										android:text="Skeleton"
 										android:textColor="@color/white"
 										tools:ignore="HardcodedText" />
+
 
 
 								</TableRow>
@@ -855,8 +1264,8 @@
 
 							<TableLayout
 								android:layout_width="match_parent"
-								android:fontFamily="@font/montserrat"
-								android:layout_height="match_parent">
+								android:layout_height="match_parent"
+								android:fontFamily="@font/montserrat">
 
 								<TableRow
 									android:layout_width="match_parent"
@@ -880,17 +1289,10 @@
 										android:textColor="@color/white"
 										tools:ignore="HardcodedText" />
 
-									<CheckBox
-										android:id="@+id/isSkelton"
-										android:layout_width="match_parent"
-										android:layout_height="match_parent"
-										android:checked="true"
-										android:text="Skeleton"
-										android:textColor="@color/white"
-										tools:ignore="HardcodedText" />
 
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
@@ -915,7 +1317,7 @@
 										android:layout_height="match_parent"
 										android:checked="true"
 										android:fontFamily="@font/montserrat"
-										android:text="Grenade Warning"
+										android:text="Throwable Warn"
 										android:textColor="@color/white"
 										tools:ignore="HardcodedText" />
 
@@ -964,7 +1366,7 @@
 								app:duration="@android:integer/config_mediumAnimTime"
 								app:size="small" />
 						</LinearLayout>
-						
+
 
 						<Switch
 							android:id="@+id/isEnemyWeapon"
@@ -978,6 +1380,7 @@
 							android:theme="@style/switchtheme"
 							android:visibility="gone"
 							tools:ignore="HardcodedText" />
+
 						<LinearLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
@@ -1002,14 +1405,14 @@
 								android:id="@+id/showall"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
-								android:text="Show All Items"
-								android:textStyle="bold"
-								android:checked="true"
-								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:layout_marginStart="8dp"
 								android:layout_marginTop="@dimen/dimen_10dp"
+								android:layout_marginBottom="@dimen/dimen_5dp"
+								android:checked="true"
 								android:fontFamily="@font/montserrat"
+								android:text="Show All Items"
 								android:textColor="@color/white"
-								android:layout_marginStart="8dp"/>
+								android:textStyle="bold" />
 
 							<TableLayout
 								android:layout_width="match_parent"
@@ -1078,8 +1481,28 @@
 										tools:ignore="HardcodedText" />
 
 
+
+								</TableRow>
+								<TableRow>
+									<CheckBox
+										android:id="@+id/stickeybomb"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Stickey Bomb"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+									<CheckBox
+										android:id="@+id/spike"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Spike Trap"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
 								</TableRow>
 							</TableLayout>
+
 							<TextView
 								android:layout_width="match_parent"
 								android:layout_height="match_parent"
@@ -1118,8 +1541,6 @@
 
 
 					</LinearLayout>
-
-
 
 
 					<LinearLayout
@@ -1168,36 +1589,37 @@
 
 								</TableRow>
 
-							<TableLayout
+								<TableLayout
 
-								android:layout_width="match_parent"
-								android:layout_height="match_parent">
-
-								<TableRow
-									android:layout_width="wrap_content"
+									android:layout_width="match_parent"
 									android:layout_height="match_parent">
 
-									<CheckBox
-										android:id="@+id/AirDrop"
-										android:layout_width="match_parent"
-										android:layout_height="match_parent"
-										android:checked="true"
-										android:text="AirDrop"
-										android:textColor="@color/white"
-										tools:ignore="HardcodedText" />
+									<TableRow
+										android:layout_width="wrap_content"
+										android:layout_height="match_parent">
 
-									<CheckBox
-										android:id="@+id/DropPlane"
-										android:layout_width="match_parent"
-										android:layout_height="match_parent"
-										android:checked="true"
-										android:text="DropPlane"
-										android:textColor="@color/white"
-										tools:ignore="HardcodedText" />
+										<CheckBox
+											android:id="@+id/AirDrop"
+											android:layout_width="match_parent"
+											android:layout_height="match_parent"
+											android:checked="true"
+											android:text="AirDrop"
+											android:textColor="@color/white"
+											tools:ignore="HardcodedText" />
 
-								</TableRow>
+										<CheckBox
+											android:id="@+id/DropPlane"
+											android:layout_width="match_parent"
+											android:layout_height="match_parent"
+											android:checked="true"
+											android:text="DropPlane"
+											android:textColor="@color/white"
+											tools:ignore="HardcodedText" />
 
-							</TableLayout>
+									</TableRow>
+
+								</TableLayout>
+
 								<TableRow
 									android:layout_width="wrap_content"
 									android:layout_height="match_parent">
@@ -1257,8 +1679,6 @@
 										tools:ignore="HardcodedText" />
 
 
-
-
 								</TableRow>
 							</TableLayout>
 
@@ -1267,19 +1687,21 @@
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
 
-							<TableRow
+								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent"
 									android:textColor="#5EE863"
 									tools:ignore="HardcodedText">
-								<CheckBox
-									android:id="@+id/reddot"
-									android:layout_width="match_parent"
-									android:layout_height="match_parent"
-									android:checked="true"
-									android:text="Red Dot"
-									android:textColor="@color/white"
-									tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/reddot"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="Red Dot"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
 									<CheckBox
 										android:id="@+id/eightx"
 										android:layout_width="match_parent"
@@ -1383,66 +1805,73 @@
 										tools:ignore="HardcodedText" />
 
 
+								</TableRow>
+							</TableLayout>
 
+							<TableLayout
+								android:layout_width="match_parent"
+								android:layout_height="match_parent">
+
+								<TableRow
+									android:layout_width="match_parent"
+									android:layout_height="match_parent">
+
+									<CheckBox
+										android:id="@+id/Mk47Mutant"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:checked="true"
+										android:text="Mk47 Mutant"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/SKS"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:checked="true"
+										android:text="SKS"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
 
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
-							<TableRow
-								android:layout_width="match_parent"
-								android:layout_height="match_parent">
 
-								<CheckBox
-									android:id="@+id/Mk47Mutant"
+								<TableRow
 									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:checked="true"
-									android:text="Mk47 Mutant"
-									android:textColor="@color/white"
-									tools:ignore="HardcodedText" />
+									android:layout_height="match_parent">
 
-								<CheckBox
-									android:id="@+id/SKS"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:checked="true"
-									android:text="SKS"
-									android:textColor="@color/white"
-									tools:ignore="HardcodedText" />
+									<CheckBox
+										android:id="@+id/SCARL"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent"
+										android:checked="true"
+										android:text="SCAR-L"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
 
-							</TableRow>
+									<CheckBox
+										android:id="@+id/Kar98k"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:checked="true"
+										android:text="Kar98k"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText,TooManyViews" />
+
+
+								</TableRow>
+								M
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
-							<TableRow
-								android:layout_width="match_parent"
-								android:layout_height="match_parent">
 
-								<CheckBox
-									android:id="@+id/SCARL"
-									android:layout_width="match_parent"
-									android:layout_height="match_parent"
-									android:checked="true"
-									android:text="SCAR-L"
-									android:textColor="@color/white"
-									tools:ignore="HardcodedText" />
-								<CheckBox
-									android:id="@+id/Kar98k"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:checked="true"
-									android:text="Kar98k"
-									android:textColor="@color/white"
-									tools:ignore="HardcodedText,TooManyViews" />
-
-
-							</TableRow>M</TableLayout>
-							<TableLayout
-								android:layout_width="match_parent"
-								android:layout_height="match_parent">
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1466,12 +1895,13 @@
 										tools:ignore="HardcodedText" />
 
 
-
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1506,9 +1936,11 @@
 
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1521,8 +1953,6 @@
 										android:text="Groza"
 										android:textColor="@color/white"
 										tools:ignore="HardcodedText" />
-
-
 									<CheckBox
 										android:id="@+id/Uzi"
 										android:layout_width="match_parent"
@@ -1532,12 +1962,13 @@
 										tools:ignore="HardcodedText" />
 
 
-
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1560,60 +1991,64 @@
 										tools:ignore="HardcodedText" />
 
 
-
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
-							<TableRow
-								android:layout_width="match_parent"
-								android:layout_height="match_parent">
-
-								<CheckBox
-									android:id="@+id/Mk14"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:checked="true"
-									android:text="MK14"
-									android:textColor="@color/white"
-									tools:ignore="HardcodedText,TooManyViews" />
-
-								<CheckBox
-									android:id="@+id/M249"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:checked="true"
-									android:text="M249"
-									android:textColor="@color/white"
-									tools:ignore="HardcodedText" />
-							</TableRow>
 
 								<TableRow
 									android:layout_width="match_parent"
-								android:layout_height="match_parent">
-			<CheckBox
-				android:id="@+id/TommyGun"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:checked="true"
-		android:text="TommyGun"
-		android:textColor="@color/white"
-		tools:ignore="HardcodedText" />
+									android:layout_height="match_parent">
 
-					<CheckBox
-						android:id="@+id/Bizon"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:text="PP19"
-						android:textColor="@color/white"
-						tools:ignore="HardcodedText" />
-</TableRow>
+									<CheckBox
+										android:id="@+id/Mk14"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:checked="true"
+										android:text="MK14"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText,TooManyViews" />
+
+									<CheckBox
+										android:id="@+id/M249"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:checked="true"
+										android:text="M249"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+								</TableRow>
+
+								<TableRow
+									android:layout_width="match_parent"
+									android:layout_height="match_parent">
+
+									<CheckBox
+										android:id="@+id/TommyGun"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:checked="true"
+										android:text="TommyGun"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+
+									<CheckBox
+										android:id="@+id/Bizon"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:text="PP19"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+								</TableRow>
 
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1680,9 +2115,11 @@
 
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1707,12 +2144,32 @@
 										tools:ignore="HardcodedText" />
 
 
+								</TableRow>
+								<TableRow>
+									<CheckBox
+										android:id="@+id/Mosin"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:checked="true"
+										android:text="Mosin Nagant"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
+									<CheckBox
+										android:id="@+id/FAMAS"
+										android:layout_width="match_parent"
+										android:layout_height="wrap_content"
+										android:text="Famas"
+										android:textColor="@color/white"
+										tools:ignore="HardcodedText" />
 
 								</TableRow>
 							</TableLayout>
+
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1732,7 +2189,6 @@
 										android:text="Win94"
 										android:textColor="@color/white"
 										tools:ignore="HardcodedText" />
-
 
 
 								</TableRow>
@@ -1776,10 +2232,12 @@
 
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent"
 								android:visibility="gone">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1811,10 +2269,12 @@
 
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent"
 								android:visibility="gone">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -1879,13 +2339,16 @@
 
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent"
 								android:visibility="gone">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
+
 									<CheckBox
 										android:id="@+id/R1895"
 										android:layout_width="match_parent"
@@ -1992,9 +2455,11 @@
 
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -2018,9 +2483,11 @@
 
 								</TableRow>
 							</TableLayout>
+
 							<TableLayout
 								android:layout_width="match_parent"
 								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -2150,8 +2617,6 @@
 										tools:ignore="HardcodedText" />
 
 
-
-
 								</TableRow>
 
 								<TableRow
@@ -2207,9 +2672,11 @@
 
 								</TableRow>
 							</TableLayout>
-								<TableLayout
-							android:layout_width="match_parent"
-							android:layout_height="match_parent">
+
+							<TableLayout
+								android:layout_width="match_parent"
+								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -2234,9 +2701,11 @@
 
 								</TableRow>
 							</TableLayout>
-								<TableLayout
-							android:layout_width="match_parent"
-							android:layout_height="match_parent">
+
+							<TableLayout
+								android:layout_width="match_parent"
+								android:layout_height="match_parent">
+
 								<TableRow
 									android:layout_width="match_parent"
 									android:layout_height="match_parent">
@@ -2323,8 +2792,7 @@
 							<TableLayout
 								android:id="@+id/otherTab"
 								android:layout_width="match_parent"
-								android:layout_height="match_parent"
-								>
+								android:layout_height="match_parent">
 
 								<TableRow
 									android:layout_width="match_parent"

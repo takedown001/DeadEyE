@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.topjohnwu.libsu:core:2.5.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/9f092b8483b389f7c4a27fcb272161b6/jetified-core-2.5.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/9f092b8483b389f7c4a27fcb272161b6/jetified-core-2.5.1/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/9f092b8483b389f7c4a27fcb272161b6/jetified-core-2.5.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/com.github.topjohnwu.libsu/core/2.5.1/b927957f249064642d3e46da8cc404a0725a82fc/core-2.5.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

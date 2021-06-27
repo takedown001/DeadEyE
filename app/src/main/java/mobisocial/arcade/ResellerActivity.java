@@ -122,28 +122,32 @@ public class ResellerActivity extends AppCompatActivity {
     class OneLoadAllProducts extends AsyncTask<String, String, String> {
         @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
-        protected void onPostExecute(String file_url) {
+        protected void onPostExecute(String s) {
             lottieDialog.dismiss();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    if (s == null || s.isEmpty()) {
+                        Toast.makeText(ResellerActivity.this, "Server Error", Toast.LENGTH_LONG).show();
+                        return;
+                    } else {
+                        if (success == 1) {
 
-                    if (success == 1) {
+                            for (int i = 0; i < offersList.size(); i++) {
+                                Reseller reseller = new Reseller();
+                                reseller.setTitle(offersList.get(i).get(TAG_RNAME));
+                                reseller.setDesc(offersList.get(i).get(TAG_RDESC));
+                                reseller.setImage(offersList.get(i).get(TAG_RIMG));
 
-                        for (int i = 0; i < offersList.size(); i++) {
-                            Reseller reseller = new Reseller();
-                            reseller.setTitle(offersList.get(i).get(TAG_RNAME));
-                            reseller.setDesc(offersList.get(i).get(TAG_RDESC));
-                            reseller.setImage(offersList.get(i).get(TAG_RIMG));
+                                ResellerList.add(reseller);
+                                adapter.notifyDataSetChanged();
 
-                            ResellerList.add(reseller);
-                            adapter.notifyDataSetChanged();
+                            }
+                        } else {
+
+                            Toast.makeText(ResellerActivity.this, "SomeThing Went Wrong", Toast.LENGTH_LONG).show();
 
                         }
-                    } else {
-
-                        Toast.makeText(ResellerActivity.this, "SomeThing Went Wrong", Toast.LENGTH_LONG).show();
-
                     }
                 }
 

@@ -42,6 +42,7 @@ import com.google.android.gms.common.util.Hex;
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.topjohnwu.superuser.Shell;
+import com.yeyint.customalertdialog.CustomAlertDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -187,7 +188,6 @@ public class HomeActivity extends AppCompatActivity {
             try {
 
                 Check();
-                loadanimation();
                 loadAssets();
             } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
@@ -221,50 +221,44 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+
+
     @Override
     public void onBackPressed() {
-
+        CustomAlertDialog Androidcheck = new CustomAlertDialog(this,  CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
         if (backbackexit >= 2) {
-
-            // Creating alert Dialog with three Buttons
-
-            android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(
-                    HomeActivity.this);
-
-            // Setting Dialog Title
-            alertDialog.setTitle(getResources().getString(R.string.app_name));
-
-            // Setting Dialog Message
-            alertDialog.setMessage("Are you sure you want to exit??");
-
-            // Setting Icon to Dialog
-            alertDialog.setIcon(R.drawable.icon);
-
-            // Setting Positive Yes Button
-            alertDialog.setPositiveButton("YES",
-                    new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                            finish();
-                        }
-                    });
-            // Setting Positive Yes Button
-            alertDialog.setNeutralButton("NO",
-                    new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog,
-                                            int which) {
-                        }
-                    });
-            // Showing Alert Message
-            alertDialog.show();
+            Androidcheck.setCancelable(false);
+            Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
+            Androidcheck.setAlertTitle("Exit");
+            Androidcheck.setImageSize(150,150);
+            Androidcheck.setAlertMessage("Are you sure you want to exit back ?");
+            Androidcheck.create();
+            Androidcheck.show();
+            Androidcheck.setPositiveButton("Yes", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    Androidcheck.dismiss();
+                }
+            });
+            Androidcheck.setNegativeButton("NO", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                    Androidcheck.cancel();
+                }
+            });
 //					super.onBackPressed();
         } else {
             backbackexit++;
             Toast.makeText(getBaseContext(), "Press again to Exit", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -300,7 +294,6 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 case R.id.betaversion:
                     if (!beta) {
-
                         item.setTitle("Live Server");
                         beta = true;
                         Toast.makeText(HomeActivity.this, "You Are In Beta Testing", Toast.LENGTH_LONG).show();
@@ -335,32 +328,6 @@ public class HomeActivity extends AppCompatActivity {
     };
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void loadanimation() {
-        String pathf = getFilesDir().toString();
-        try
-        {
-            OutputStream myOutput = new FileOutputStream(pathf+"/animation.json");
-            byte[] buffer = new byte[1024];
-            int length;
-            InputStream myInput =getAssets().open("animation.json");
-
-            while ((length = myInput.read(buffer)) > 0) {
-                myOutput.write(buffer, 0, length);
-            }
-
-            myInput.close();
-            myOutput.flush();
-            myOutput.close();
-        }
-
-        catch (IOException e)
-        {
-        }
-
-        ShellUtils.SU("chmod 755 "+ pathf+"/animation.json");
-
-    }
 
 
     public void loadAssets()
@@ -384,11 +351,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 } catch (IOException e) {
                 }
-
-
                 daemonPath = getFilesDir().toString() + "/sysexe";
-
-
                 try {
                     Runtime.getRuntime().exec("chmod 777 " + daemonPath);
                 } catch (IOException e) {
@@ -444,42 +407,46 @@ public class HomeActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                try {
-                    //converting response to json object
-                    JSONObject obj = new JSONObject(s);
-                    error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
+                        if (s == null || s.isEmpty()) {
+                            Toast.makeText(HomeActivity.this, "Server Error", Toast.LENGTH_LONG).show();
+                            return;
+                        } else {
+                            try {
+                                //converting response to json object
+                                JSONObject obj = new JSONObject(s);
+                                error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
 
-                    if (!error) {
-                        newversion = obj.getString(TAG_APP_NEWVERSION);
-                        whatsNewData = obj.getString(data);
-                        ismaintaince = obj.getBoolean("ismain");
-                        videourl = obj.getString("videourl");
-                        url = obj.getString("updateurl");
-                       // Log.d("main",videourl);
-                        ShellUtils.SU("su");
-                        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                        String version = pInfo.versionName;
+                                if (!error) {
+                                    newversion = obj.getString(TAG_APP_NEWVERSION);
+                                    whatsNewData = obj.getString(data);
+                                    ismaintaince = obj.getBoolean("ismain");
+                                    videourl = obj.getString("videourl");
+                                    url = obj.getString("updateurl");
+                                    // Log.d("main",videourl);
+                                    ShellUtils.SU("su");
+                                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                                    String version = pInfo.versionName;
 
-                        //    System.out.println("takedown" + "old:" + version + " new:" + newversion);
+                                    //    System.out.println("takedown" + "old:" + version + " new:" + newversion);
 
-                        if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
-                        Intent intent = new Intent(HomeActivity.this, AppUpdaterActivity.class);
-                        intent.putExtra(TAG_APP_NEWVERSION, newversion);
-                        intent.putExtra(data,whatsNewData);
-                        intent.putExtra("updateurl",url);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                                    if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
+                                        Intent intent = new Intent(HomeActivity.this, AppUpdaterActivity.class);
+                                        intent.putExtra(TAG_APP_NEWVERSION, newversion);
+                                        intent.putExtra(data, whatsNewData);
+                                        intent.putExtra("updateurl", url);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    } else if (ismaintaince) {
+                                        Intent intent = new Intent(HomeActivity.this, activityMaintain.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                    }
+                                }
+
+                            } catch (JSONException | PackageManager.NameNotFoundException e) {
+                                e.printStackTrace();
+                            }
                         }
-                       else if(ismaintaince){
-                            Intent intent = new Intent(HomeActivity.this, activityMaintain.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
-                    }
-
-                } catch (JSONException | PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
                     }
                 }).start();
 

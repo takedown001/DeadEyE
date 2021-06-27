@@ -68,7 +68,7 @@ public class MyActivity extends AppCompatActivity {
     Handler handler = new Handler();
     JSONParserString jsonParserString = new JSONParserString();
     Context ctx;
-    TextInputEditText editTextname,editTextmobile;
+    TextInputEditText editTextname,editTextmobile,editTextemail;
     private Button paynow;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -92,6 +92,7 @@ public class MyActivity extends AppCompatActivity {
 
         editTextmobile =findViewById(R.id.mobile);
         editTextname =findViewById(R.id.fname);
+        editTextemail = findViewById(R.id.email);
         txnid = getIntent().getExtras().getString("taxid");
         amount = getIntent().getExtras().getString("amount");
         prodname = getIntent().getExtras().getString("product");
@@ -113,9 +114,10 @@ public class MyActivity extends AppCompatActivity {
                 if(checkdetails()) {
                     firstname = editTextname.getText().toString().trim();
                     phone = editTextmobile.getText().toString().trim();
+                    email = editTextemail.getText().toString().trim();
                     //validating inputs
                     startpay();
-                    Toast.makeText(MyActivity.this," Wait For GateWay",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyActivity.this,"InVoice And Key Will Be Sent To Email",Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -141,6 +143,11 @@ public class MyActivity extends AppCompatActivity {
         }else if(editTextname.getText().toString().trim().isEmpty()){
             Toast.makeText(MyActivity.this, "Enter Your Name", Toast.LENGTH_SHORT).show();
             editTextmobile.requestFocus();
+            return false;
+        }
+        else if (!Patterns.EMAIL_ADDRESS.matcher(editTextemail.getText().toString().trim()).matches()) {
+            Toast.makeText(MyActivity.this, "Enter valid Value for Email", Toast.LENGTH_SHORT).show();
+            editTextemail.requestFocus();
             return false;
         }
         return true;
@@ -187,7 +194,6 @@ public void startupi(){
     //declare paymentParam object
     PayUmoneySdkInitializer.PaymentParam paymentParam = null;
     public void startpay(){
-        phone = "7707909733";
         builder.setAmount(amount)                          // Payment amount
                 .setTxnId(txnid)                     // Transaction ID
                 .setPhone(phone)                   // User Phone number
@@ -217,7 +223,7 @@ public void startupi(){
             getHashkey();
 
         } catch (Exception e) {
-            Log.e(TAG, " error s "+e.toString());
+           // Log.e(TAG, " error s "+e.toString());
         }
 
     }
@@ -327,6 +333,9 @@ public void startupi(){
             params.put("20",AESUtils.DarKnight.getEncrypted(time));
             params.put("14",AESUtils.DarKnight.getEncrypted(prodname));
             params.put(TAG_ONESIGNALID,AESUtils.DarKnight.getEncrypted(UUID));
+            params.put("fname",AESUtils.DarKnight.getEncrypted(firstname));
+            params.put("mobile",AESUtils.DarKnight.getEncrypted(phone));
+            params.put("email",AESUtils.DarKnight.getEncrypted(email));
          //   Log.d("allarray",AESUtils.DarKnight.getEncrypted(key));
          //   Log.d("allarray",AESUtils.DarKnight.getEncrypted(Title));
         //  Log.d("allarray",AESUtils.DarKnight.getEncrypted(deviceid));
@@ -350,47 +359,49 @@ public void startupi(){
                 public void run() {
                     lottieDialog.dismiss();
                     try {
+                        if (s == null || s.isEmpty()) {
+                            Toast.makeText(MyActivity.this, "Server Error", Toast.LENGTH_LONG).show();
+                            return;
+                        } else {
+                            JSONObject obj = new JSONObject(s);
+                            //          Log.d("login", obj.toString());
+                            //checking for error to authenticate
+                            boolean error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
+                            //      Log.d("asa", Boolean.toString(error));
+                            //  Log.d("asa",AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)));
 
-                        JSONObject obj = new JSONObject(s);
-                  //          Log.d("login", obj.toString());
-                        //checking for error to authenticate
-                        boolean error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-                        //      Log.d("asa", Boolean.toString(error));
-                          //  Log.d("asa",AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)));
-
-                        if(Helper.checkVPN(MyActivity.this)){
-                            Toast.makeText(MyActivity.this, "Vpn Not Allowed, Refund Will be Not Initiated", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                        else {
-
-                            if (!error) {
-                                startActivity(new Intent(MyActivity.this, LoginActivity.class));
-                                Toast.makeText(MyActivity.this, AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
-                                gen=AESUtils.DarKnight.getDecrypted(obj.getString("505"));
-                            //    Log.d("gen",gen);
-                                DownloadManager.Request dmr = new DownloadManager.Request(Uri.parse(urlref.gen+"appkey"+gen+".txt"));
-
-                                String fileName = "key.txt";
-
-                                dmr.setTitle(fileName);
-                             //   dmr.setDescription("Some descrition about file"); //optional
-                                dmr.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
-                                dmr.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                dmr.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-                                DownloadManager manager = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
-                                manager.enqueue(dmr);
-                                Toast.makeText(MyActivity.this, "Check Your Download Folder", Toast.LENGTH_LONG).show();
-                            } else {
-                                //saving to prefrences m
-
-                                //getting the user from the response.
-                                //starting the profile activity
-                                Toast.makeText(getApplicationContext(), "SomeThing Went Wrong", Toast.LENGTH_SHORT).show();
+                            if (Helper.checkVPN(MyActivity.this)) {
+                                Toast.makeText(MyActivity.this, "Vpn Not Allowed, Refund Will be Not Initiated", Toast.LENGTH_LONG).show();
                                 finish();
+                            } else {
+
+                                if (!error) {
+                                    startActivity(new Intent(MyActivity.this, LoginActivity.class));
+                                    Toast.makeText(MyActivity.this, AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
+                                    gen = AESUtils.DarKnight.getDecrypted(obj.getString("505"));
+                                    //    Log.d("gen",gen);
+                                    DownloadManager.Request dmr = new DownloadManager.Request(Uri.parse(urlref.gen + "appkey" + gen + ".txt"));
+
+                                    String fileName = "key.txt";
+
+                                    dmr.setTitle(fileName);
+                                    //   dmr.setDescription("Some descrition about file"); //optional
+                                    dmr.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+                                    dmr.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                    dmr.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+                                    DownloadManager manager = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
+                                    manager.enqueue(dmr);
+                                    Toast.makeText(MyActivity.this, AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)), Toast.LENGTH_LONG).show();
+                                } else {
+                                    //saving to prefrences m
+                                    //getting the user from the response.
+                                    //starting the profile activity
+                                    Toast.makeText(MyActivity.this, "SomeThing Went Wrong", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
                             }
                         }
-                    } catch (JSONException e) {
+                    }catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }

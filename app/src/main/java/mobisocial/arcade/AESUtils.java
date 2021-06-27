@@ -11,18 +11,16 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESUtils
 {
-
+    public static native String AES();
     public static class DarKnight {
         private static final String ALGORITHM = "AES";
-        private static final byte[] SALT = urlref.enckey.getBytes();// THE KEY MUST BE SAME
+        private static final byte[] SALT =AES().getBytes();// THE KEY MUST BE SAME
         private static final String X = DarKnight.class.getSimpleName();
         public static String getEncrypted(String plainText) {
             if (plainText == null) {
                 return null;
             }
-
             Key salt = getSalt();
-
             try {
                 Cipher cipher = Cipher.getInstance(ALGORITHM);
                 cipher.init(Cipher.ENCRYPT_MODE, salt);

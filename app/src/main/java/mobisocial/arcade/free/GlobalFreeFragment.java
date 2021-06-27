@@ -26,6 +26,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.topjohnwu.superuser.Shell;
+
 import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.ESPView;
 import mobisocial.arcade.FloatLogo;
@@ -49,9 +51,11 @@ import java.util.concurrent.TimeUnit;
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
 import static android.content.Context.MODE_PRIVATE;
+import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.GccConfig.urlref.time;
+import static mobisocial.arcade.Helper.givenToFile;
 
-public class GlobalFreeFragment extends Fragment {
+public class GlobalFreeFragment extends Fragment implements View.OnClickListener {
 
     private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
     private String data;
@@ -93,8 +97,8 @@ public class GlobalFreeFragment extends Fragment {
         Context ctx;
         ctx =getActivity();
         View rootViewone = inflater.inflate(R.layout.fragment_global, container, false);
-
-        version = "32";
+        SharedPreferences shred = ctx.getSharedPreferences("userdetails", MODE_PRIVATE);
+        version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
         deviceid = LoginActivity.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
@@ -124,14 +128,29 @@ public class GlobalFreeFragment extends Fragment {
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
                 }
+                else if (Helper.appInstalledOrNot(gameName,getActivity())){
+                    Toast.makeText(getActivity(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                }
                 else {
                     antiban.show(getActivity().getFragmentManager(), "StartCheatGl");
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             antiban.dismiss();
-                              betastartcheat();
+                            ShellUtils.SU("iptables -F");
+                            ShellUtils.SU("iptables --flush");
+                            if  (Shell.rootAccess()) {
+                                try {
+                                    Helper.unzip(getActivity());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                betastartcheat();
                                 Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
+                            }
+                              else{
+                                Toast.makeText(getContext(), "Root Access Was Not Granted", Toast.LENGTH_LONG).show();
+                            }
 
                         }
                     }, 4000);
@@ -152,14 +171,23 @@ public class GlobalFreeFragment extends Fragment {
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
                 }
+                else if (Helper.appInstalledOrNot(gameName,getActivity())){
+                    Toast.makeText(getActivity(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                }
                 else {
                     antiban.show(getActivity().getFragmentManager(), "StopCheatGl");
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             antiban.dismiss();
-                            betastopcheat();
-                            getActivity().stopService(new Intent(getActivity(),FreeFloatLogo.class));
+                            ShellUtils.SU("iptables -F");
+                            ShellUtils.SU("iptables --flush");
+                            if (Shell.rootAccess()) {
+                                betastopcheat();
+                                ctx.stopService(new Intent(ctx, FreeFloatLogo.class));
+                            }else {
+                                Toast.makeText(getActivity(),"Root Access Was Not Granted ",Toast.LENGTH_LONG).show();
+                            }
                         }
                     }, 4000);
                 }
@@ -298,25 +326,24 @@ public class GlobalFreeFragment extends Fragment {
 
         class load extends AsyncTask<Void, Void, String> {
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                //       Log.d("data",data);
+                //      Log.d("data",s);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                        for (int i = 0; i < lines.length; i++) {
+                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() +"/scheat.sh");
+                        try {
+                            givenToFile(getActivity(),s);
 
-                             //     Log.d("testlines", lines[i]);
-                            try {
-                                ShellUtils.SU(lines[i]);
-                                TimeUnit.MILLISECONDS.sleep(80);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                         startPatcher();
+
                     });
+
                 }).start();
 
             }
@@ -339,32 +366,23 @@ public class GlobalFreeFragment extends Fragment {
 
 
         class load extends AsyncTask<Void, Void, String> {
-
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                if (Helper.checkVPN(getActivity())) {
-                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                } else {
+                //    Log.d("data",data);
+                new Thread(() -> {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
+                        try {
 
-                    //    Log.d("data",data);
-                    new Thread(() -> {
-                        String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                        for (int i = 0; i < lines.length; i++) {
-                            //      Log.d("testlines", lines[i]);
-                            try {
-                                ShellUtils.SU(lines[i]);
-                                TimeUnit.MILLISECONDS.sleep(80);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                            givenToFile(getActivity(), s);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        ShellUtils.SU("iptables --flush");
-
-                    }).start();
-
-                }
+                        getActivity().stopService(new Intent(getActivity(),FloatLogo.class));
+                    });
+                }).start();
             }
             @Override
             protected String doInBackground(Void... voids) {
@@ -406,4 +424,37 @@ public class GlobalFreeFragment extends Fragment {
     }
 
 
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+
+            case R.id.taptoactivategl:
+                try {
+                    Check();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+                if(Helper.checkVPN(getActivity())){
+                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                }
+                else {
+                    lottieDialog.show(getActivity().getFragmentManager(), "loo");
+                    lottieDialog.setCancelable(false);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            lottieDialog.dismiss();
+                            startPatcher();
+
+                        }
+                    }, 2000);
+                }
+                break;
+        }
+    }
 }
+

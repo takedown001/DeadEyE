@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -58,6 +59,9 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
     private static final String TAG_DURATION = urlref.TAG_DURATION;
     private  boolean error,safe,brutal,Aerror;
     //Prefrance
+    static{
+        System.loadLibrary("sysload");
+    }
     private String newversion;
     private String data = "data";
     private String updateurl;
@@ -71,6 +75,7 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
     private String key, deviceid="null",version,UUID="null";
     private long getduration;
     Date time;
+    public static PackageInfo pInfo = null;
     RequestHandler requestHandler = new RequestHandler();
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -85,6 +90,13 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
         setContentView(R.layout.activity_splash_screen);
         key = shred.getString(TAG_KEY, "null");
         time = new Date();
+
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+       // Logcat.Save(SplashScreenActivity.this);
         // OneSignal Initialization
         deviceid = AESUtils.DarKnight.getEncrypted(getDeviceId(SplashScreenActivity.this));
         OneSignal.idsAvailable((userId, registrationId) -> {
@@ -98,7 +110,6 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
     }
     public String getDeviceId(Context context) {
 
@@ -147,7 +158,10 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
             isStoragePermissionGranted();
             stopService(new Intent(SplashScreenActivity.this,FloatLogo.class));
             stopService(new Intent(SplashScreenActivity.this, FreeFloatLogo.class));
+            stopService(new Intent(SplashScreenActivity.this,logo.class));
+            stopService(new Intent(SplashScreenActivity.this, flogo.class));
             new BackgroundSplashTask().execute();
+
         }
     }
 
@@ -235,84 +249,39 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
                   boolean isFirstStart = shred.getBoolean("firstStart", true);
                   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                           WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                  try {
-                      JSONObject obj = new JSONObject(result);
-                      error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-                      restime = Long.parseLong(String.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_TIME))));
-                      diff = restime - reqtime;
-                      // Log.d("test", String.valueOf(error));
-                      if (diff == urlref.logindiff) {
-                          if (!error) {
-                              getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
-                              islite = Boolean.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_LITE)));
-                              msg = AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG));
-                              safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
-                              brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
-                              editor.putLong(TAG_DURATION, getduration);
-                              editor.apply();
-
-                              //    Log.d("splash", String.valueOf(getduration));
-                          }
-                      }
-                  } catch (JSONException e) {
-                      e.printStackTrace();
-                  }
-                  if (checkVPN()) {
-                      Toast.makeText(SplashScreenActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                      finish();
+                  if (result == null || result.isEmpty()) {
+                      Toast.makeText(SplashScreenActivity.this, "Server Error", Toast.LENGTH_LONG).show();
+                      return;
                   } else {
+                      try {
+                          JSONObject obj = new JSONObject(result);
+                          error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
+                          restime = Long.parseLong(String.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_TIME))));
+                          diff = restime - reqtime;
+                          // Log.d("test", String.valueOf(error));
+                          if (diff == urlref.logindiff) {
+                              if (!error) {
+                                  getduration = Long.parseLong(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_DURATION)));
+                                  islite = Boolean.valueOf(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_LITE)));
+                                  msg = AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG));
+                                  safe = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("5")));
+                                  brutal = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString("6")));
+                                  editor.putLong(TAG_DURATION, getduration);
+                                  editor.apply();
 
-                      // If the activity has never started before...
-                      if (isFirstStart) {
-                          if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
-                              Intent intent = new Intent(SplashScreenActivity.this, AppUpdaterActivity.class);
-                              intent.putExtra(TAG_APP_NEWVERSION, newversion);
-                              intent.putExtra(data, whatsNewData);
-                              intent.putExtra("updateurl", updateurl);
-                              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                              startActivity(intent);
-                          } else if (ismaintaince) {
-                              Intent intent = new Intent(SplashScreenActivity.this, activityMaintain.class);
-                              startActivity(intent);
-                          } else {
-                              //user not signedin
-                              Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                              startActivity(i);
+                                  //    Log.d("splash", String.valueOf(getduration));
+                              }
                           }
-                          // Launch app intro
-
+                      } catch (JSONException e) {
+                          e.printStackTrace();
+                      }
+                      if (checkVPN()) {
+                          Toast.makeText(SplashScreenActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+                          finish();
                       } else {
 
-                          // Create a new boolean and preference and set it to true
-                          String isSignedin = shred.getString(TAG_KEY, "null");
-
-                          if (!isSignedin.equals("null")) {
-                              if (!(getduration == 0)) {
-                                  if (islite) {
-                                      //saving to prefrences m
-                                      editor.putLong(TAG_DURATION, getduration).apply();
-                                      editor.putString(TAG_KEY, key);
-                                      editor.apply();
-                                      Intent intent = new Intent(SplashScreenActivity.this, HomeActivityLite.class);
-                                      intent.putExtra("safe", safe);
-                                      intent.putExtra("brutal", brutal);
-                                      startActivity(intent);
-                                  } else {
-                                      //user signedin
-                                      Intent i = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                                      i.putExtra("safe", safe);
-                                      i.putExtra("brutal", brutal);
-                                      startActivity(i);
-                                  }
-                              } else {
-                                  //   Log.d("duration", String.valueOf(getduration));
-                                  Toast.makeText(SplashScreenActivity.this, "Subscription Expired ", Toast.LENGTH_LONG).show();
-                                  shred.edit().clear().apply();
-                                  Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                                  startActivity(i);
-                              }
-
-                          } else {
+                          // If the activity has never started before...
+                          if (isFirstStart) {
                               if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
                                   Intent intent = new Intent(SplashScreenActivity.this, AppUpdaterActivity.class);
                                   intent.putExtra(TAG_APP_NEWVERSION, newversion);
@@ -320,23 +289,70 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
                                   intent.putExtra("updateurl", updateurl);
                                   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                   startActivity(intent);
-                              }  else {
+                              } else if (ismaintaince) {
+                                  Intent intent = new Intent(SplashScreenActivity.this, activityMaintain.class);
+                                  startActivity(intent);
+                              } else {
                                   //user not signedin
-                                  Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                                  Intent i = new Intent(SplashScreenActivity.this, GameActivity.class);
                                   startActivity(i);
+                              }
+                              // Launch app intro
+
+                          } else {
+
+                              // Create a new boolean and preference and set it to true
+                              String isSignedin = shred.getString(TAG_KEY, "null");
+
+                              if (!isSignedin.equals("null")) {
+                                  if (!(getduration == 0)) {
+                                      if (islite) {
+                                          //saving to prefrences m
+                                          editor.putLong(TAG_DURATION, getduration).apply();
+                                          editor.putString(TAG_KEY, key);
+                                          editor.apply();
+                                          Intent intent = new Intent(SplashScreenActivity.this, HomeActivityLite.class);
+                                          intent.putExtra("safe", safe);
+                                          intent.putExtra("brutal", brutal);
+                                          startActivity(intent);
+                                      } else {
+                                          //user signedin
+                                          Intent i = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                                          i.putExtra("safe", safe);
+                                          i.putExtra("brutal", brutal);
+                                          startActivity(i);
+                                      }
+                                  } else {
+                                      //   Log.d("duration", String.valueOf(getduration));
+                                      Toast.makeText(SplashScreenActivity.this, "Subscription Expired ", Toast.LENGTH_LONG).show();
+                                      shred.edit().clear().apply();
+                                      Intent i = new Intent(SplashScreenActivity.this, GameActivity.class);
+                                      startActivity(i);
+                                  }
+
+                              } else {
+                                  if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
+                                      Intent intent = new Intent(SplashScreenActivity.this, AppUpdaterActivity.class);
+                                      intent.putExtra(TAG_APP_NEWVERSION, newversion);
+                                      intent.putExtra(data, whatsNewData);
+                                      intent.putExtra("updateurl", updateurl);
+                                      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                      startActivity(intent);
+                                  } else {
+                                      //user not signedin
+                                      Intent i = new Intent(SplashScreenActivity.this, GameActivity.class);
+                                      startActivity(i);
+                                  }
                               }
                           }
                       }
+                      finish();
                   }
-                  finish();              }
+              }
           });
                 }
             },SPLASH_SHOW_TIME);
 
-
-
-
-            // Create a new boolean and preference and set it to true
 
         }
     }

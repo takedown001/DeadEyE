@@ -9,7 +9,6 @@
 #include <android/log.h>
 #include "PMStructsCommon.h"
 #include "PMLog.h"
-bool isfree = true;
 bool isfov=false;
 bool isdaemon =false;
 bool iscrosshair =false;
@@ -25,22 +24,19 @@ bool isPlayerLine = false;
 bool isPlayer360 = false;
 bool isNearEnemy= false;
 bool isPlayerSkel= false;
-
+bool islinecenter = false;
+bool is3DPlayerBox = false;
+bool islinedown = false;
 float playerTextSize = 15;
 bool isEnemyWeapon = false;
-//Items
-bool isVehicle = false;
-bool isLootBox = false;
-bool isAirDrop = false;
-bool isLootItems = false;
 bool isItemName = false;
 bool isItemDist = false;
-
 float itemTextSize = 15;
-
+bool isverticlhealth =false;
 
 //vehicals
-
+bool ismotarglider = false;
+bool isFerrisCar = false;
 bool isbuggy = false;
 bool isUAZ = false;
 bool istrick = false;
@@ -72,6 +68,8 @@ bool isBandage = false;
 bool iswarning = false;
 
 //weapons
+bool isMosin = false;
+bool isFAMAS = false;
 bool isakm = false;
 bool ism416 = false;
 bool isAug = false;
@@ -139,6 +137,8 @@ bool Airdrop = false;
 bool DropPlane = false;
 bool Crate = false;
 //throwadble
+bool isspiketrap = false;
+bool isstickeybomb =false;
 bool isgranade = false;
 bool issmoke = false;
 bool ismolo = false;

@@ -23,19 +23,15 @@ public class ESPView extends View implements Runnable {
     Paint mFilledPaint;
     Paint mTextPaint;
     Thread mThread;
-    int FPS = 70;
+    int FPS = 45;
     long sleepTime;
-
     Date time;
-    SimpleDateFormat formatter;
-    PackageInfo pInfo = null;
     NumberFormat f = new DecimalFormat("00");
-    public ESPView(Context context) throws PackageManager.NameNotFoundException {
+    public ESPView(Context context) {
         super(context, null, 0);
         InitializePaints();
         setFocusableInTouchMode(false);
         setBackgroundColor(Color.TRANSPARENT);
-        pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
         time = new Date();
     //    formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         sleepTime = 1000 / FPS;
@@ -43,14 +39,12 @@ public class ESPView extends View implements Runnable {
         mThread.start();
     }
 
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         if (canvas != null && getVisibility() == VISIBLE) {
             ClearCanvas(canvas);
             time.setTime(System.currentTimeMillis());
-            DrawText(canvas, 255, 255, 0, 0,"DeadEye ESP v" + pInfo.versionName, 155, 55, 20);
+            DrawText(canvas, 255, 255, 0, 0,"DeadEye ESP v" +SplashScreenActivity.pInfo.versionName, 155, 55, 20);
             DrawOn(this, canvas);
         }
     }

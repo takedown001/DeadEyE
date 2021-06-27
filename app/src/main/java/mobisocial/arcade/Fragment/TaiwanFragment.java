@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
+import com.topjohnwu.superuser.Shell;
 
 import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.ESPView;
@@ -34,6 +37,7 @@ import mobisocial.arcade.JavaUrlConnectionReader;
 import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.ShellUtils;
+import mobisocial.arcade.flogo;
 import mobisocial.arcade.free.FreeFloatLogo;
 import mobisocial.arcade.imgLoad;
 
@@ -45,10 +49,13 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
+import mobisocial.arcade.logo;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.os.Environment.DIRECTORY_PICTURES;
+import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.GccConfig.urlref.time;
+import static mobisocial.arcade.Helper.givenToFile;
 
 
 public class TaiwanFragment extends Fragment implements View.OnClickListener {
@@ -91,7 +98,8 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
         }
         View rootViewone = inflater.inflate(R.layout.fragment_taiwan, container, false);
         SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
-        version = shred.getString("version", "32");
+
+        version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
         final File daemon = new File(urlref.pathoflib+urlref.SafeMem);
         deviceid = LoginActivity.getDeviceId(getActivity());
@@ -130,46 +138,41 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
                 }
+                else if (Helper.appInstalledOrNot(gameName,getActivity())){
+                    Toast.makeText(getActivity(), "Game Not Installed", Toast.LENGTH_LONG).show();
+                }
                 else {
                     antiban.show(getActivity().getFragmentManager(), "StartCheatGl");
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             antiban.dismiss();
-                            ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString() + "/libtakedown.so");
-                            ShellUtils.SU("chmod 777 " + getActivity().getFilesDir().toString() + "/libPNR.so");
-
-                            if (HomeActivity.beta) {
-                                ShellUtils.SU("mkdir -p /sdcard/Android/data/com.google.backup/cache");
-                                File check = new File("/sdcard/Android/data/com.google.backup/cache/gmsnet3_index");
-                                File cubecheck = new File("/sdcard/Android/data/com.google.backup/cache/kgmsnet3_index");
-                                if(!check.exists() && !cubecheck.exists()) {
-                                    ShellUtils.SU("cp -Rf /data/data/"+gameName+"/lib/libBugly.so /storage/emulated/0/Android/data/com.google.backup/cache/gmsnet3_index ");ShellUtils.SU("cp -Rf /data/data/"+gameName+"/lib/libcubehawk.so /storage/emulated/0/Android/data/com.google.backup/cache/kgmsnet3_index");
-                                }
-//                                try {
-//                                    Helper.unzipB(getActivity());
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                }
-                                //            Log.d("betastartcheat", String.valueOf(HomeActivity.beta));
-                                betastartcheat();
-                            } else {
-                                //Log.d("lolll", String.valueOf(espcheck));
-                                try {
-                                    ShellUtils.SU("mkdir -p /sdcard/Android/data/com.google.backup/cache");
-                                    File check = new File("/sdcard/Android/data/com.google.backup/cache/gmsnet3_index");
-                                    //        File cubecheck = new File("/sdcard/Android/data/com.google.backup/cache/known_index");
-                                    if(!check.exists()) {
-                                        ShellUtils.SU("cp -Rf /data/data/"+gameName+"/lib/libBugly.so /storage/emulated/0/Android/data/com.google.backup/cache/gmsnet3_index");
-                                        //              ShellUtils.SU("cp -Rf /data/data/"+gameName+"/lib/libcubehawk.so /storage/emulated/0/Android/data/com.google.backup/cache/known_index");
+                            ShellUtils.SU("iptables -F");
+                            ShellUtils.SU("iptables --flush");
+                            if(Shell.rootAccess()) {
+                                if (HomeActivity.safe) {
+                                    try {
+                                        Helper.unzip(getActivity());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
                                     }
-                                    Helper.unzip(getActivity());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                                    version = AESUtils.DarKnight.getEncrypted("64");
+
+                                    livestartcheat();
+
+                                } else {
+                                    try {
+                                        Helper.unzip(getActivity());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    livestartcheat();
                                 }
                             }
-                                livestartcheat();
+                            else {
+                                Toast.makeText(getActivity(),"Root Access Was Not Granted ", Toast.LENGTH_LONG).show();
                             }
+                        }
                     }, 4000);
                 }
             }
@@ -195,13 +198,17 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         antiban.dismiss();
-
-                        if (HomeActivity.beta) {
-
-                            betastopcheat();
-                        } else {
-
-                            livestopcheat();
+                        ShellUtils.SU("iptables -F");
+                        ShellUtils.SU("iptables --flush");
+                        if (Shell.rootAccess()) {
+                            if (HomeActivity.safe) {
+                                version = AESUtils.DarKnight.getEncrypted("64");
+                                livestopcheat();
+                            } else {
+                                livestopcheat();
+                            }
+                        }else{
+                            Toast.makeText(getActivity()," Root Access Was Not Granted ",Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -392,31 +399,24 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
 
         class load extends AsyncTask<Void, Void, String> {
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                //              Log.d("data",data);
+                              Log.d("data",data);
                 if (Helper.checkVPN(getActivity())) {
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
                 } else {
                     new Thread(() -> {
                         new Handler(Looper.getMainLooper()).post(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                            for (int i = 0; i < lines.length; i++) {
-                                //      Log.d("testlines", lines[i]);
-                                try {
-                                    ShellUtils.SU(lines[i]);
-                                    TimeUnit.MILLISECONDS.sleep(200);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                            try {
+                                givenToFile(getActivity(),s);
+                           } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                            ShellUtils.SU("mv -f " + getActivity().getExternalFilesDir(DIRECTORY_PICTURES).getAbsolutePath() + "/1 /data/data/" + gameName + "/lib/libBugly.so");
-                            ShellUtils.SU("chmod -R 777 "+ "/data/data/" + gameName + "/lib/*");
                             startPatcher();
                             Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
-                            //    Log.d("lolll", String.valueOf(espcheck));
 
                         });
                     }).start();
@@ -448,30 +448,21 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                //     Log.d("data",data);
-                if (Helper.checkVPN(getActivity())) {
-                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                } else {
-                    new Thread(() -> {
-                        String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
-                        for (int i = 0; i < lines.length; i++) {
-
-                            //      Log.d("testlines", lines[i]);
-                            try {
-                                ShellUtils.SU(lines[i]);
-                                TimeUnit.MILLISECONDS.sleep(80);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                //    Log.d("data",data);
+                new Thread(() -> {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
+                        try {
+                            givenToFile(getActivity(), s);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                    });
 
-                        ctx.stopService(new Intent(ctx,FloatLogo.class));
-
-                        //startDaemon();
-
-                    }).start();
-                }
+                    ctx.stopService(new Intent(ctx,FloatLogo.class));
+                    ctx.stopService(new Intent(ctx, flogo.class));
+                    ctx.stopService(new Intent(ctx, logo.class));
+                }).start();
             }
             @Override
             protected String doInBackground(Void... voids) {
@@ -548,6 +539,8 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
     }
 
     private void startFloater() {
+        getActivity().stopService(new Intent(getActivity(), logo.class));
+        getActivity().stopService(new Intent(getActivity(), flogo.class));
         getActivity().stopService(new Intent(getActivity(), FloatLogo.class));
         Intent i = new Intent(getActivity(), FloatLogo.class);
         i.putExtra("gametype",4);
@@ -578,7 +571,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void run() {
                             lottieDialog.dismiss();
-
+                            startPatcher();
                         }
                     }, 2000);
                 }

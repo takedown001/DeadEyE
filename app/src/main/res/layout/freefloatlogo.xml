@@ -435,10 +435,11 @@
                         android:background="@color/bgblue"
                         android:orientation="vertical"
                         android:visibility="visible">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:orientation="vertical">
 
                         <TextView
@@ -521,15 +522,25 @@
                             android:layout_marginTop="@dimen/dimen_5dp"
                             android:layout_marginBottom="@dimen/dimen_5dp"
                             android:fontFamily="@font/montserrat_bold"
-                            android:text="Bounding Box Display"
+                            android:text="ESP Generic Adjustment"
+                            android:visibility="visible"
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen_14sp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginBottom="@dimen/dimen_5dp"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Bounding Box Display"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_12sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="5dp">
+                            android:layout_marginStart="7dp">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -541,6 +552,7 @@
                                 android:textSize="@dimen/dimen_10dp" />
 
                             <RadioGroup
+                                android:id="@+id/boxgroup"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
@@ -567,28 +579,147 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="#FFF"
-                                    android:visibility="gone"
+                                    android:visibility="visible"
                                     android:fontFamily="@font/montserrat"
                                     android:text="3-D Box"
+                                    android:textColor="@color/white" />
+
+                            </RadioGroup>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginTop="@dimen/dimen_5dp"
+                            android:layout_marginBottom="@dimen/dimen_5dp"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Line Display"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_12sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="7dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/dimen_5dp"
+                                android:fontFamily="@font/montserrat"
+                                android:text="Show The Lines To Head Of Player"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dimen_10dp" />
+
+                            <RadioGroup
+                                android:id="@+id/linegroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <RadioButton
+                                    android:id="@+id/lineoff"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="#FFF"
+                                    android:checked="true"
+                                    android:text="OFF"
+                                    android:textColor="@color/white" />
+
+                                <RadioButton
+                                    android:id="@+id/lineup"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="#FFF"
+                                    android:fontFamily="@font/montserrat"
+                                    android:text="Upwards"
+                                    android:textColor="@color/white" />
+
+                                <RadioButton
+                                    android:id="@+id/linecenter"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="#FFF"
+                                    android:fontFamily="@font/montserrat"
+                                    android:text="Centered"
+                                    android:textColor="@color/white" />
+                                <RadioButton
+                                    android:id="@+id/linedown"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="#FFF"
+                                    android:visibility="visible"
+                                    android:fontFamily="@font/montserrat"
+                                    android:text="Downwords"
                                     android:textColor="@color/white" />
 
 
                             </RadioGroup>
                         </LinearLayout>
 
-
-
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="@dimen/dimen_5dp"
+                            android:layout_marginStart="7dp"
                             android:layout_marginBottom="@dimen/dimen_5dp"
                             android:fontFamily="@font/montserrat_bold"
-                            android:text="ESP Generic Adjustment"
-                            android:visibility="visible"
+                            android:text="Health Display Adjustment"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/dimen_14sp" />
+                            android:textSize="@dimen/dimen_12sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="7dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/dimen_5dp"
+                                android:fontFamily="@font/montserrat"
+                                android:text="Show The HealthBar On Player"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dimen_10dp" />
+
+                            <RadioGroup
+                                android:id="@+id/healthgroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <RadioButton
+                                    android:id="@+id/healthoff"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="#FFF"
+                                    android:checked="true"
+                                    android:text="OFF"
+                                    android:textColor="@color/white" />
+
+                                <RadioButton
+                                    android:id="@+id/healthhori"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="#FFF"
+                                    android:fontFamily="@font/montserrat"
+                                    android:text="Horizotal"
+                                    android:textColor="@color/white" />
+
+                                <RadioButton
+                                    android:id="@+id/healthverti"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="#FFF"
+                                    android:fontFamily="@font/montserrat"
+                                    android:text="Vertical"
+                                    android:textColor="@color/white"
+                                    android:visibility="visible" />
+
+
+                            </RadioGroup>
+                        </LinearLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -605,36 +736,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
+
+
                                 <TableRow
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent">
 
-                                    <CheckBox
-                                    android:id="@+id/isLine"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:checked="true"
-                                    android:text="Line"
-                                    android:visibility="visible"
-                                    android:textColor="@color/white"
-                                    tools:ignore="HardcodedText" />
-                                    <CheckBox
-                                        android:id="@+id/isDist"
-                                        android:layout_width="91dp"
-                                        android:layout_height="match_parent"
-                                        android:checked="true"
-                                        android:text="Distance"
-                                        android:textColor="@color/white"
-                                        tools:ignore="HardcodedText" />
 
-                                    <CheckBox
-                                        android:id="@+id/isHealth"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:checked="true"
-                                        android:text="Health"
-                                        android:textColor="@color/white"
-                                        tools:ignore="HardcodedText" />
 
 
                                 </TableRow>
@@ -648,6 +756,14 @@
                                 <TableRow
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent">
+                                    <CheckBox
+                                        android:id="@+id/isDist"
+                                        android:layout_width="91dp"
+                                        android:layout_height="match_parent"
+                                        android:checked="true"
+                                        android:text="Distance"
+                                        android:textColor="@color/white"
+                                        tools:ignore="HardcodedText" />
 
                                     <CheckBox
                                         android:id="@+id/isName"
@@ -775,7 +891,7 @@
                             android:background="@color/bgblue"
                             android:fontFamily="@font/montserrat"
                             android:orientation="vertical"
-                            android:visibility="visible">
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -796,11 +912,12 @@
                                 android:text="Show All Items"
                                 android:textStyle="bold"
                                 android:checked="true"
+                                android:textSize="@dimen/dimen_12sp"
                                 android:layout_marginBottom="@dimen/dimen_5dp"
-                                android:layout_marginTop="@dimen/dimen_10dp"
+                                android:layout_marginTop="5dp"
                                 android:fontFamily="@font/montserrat"
                                 android:textColor="@color/white"
-                                android:layout_marginStart="8dp"/>
+                                android:layout_marginStart="7dp"/>
 
                             <TableLayout
                                 android:layout_width="match_parent"
@@ -871,234 +988,10 @@
 
                                 </TableRow>
                             </TableLayout>
-                            <LinearLayout
-
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                            <Switch
-                                android:id="@+id/memorycheat"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginTop="@dimen/dimen_5dp"
-                                android:layout_marginBottom="@dimen/dimen_5dp"
-                                android:fontFamily="@font/montserrat_bold"
-                                android:text="Memory Cheats"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/dimen_14sp" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="@dimen/dimen_7dp"
-                                    android:layout_marginBottom="@dimen/dimen_5dp"
-                                    android:fontFamily="@font/montserrat"
-                                    android:text="Runtime Memory Modificaiton (You Might Be At Risk)"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/dimen_12sp" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/memorycheatlayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:visibility="gone"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="@dimen/dimen_7dp"
-                                    android:layout_marginBottom="@dimen/dimen_5dp"
-                                    android:fontFamily="@font/montserrat_bold"
-                                    android:text="Aimbot"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/dimen_14sp" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="@dimen/dimen_7dp"
-                                    android:layout_marginBottom="@dimen/dimen_5dp"
-                                    android:fontFamily="@font/montserrat"
-                                    android:text="Increases Aim Assist"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/dimen_12sp" />
-
-                            <RadioGroup
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <RadioButton
-                                    android:id="@+id/Aimoff"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:buttonTint="#FFF"
-                                    android:layout_marginStart="@dimen/dimen_10dp"
-                                    android:checked="true"
-                                    android:text="OFF"
-                                    android:textColor="@color/white" />
-
-                                <RadioButton
-                                    android:id="@+id/Aimon"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:buttonTint="#FFF"
-                                    android:layout_marginStart="@dimen/dimen_10dp"
-                                    android:fontFamily="@font/montserrat"
-                                    android:text="On"
-                                    android:textColor="@color/white" />
-                            </RadioGroup>
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginTop="@dimen/dimen_5dp"
-                                    android:fontFamily="@font/montserrat_bold"
-                                    android:layout_marginStart="@dimen/dimen_5dp"
-                                    android:layout_marginRight="@dimen/dimen_10dp"
-                                    android:text="Magic Bullet"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/dimen_15dp" />
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="@dimen/dimen_7dp"
-                                    android:layout_marginBottom="@dimen/dimen_5dp"
-                                    android:fontFamily="@font/montserrat"
-                                    android:text="Forces Scattered Bullets On Enemies"
-                                    android:layout_marginTop="7sp"
-                                    android:textColor="@color/white"
-                                    android:textSize="10sp"/>
-                                <Switch
-                                    android:id="@+id/magicbullet"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:fontFamily="@font/montserrat"
-                                    android:textColor="@color/white"
-                                    android:layout_marginStart="@dimen/dimen_10dp"
-                                    android:layout_marginRight="@dimen/dimen_10dp"
-                                    android:text="Activate Magic Bullet"
-                                    />
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="@dimen/dimen_7dp"
-                                    android:fontFamily="@font/montserrat_bold"
-                                    android:text="Recoil Compensation"
-                                    android:layout_marginTop="@dimen/dimen_5dp"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/dimen_14sp" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="@dimen/dimen_7dp"
-                                    android:layout_marginBottom="3dp"
-                                    android:fontFamily="@font/montserrat"
-                                    android:text="Reduces Horizontal Weapon Recoil"
-                                    android:textColor="@color/white"
-                                    android:textSize="10sp" />
-
-                                <Switch
-                                    android:id="@+id/recoil"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:fontFamily="@font/montserrat"
-                                    android:textColor="@color/white"
-                                    android:layout_marginStart="@dimen/dimen_10dp"
-                                    android:layout_marginRight="@dimen/dimen_10dp"
-                                    android:text="Activate Recoil"
-                                    />
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="@dimen/dimen_7dp"
-                                    android:layout_marginBottom="@dimen/dimen_5dp"
-                                    android:fontFamily="@font/montserrat_bold"
-                                    android:text="Custom Crosshair"
-                                    android:layout_marginTop="@dimen/dimen_5dp"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/dimen_14sp" />
-
-                                <TextView
-                                    android:layout_width="184dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/dimen_12dp"
-                                    android:layout_marginBottom="@dimen/dimen_5dp"
-                                    android:fontFamily="@font/montserrat"
-                                    android:text="Reduces Bullet Spread On Hip Fire And Improves Raw Aim"
-                                    android:textColor="@color/white"
-                                    android:textSize="10sp" />
-                                <RadioGroup
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-                                    <RadioButton
-                                        android:id="@+id/crossoff"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:buttonTint="#FFF"
-                                        android:layout_marginStart="@dimen/dimen_10dp"
-                                        android:checked="true"
-                                        android:text="OFF"
-                                        android:textColor="@color/white" />
-
-                                    <RadioButton
-                                        android:id="@+id/graphicross"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:buttonTint="#FFF"
-                                        android:layout_marginStart="@dimen/dimen_10dp"
-                                        android:checked="true"
-                                        android:fontFamily="@font/montserrat"
-                                        android:text="Graphical Crosshair"
-                                        android:textColor="@color/white" />
-
-                                    <RadioButton
-                                        android:id="@+id/memorycross"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/dimen_10dp"
-                                        android:buttonTint="#FFF"
-                                        android:fontFamily="@font/montserrat"
-                                        android:text="Memory Crosshair"
-                                        android:textColor="@color/white" />
-                                </RadioGroup>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="@dimen/dimen_7dp"
-                                    android:layout_marginBottom="@dimen/dimen_5dp"
-                                    android:fontFamily="@font/montserrat_bold"
-                                    android:text="Dawn Environment"
-                                    android:layout_marginTop="@dimen/dimen_5dp"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/dimen_14sp" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="@dimen/dimen_7dp"
-                                    android:layout_marginBottom="@dimen/dimen_5dp"
-                                    android:fontFamily="@font/montserrat"
-                                    android:text="Darkens Whole Map For Better ESP View"
-                                    android:textColor="@color/white"
-                                    android:textSize="10sp" />
-
-                                <Switch
-                                    android:id="@+id/midnight"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:fontFamily="@font/montserrat"
-                                    android:textColor="@color/white"
-                                    android:layout_marginStart="@dimen/dimen_10dp"
-                                    android:layout_marginRight="@dimen/dimen_10dp"
-                                    android:text="Activate Midnight"
-                                    />
                         </LinearLayout>
+
+
+
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -1369,12 +1262,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
                             android:background="@color/bgblue"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+                            android:orientation="vertical">
 
                             <TableLayout
                                 android:id="@+id/scopeAutoSMG"
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
 
                                 <TableRow
@@ -1406,6 +1299,7 @@
                             </TableLayout>
                             <TableLayout
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
                                 <TableRow
                                     android:layout_width="match_parent"
@@ -1432,6 +1326,7 @@
                                 </TableRow>
                             </TableLayout>
                             <TableLayout
+
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
                                 <TableRow
@@ -1474,11 +1369,11 @@
                                         tools:ignore="HardcodedText" />
 
                                     <CheckBox
-                                        android:id="@+id/M16A4"
+                                        android:id="@+id/AKM"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="match_parent"
                                         android:checked="true"
-                                        android:text="M16A4"
+                                        android:text="AKM"
                                         android:textColor="@color/white"
                                         tools:ignore="HardcodedText" />
 
@@ -1488,6 +1383,7 @@
                             </TableLayout>
                             <TableLayout
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
                                 <TableRow
                                     android:layout_width="match_parent"
@@ -1512,19 +1408,21 @@
                                         tools:ignore="HardcodedText" />
 
                                     <CheckBox
-                                        android:id="@+id/AKM"
+                                        android:id="@+id/M16A4"
                                         android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
+                                        android:layout_height="wrap_content"
                                         android:checked="true"
-                                        android:text="AKM"
+                                        android:text="M16A4"
                                         android:textColor="@color/white"
                                         tools:ignore="HardcodedText" />
+
 
 
                                 </TableRow>
                             </TableLayout>
                             <TableLayout
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
                                 <TableRow
                                     android:layout_width="match_parent"
@@ -1554,7 +1452,9 @@
                             </TableLayout>
                             <TableLayout
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
+
                                 <TableRow
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent">
@@ -1582,6 +1482,7 @@
                             </TableLayout>
                             <TableLayout
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
                                 <TableRow
                                     android:layout_width="match_parent"
@@ -1632,6 +1533,7 @@
                             </TableLayout>
                             <TableLayout
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
                                 <TableRow
                                     android:layout_width="match_parent"
@@ -1664,7 +1566,7 @@
                                 android:id="@+id/sniperTab"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:visibility="visible">
+                                android:visibility="gone">
 
                                 <TableRow
                                     android:layout_width="match_parent"
@@ -1729,8 +1631,12 @@
 
                                 </TableRow>
                             </TableLayout>
+
+
+
                             <TableLayout
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
                                 <TableRow
                                     android:layout_width="match_parent"
@@ -2194,8 +2100,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
                             android:background="@color/bgblue"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+                            android:orientation="vertical">
 
                             <TableLayout
                                 android:id="@+id/healthkitTab"
@@ -2281,9 +2186,236 @@
                                 </TableRow>
 
                             </TableLayout>
-
                         </LinearLayout>
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                            <Switch
+                                android:id="@+id/memorycheat"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="@dimen/dimen_5dp"
+                                android:layout_marginBottom="@dimen/dimen_5dp"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:text="Memory Cheats"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dimen_14sp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="29dp"
+                                    android:layout_marginStart="@dimen/dimen_7dp"
+                                    android:layout_marginBottom="@dimen/dimen_5dp"
+                                    android:fontFamily="@font/montserrat"
+                                    android:text="Runtime Memory Modificaiton (You Might Be At Risk)"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/dimen_12sp" />
+
+
+                                <LinearLayout
+                                    android:id="@+id/memorycheatlayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:visibility="gone"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="@dimen/dimen_7dp"
+                                        android:layout_marginBottom="@dimen/dimen_5dp"
+                                        android:fontFamily="@font/montserrat_bold"
+                                        android:text="Aimbot"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/dimen_14sp" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="@dimen/dimen_7dp"
+                                        android:layout_marginBottom="@dimen/dimen_5dp"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="Increases Aim Assist"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/dimen_12sp" />
+
+                                    <RadioGroup
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <RadioButton
+                                            android:id="@+id/Aimoff"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:buttonTint="#FFF"
+                                            android:layout_marginStart="@dimen/dimen_10dp"
+                                            android:checked="true"
+                                            android:text="OFF"
+                                            android:textColor="@color/white" />
+
+                                        <RadioButton
+                                            android:id="@+id/Aimon"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:buttonTint="#FFF"
+                                            android:layout_marginStart="@dimen/dimen_10dp"
+                                            android:fontFamily="@font/montserrat"
+                                            android:text="On"
+                                            android:textColor="@color/white" />
+                                    </RadioGroup>
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginTop="@dimen/dimen_5dp"
+                                        android:fontFamily="@font/montserrat_bold"
+                                        android:layout_marginStart="@dimen/dimen_5dp"
+                                        android:layout_marginRight="@dimen/dimen_10dp"
+                                        android:text="Magic Bullet"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/dimen_15dp" />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="@dimen/dimen_7dp"
+                                        android:visibility="gone"
+                                        android:layout_marginBottom="@dimen/dimen_5dp"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="Forces Scattered Bullets On Enemies"
+                                        android:layout_marginTop="7sp"
+                                        android:textColor="@color/white"
+                                        android:textSize="10sp"/>
+                                    <Switch
+                                        android:id="@+id/magicbullet"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:fontFamily="@font/montserrat"
+                                        android:textColor="@color/white"
+                                        android:layout_marginStart="@dimen/dimen_10dp"
+                                        android:layout_marginRight="@dimen/dimen_10dp"
+                                        android:text="Activate Magic Bullet"
+                                        />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="@dimen/dimen_7dp"
+                                        android:fontFamily="@font/montserrat_bold"
+                                        android:text="Recoil Compensation"
+                                        android:layout_marginTop="@dimen/dimen_5dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/dimen_14sp" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="@dimen/dimen_7dp"
+                                        android:layout_marginBottom="3dp"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="Reduces Weapon Recoil"
+                                        android:textColor="@color/white"
+                                        android:textSize="10sp" />
+
+                                    <Switch
+                                        android:id="@+id/recoil"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:fontFamily="@font/montserrat"
+                                        android:textColor="@color/white"
+                                        android:layout_marginStart="@dimen/dimen_10dp"
+                                        android:layout_marginRight="@dimen/dimen_10dp"
+                                        android:text="Activate Recoil"
+                                        />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="@dimen/dimen_7dp"
+                                        android:layout_marginBottom="@dimen/dimen_5dp"
+                                        android:fontFamily="@font/montserrat_bold"
+                                        android:text="Custom Crosshair"
+                                        android:layout_marginTop="@dimen/dimen_5dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/dimen_14sp" />
+
+                                    <TextView
+                                        android:layout_width="184dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/dimen_12dp"
+                                        android:layout_marginBottom="@dimen/dimen_5dp"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="Reduces Bullet Spread On Hip Fire And Improves Raw Aim"
+                                        android:textColor="@color/white"
+                                        android:textSize="10sp" />
+
+                                    <RadioGroup
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+                                        <RadioButton
+                                            android:id="@+id/crossoff"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:buttonTint="#FFF"
+                                            android:layout_marginStart="@dimen/dimen_10dp"
+                                            android:checked="true"
+                                            android:text="OFF"
+                                            android:textColor="@color/white" />
+
+                                        <RadioButton
+                                            android:id="@+id/graphicross"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:buttonTint="#FFF"
+                                            android:layout_marginStart="@dimen/dimen_10dp"
+                                            android:checked="true"
+                                            android:fontFamily="@font/montserrat"
+                                            android:text="Graphical Crosshair"
+                                            android:textColor="@color/white" />
+
+                                        <RadioButton
+                                            android:id="@+id/memorycross"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="@dimen/dimen_10dp"
+                                            android:buttonTint="#FFF"
+                                            android:fontFamily="@font/montserrat"
+                                            android:text="Memory Crosshair"
+                                            android:textColor="@color/white" />
+                                    </RadioGroup>
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="@dimen/dimen_7dp"
+                                        android:layout_marginBottom="@dimen/dimen_5dp"
+                                        android:fontFamily="@font/montserrat_bold"
+                                        android:text="Dawn Environment"
+                                        android:layout_marginTop="@dimen/dimen_5dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/dimen_14sp" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginStart="@dimen/dimen_7dp"
+                                        android:layout_marginBottom="@dimen/dimen_5dp"
+                                        android:fontFamily="@font/montserrat"
+                                        android:text="Darkens Whole Map For Better ESP View"
+                                        android:textColor="@color/white"
+                                        android:textSize="10sp" />
+
+                                    <Switch
+                                        android:id="@+id/midnight"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:fontFamily="@font/montserrat"
+                                        android:textColor="@color/white"
+                                        android:layout_marginStart="@dimen/dimen_10dp"
+                                        android:layout_marginRight="@dimen/dimen_10dp"
+                                        android:text="Activate "
+                                        />
+                                </LinearLayout>
                         <LinearLayout
                             android:id="@+id/MiscTab"
                             android:layout_width="match_parent"

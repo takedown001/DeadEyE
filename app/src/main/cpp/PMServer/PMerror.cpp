@@ -101,6 +101,8 @@ static const char* vehicles[][2] = {
 		{"PickUp_02_C", "Pickup"},
 		{"AquaRail_1_C", "AquaRail"},
 		{"VH_PG117", "Boat"},
+		{"Motorglider", "Motor Glider"},
+		{"BP_FerrisWheelCar_C", "Ferris Car"},
 
 };
 
@@ -124,7 +126,6 @@ static const char* impitems[][2] = {
 		{"PickUp_BP_Armor_Lv3", "Armor L3"}, //C
 		{"PickUp_BP_Helmet_Lv3", "Helmet L3"}, //C
 		{"PickUp_BP_Bag_Lv3", "Bag L3"}, //C
-		{"BP_MZJ_SideRMR_Pickup", "Canted"},
 		{"BP_MZJ_QX_Pickup_C", "HoloSignt"},
 		{"BP_MZJ_HD_Pickup", "RedDot"},
 		{"BP_MZJ_8X_Pickup", "8x"},
@@ -135,7 +136,21 @@ static const char* impitems[][2] = {
 		{"BP_Grenade_Smoke_Weapon_Wrapper", "Smoke"},
 		{"GasCan", "GasCan"},
 		{"BP_Ghillie_", "Ghillie"},
+
 		// NEW ITEMS
+		{"BP_MZJ_SideRMR_Pickup", "Canted Sight"},
+		{"BP_Rifle_FAMAS_Wrapper_C", "FAMAS"},
+		{"BP_Sniper_Mosin_Wrapper_C", "Mosin Nagant"},
+//Location
+		{"BP_Grenade_Sticky_Bomb_C", "Sticky Bomb"},
+// Warning
+		{"Skill_Grenade_Sticky_Bomb_C", "Sticky BombW"},
+
+//Location
+		{"BP_ProjSpikeTrap_BP_C", "Spike Trap"},
+// Warning
+		{"Skill_ProjSpikeTrap_BP_C", "Spike TrapW"},
+
 		{"PlayerDeadInventoryBox_C", "Crate"},
 		{"BP_Sniper_AWM_Wrapper_C", "AWM"},
 		{"BP_Rifle_AKM_Wrapper_C", "AKM"},
@@ -659,9 +674,13 @@ int main(int argc, char *argv[]) {
 				LOGE("Can't find the process\n");
 				return -1;
 			}
-
-		}
-		else {
+		} else if(mode == 5){
+			target_pid = find_pid("com.pubg.imobile");
+			if (target_pid == -1) {
+				LOGE("Can't find the process\n");
+				return -1;
+			}
+		} else {
 			LOGE("Invalid Game Choice\n");
 			return -1;
 		}
@@ -684,12 +703,11 @@ int main(int argc, char *argv[]) {
 			else if (request.Mode == ESPMode) {
 				SWidth = request.ScreenWidth;
 				SHeight = request.ScreenHeight;
-                if(find_pid("com.tencent.ig")!=-1) {
+                if(find_pid("com.pubg.imobile")!=-1) {
                     createUDataList(response);
                 }
                 else{
-
-                    createDataList(response);
+                    createDataList(response); // All Version
 
                 }
 			}

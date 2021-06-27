@@ -21,7 +21,6 @@ import android.widget.Toast;
 import mobisocial.arcade.Adapter.SectionPagerAdapter;
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.LoginActivity;
-import mobisocial.arcade.PassME;
 import mobisocial.arcade.R;
 import mobisocial.arcade.imgLoad;
 import com.google.android.material.tabs.TabLayout;
@@ -65,7 +64,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         myFragment = inflater.inflate(R.layout.fragment_home, container, false);
 
-        new PassME(getActivity()).execute();
         try {
             Check();
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {

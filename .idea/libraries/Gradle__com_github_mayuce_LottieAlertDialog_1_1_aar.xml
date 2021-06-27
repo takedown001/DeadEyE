@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.mayuce:LottieAlertDialog:1.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/e9ed29ba05dcb08fec475944b27d2d5b/jetified-LottieAlertDialog-1.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/e9ed29ba05dcb08fec475944b27d2d5b/jetified-LottieAlertDialog-1.1/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/e9ed29ba05dcb08fec475944b27d2d5b/jetified-LottieAlertDialog-1.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/com.github.mayuce/LottieAlertDialog/1.1/94d57954ea4ca6c126ab4b3bade6ec71591daf3/LottieAlertDialog-1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

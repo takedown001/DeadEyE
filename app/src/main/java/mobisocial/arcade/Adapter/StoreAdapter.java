@@ -13,8 +13,12 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import mobisocial.arcade.DetailActivity;
 import mobisocial.arcade.GccConfig.urlref;
+import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.data.Model;
+import mobisocial.arcade.free.FHomeActivity;
+import mobisocial.arcade.free.FLoginActivity;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -52,7 +56,6 @@ public class StoreAdapter extends PagerAdapter {
         final Model official = models.get(position);
         ImageView imageView;
         TextView title, desc;
-
         imageView = view.findViewById(R.id.image);
         title = view.findViewById(R.id.stitle);
         desc = view.findViewById(R.id.desc);
@@ -69,12 +72,25 @@ public class StoreAdapter extends PagerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra(TAG_TITLE, models.get(position).getTitle());
-                intent.putExtra(TAG_IMG,models.get(position).getImage());
-                context.startActivity(intent);
-                // finish();
-                // finish();
+                switch (models.get(position).getTitle()) {
+                    case "Free Access":
+                        context.startActivity(new Intent(context, FLoginActivity.class));
+                        break;
+                    case "Premium Access":
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                        break;
+                    case "BGMI":
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                        break;
+                    default:
+                        Intent intent = new Intent(context, DetailActivity.class);
+                        intent.putExtra(TAG_TITLE, models.get(position).getTitle());
+                        intent.putExtra(TAG_IMG, models.get(position).getImage());
+                        context.startActivity(intent);
+                        // finish();
+                        // finish();
+                        break;
+                }
             }
         });
 

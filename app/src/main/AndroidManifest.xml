@@ -4,6 +4,7 @@
     package="mobisocial.arcade">
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
@@ -34,11 +35,13 @@
         <activity android:name="mobisocial.arcade.StoreActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name="mobisocial.arcade.HomeActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name="mobisocial.arcade.LoginActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name="mobisocial.arcade.GameActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name="mobisocial.arcade.AppUpdaterActivity"/>
         <activity android:name="mobisocial.arcade.ResellerActivity"/>
         <activity android:name="mobisocial.arcade.activityMaintain"/>
         <activity android:name="mobisocial.arcade.PluginActivity"/>
         <activity android:name="mobisocial.arcade.MyActivity"/>
+        <activity android:name="mobisocial.arcade.free.FLoginActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <activity android:name="mobisocial.arcade.free.FHomeActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <service android:name="mobisocial.arcade.free.FreeFloatLogo" android:exported="false" android:enabled="true"/>
@@ -46,6 +49,8 @@
 
         <activity android:name="mobisocial.arcade.lite.HomeActivityLite" android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <service android:name="mobisocial.arcade.lite.LiteFloatLogo" android:exported="false" android:enabled="true"/>
+        <service android:name="mobisocial.arcade.logo" android:exported="false" android:enabled="true"/>
+        <service android:name="mobisocial.arcade.flogo" android:exported="false" android:enabled="true"/>
 
     </application>
 </manifest>

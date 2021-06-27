@@ -17,7 +17,6 @@ public class MyApplication extends Application implements OSSubscriptionObserver
     @Override
     public void onCreate() {
         super.onCreate();
-
         // initialize the AdMob app
     initialization();
     }

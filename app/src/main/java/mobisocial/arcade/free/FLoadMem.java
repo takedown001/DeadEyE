@@ -26,11 +26,11 @@ public class FLoadMem extends AsyncTask<String, Integer, String>
     public FLoadMem(Context context) {
 
         this.instance = context;
-        mProgressDialog = new ProgressDialog(instance);
-        mProgressDialog.setMessage("Downloading Requirements...");
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mProgressDialog.setCancelable(false);
+//        mProgressDialog = new ProgressDialog(instance);
+//        mProgressDialog.setMessage("Downloading Requirements...");
+//        mProgressDialog.setIndeterminate(true);
+//        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        mProgressDialog.setCancelable(false);
     }
 
     protected String doInBackground(String... url_download)
@@ -88,21 +88,21 @@ public class FLoadMem extends AsyncTask<String, Integer, String>
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 getClass().getName());
         mWakeLock.acquire();
-        mProgressDialog.show();
+   //     mProgressDialog.show();
     }
 
-    @Override
-    protected void onProgressUpdate(Integer... progress) {
-        super.onProgressUpdate(progress);
-        mProgressDialog.setIndeterminate(false);
-        mProgressDialog.setMax(100);
-        mProgressDialog.setProgress(progress[0]);
-    }
+//    @Override
+//    protected void onProgressUpdate(Integer... progress) {
+//        super.onProgressUpdate(progress);
+//        mProgressDialog.setIndeterminate(false);
+//        mProgressDialog.setMax(100);
+//        mProgressDialog.setProgress(progress[0]);
+//    }
 
     @Override
     protected void onPostExecute(String result) {
         mWakeLock.release();
-        mProgressDialog.dismiss();
+  //      mProgressDialog.dismiss();
         ShellUtils.SU("chmod 777 " +instance.getFilesDir().toString() + urlref.FreeMem);
         if (result != null) {
             new AlertDialog.Builder(instance)

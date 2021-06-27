@@ -27,8 +27,8 @@
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
-            android:layout_width="296dp"
-            android:layout_height="88dp"
+            android:layout_width="282dp"
+            android:layout_height="102dp"
             android:layout_marginStart="50dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="49dp"
@@ -36,9 +36,10 @@
             android:background="@drawable/choosegamversionback"
             app:layout_constraintBottom_toTopOf="@+id/relativeLayout2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.459"
+            app:layout_constraintHorizontal_bias="0.437"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/updateCheat">
+
 
             <ImageView
                 android:layout_width="412px"
@@ -55,8 +56,8 @@
                 android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="-148dp"
                 android:layout_marginBottom="20dp"
                 android:layout_toStartOf="@+id/playstore64version"
                 android:background="@drawable/version32bitback"
@@ -73,12 +74,13 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="5dp"
-                android:visibility="gone"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/playstore64back"
                 android:text="playstore 64 "
                 android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
+
 
         </RelativeLayout>
 
@@ -172,16 +174,16 @@
             android:layout_width="295dp"
             android:layout_height="49dp"
             android:layout_marginStart="50dp"
-
             android:layout_marginTop="15dp"
             android:layout_marginEnd="48dp"
-            android:layout_marginBottom="281dp"
+            android:layout_marginBottom="100dp"
             android:background="@drawable/website"
             android:fontFamily="@font/montserrat"
             android:textAlignment="viewStart"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.388"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
             app:layout_constraintVertical_bias="1.0" />
@@ -191,8 +193,9 @@
             android:layout_width="295dp"
             android:layout_height="49dp"
             android:layout_marginStart="49dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="@dimen/dimen_30dp"
             android:layout_marginEnd="49dp"
+            android:visibility="gone"
             android:layout_marginBottom="1dp"
             android:src="@drawable/updateservers"
             app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
