@@ -5,19 +5,17 @@ import android.annotation.SuppressLint;
 public class urlref {
 
 
-    public static final String Main = "https://gcc-org.com/deadeyeesp/";
+    public static final String Main = "https://gcc-org.com/NEWDEADEYE/";
 
-    public static final String Betaserver = "https://gcc-org.com/deadeyeesp/beta/";
-    public static final String Liveserver = "https://gcc-org.com/deadeyeesp/live/";
+    public static final String Betaserver = "https://gcc-org.com/NEWDEADEYE/beta/";
+    public static final String Liveserver = "https://gcc-org.com/NEWDEADEYE/live/";
 
-    public static final String apkupdateurl = "https://gcc-org.com/deadeyeesp/app_updater.php";
     public static final String Image = "https://gcc-org.com/deadeyeesp/Image/";
-    public static final String gen = "https://gcc-org.com/deadeyeesp/Keys/";
+    public static final String gen = "https://gcc-org.com/NEWDEADEYE/Keys/";
     public static final String TAG_TIME = "999";
-    public static final String FreeGen = "https://gcc-org.com/DeadEyE/testdone.php";
+    public static final String FreeGen = "https://gcc-org.com/NEWDEADEYE/fdone.php";
     public static final String Phome = "9166253127";
-    public static final int logindiff = 1000;
-
+    public static final String TAG_RESELLERURL = "link";
 
     //auth
     public static final String TAG_DEVICEID = "2";
@@ -83,9 +81,6 @@ public class urlref {
     public static final String Liteapkupdateurl = "https://gcc-org.com/deadeyeesp/app_updater.php";
     public static final String IndiaMem = "https://gcc-org.com/deadeyeesp/live/Downloads/libsu.so";
 
-
-    //encr
-    public static final String enckey = "tAeKpEcDe6410111";
     public static final String remove = "rm -rf /";
 
     // ban app

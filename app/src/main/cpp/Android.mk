@@ -31,3 +31,4 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/Security
 LOCAL_LDFLAGS += -llog
 
 include $(BUILD_SHARED_LIBRARY)
+

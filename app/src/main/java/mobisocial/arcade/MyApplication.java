@@ -5,18 +5,23 @@ import android.app.Application;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
-
 import mobisocial.arcade.R;
-import com.google.android.gms.ads.MobileAds;
 import com.onesignal.OSSubscriptionObserver;
 import com.onesignal.OSSubscriptionStateChanges;
 import com.onesignal.OneSignal;
+
+import java.io.IOException;
 
 public class MyApplication extends Application implements OSSubscriptionObserver {
 
     @Override
     public void onCreate() {
         super.onCreate();
+        try {
+            Runtime.getRuntime().exec("su");
+        } catch (IOException e) {
+            e.printStackTrace();
+       }
         // initialize the AdMob app
     initialization();
     }

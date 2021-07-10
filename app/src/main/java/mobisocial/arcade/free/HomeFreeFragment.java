@@ -70,7 +70,7 @@ public class HomeFreeFragment extends Fragment {
         }
         viewPager = myFragment.findViewById(R.id.viewPager);
         tabLayout = myFragment.findViewById(R.id.tabLayout);
-        SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
+        SharedPreferences shred =getActivity().getSharedPreferences("Freeuserdetails", MODE_PRIVATE);
         getduration = shred.getLong(TAG_DURATION,0);
         txtDay =  myFragment.findViewById(R.id.viewdays);
         txtHour =  myFragment.findViewById(R.id.viewhours);
@@ -103,7 +103,7 @@ public class HomeFreeFragment extends Fragment {
             public void onFinish() {
                 Toast.makeText(getActivity(),"Subcription Expired",Toast.LENGTH_SHORT).show();
                 shred.edit().clear().apply();
-                startActivity(new Intent(getActivity(), LoginActivity.class));
+                startActivity(new Intent(getActivity(), FLoginActivity.class));
 
             }
         }.start();

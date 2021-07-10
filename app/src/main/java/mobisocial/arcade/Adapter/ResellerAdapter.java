@@ -20,6 +20,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
+import static mobisocial.arcade.GccConfig.urlref.TAG_RESELLERURL;
+
 public class ResellerAdapter  extends PagerAdapter {
     private List<Reseller> movelist;
     private LayoutInflater layoutInflater;
@@ -66,12 +68,11 @@ public class ResellerAdapter  extends PagerAdapter {
 
         view.setOnClickListener(v -> {
 
-
             Intent intent = new Intent(ctx, RDetailActivity.class);
-
             intent.putExtra(TAG_RNAME, movelist.get(position).getTitle());
             intent.putExtra(TAG_RDESC,movelist.get(position).getDesc());
             intent.putExtra(TAG_RIMG,movelist.get(position).getImage());
+            intent.putExtra(TAG_RESELLERURL,movelist.get(position).getResellerurl());
             ctx.startActivity(intent);
             // finish();
         });

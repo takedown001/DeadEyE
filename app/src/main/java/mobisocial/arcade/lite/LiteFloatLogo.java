@@ -47,6 +47,7 @@ import kotlin.jvm.functions.Function0;
 import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.ESPView;
 import mobisocial.arcade.GccConfig.urlref;
+import mobisocial.arcade.Helper;
 import mobisocial.arcade.JavaUrlConnectionReader;
 import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
@@ -91,7 +92,7 @@ public class LiteFloatLogo extends Service implements View.OnClickListener {
         super.onCreate();
         Instance = this;
         version = AESUtils.DarKnight.getEncrypted(version);
-        deviceid = AESUtils.DarKnight.getEncrypted(LoginActivity.getDeviceId(getApplicationContext()));
+        deviceid = AESUtils.DarKnight.getEncrypted(Helper.getDeviceId(getApplicationContext()));
         windowManager = (WindowManager) Instance.getSystemService(Context.WINDOW_SERVICE);
             overlayView = new LiteESPView(Instance);
 

@@ -6,16 +6,16 @@ plugins {
 // Set Enigma options:
 enigma.enabled = false
 enigma.injectFakeKeys = true
-enigma.classes  = ["mobisocial.arcade.GccConfig.urlref.java","mobisocial.arcade.Helper.java","mobisocial.arcade.ESPView.java","mobisocial.arcade.lite,LiteESPView.java","mobisocial.arcade.Fragment.AboutFragment.java","mobisocial.arcade.PluginActivity.java","mobisocial.arcade.SingleTapConfirm.java","mobisocial.arcade.imgLoad.java","mobisocial.arcade.logo.java","mobisocial.arcade.flogo.java"]
+enigma.classes  = ["mobisocial.arcade.GccConfig.urlref.java","mobisocial.arcade.Helper.java","mobisocial.arcade.ESPView.java","mobisocial.arcade.free.FESPView.java","mobisocial.arcade.lite,LiteESPView.java","mobisocial.arcade.Fragment.AboutFragment.java","mobisocial.arcade.PluginActivity.java","mobisocial.arcade.SingleTapConfirm.java","mobisocial.arcade.imgLoad.java","mobisocial.arcade.logo.java","mobisocial.arcade.flogo.java"]
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "mobisocial.arcade"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
-        versionName "1.89"
+        versionName "1.90"
         manifestPlaceholders = [
                 onesignal_app_id: 'd0827521-a855-456b-a09f-dc25899ac339',
                 // Project number pulled from dashboard, local value is ignored.
@@ -77,13 +77,13 @@ dependencies {
     implementation 'com.ramotion.circlemenu:circle-menu:0.3.2'
     implementation 'com.github.madrapps:pikolo:2.0.1'
     implementation 'com.github.topjohnwu.libsu:core:2.5.1'
-    implementation 'com.payumoney.core:payumoney-sdk:7.6.0'
     implementation  'com.payumoney.sdkui:plug-n-play:1.6.0'
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
     implementation 'com.scottyab:rootbeer-lib:0.0.8'
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.payumoney.core:payumoney-sdk:7.6.0'
     implementation 'com.ramotion.fluidslider:fluid-slider:0.3.1'
     implementation 'com.airbnb.android:lottie:3.5.0'
     implementation 'com.burakustun:lottieprogressdialog:1.0.2'

@@ -8,14 +8,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.view.View;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static mobisocial.arcade.FloatLogo.DrawOn;
 
 
 public class ESPView extends View implements Runnable {
@@ -26,8 +24,9 @@ public class ESPView extends View implements Runnable {
     int FPS = 45;
     long sleepTime;
     Date time;
+    private PackageInfo pInfo=null;
     NumberFormat f = new DecimalFormat("00");
-    public ESPView(Context context) {
+    public ESPView(Context context){
         super(context, null, 0);
         InitializePaints();
         setFocusableInTouchMode(false);
@@ -37,14 +36,19 @@ public class ESPView extends View implements Runnable {
         sleepTime = 1000 / FPS;
         mThread = new Thread(this);
         mThread.start();
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
-
+    public native void DrawOn(ESPView espView, Canvas canvas);
     @Override
     protected void onDraw(Canvas canvas) {
         if (canvas != null && getVisibility() == VISIBLE) {
             ClearCanvas(canvas);
             time.setTime(System.currentTimeMillis());
-            DrawText(canvas, 255, 255, 0, 0,"DeadEye ESP v" +SplashScreenActivity.pInfo.versionName, 155, 55, 20);
+            DrawText(canvas, 255, 255, 0, 0,"DeadEye ESP v" +pInfo.versionName, 155, 55, 20);
             DrawOn(this, canvas);
         }
     }

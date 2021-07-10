@@ -1,6 +1,7 @@
 package mobisocial.arcade.free;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -54,7 +55,7 @@ import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
 
 
-public class TaiwanFreeFragment extends Fragment implements View.OnClickListener {
+public class TaiwanFreeFragment extends Fragment {
 
     public TaiwanFreeFragment() {
         // Required empty public constructor
@@ -89,12 +90,11 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
         }
         View rootViewone = inflater.inflate(R.layout.fragment_taiwan, container, false);
         Context ctx=getActivity();
-        SharedPreferences shred = ctx.getSharedPreferences("userdetails", MODE_PRIVATE);
+        SharedPreferences shred = ctx.getSharedPreferences("Freeuserdetails", MODE_PRIVATE);
         version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
-        deviceid = LoginActivity.getDeviceId(getActivity());
+        deviceid = Helper.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
-
         Button cleanguest, fixgame, StartCheatTw, StopCheatTw,DeepFixGame;
         StartCheatTw = rootViewone.findViewById(R.id.startcheattw);
         StopCheatTw = rootViewone.findViewById(R.id.stopcheattw);
@@ -118,11 +118,6 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -138,7 +133,7 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
                             antiban.dismiss();
                             if  (Shell.rootAccess()) {
                                 try {
-                                    Helper.unzip(getActivity());
+                                    Helper.unzip(getActivity(),gameName);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -150,7 +145,7 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
                             }
 
                         }
-                    }, 4000);
+                    }, 2000);
                 }
             }
         });
@@ -160,11 +155,6 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -182,12 +172,11 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
                             ShellUtils.SU("iptables --flush");
                             if (Shell.rootAccess()) {
                                 betastopcheat();
-                                ctx.stopService(new Intent(ctx, FreeFloatLogo.class));
                             }else {
                                 Toast.makeText(getActivity(),"Root Access Was Not Granted ",Toast.LENGTH_LONG).show();
                             }
                         }
-                    }, 4000);
+                    }, 2000);
                 }
             }
         });
@@ -207,7 +196,6 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
                         @Override
                         public void run() {
                             cleanguestani.dismiss();
-
                             String s = "rm -Rf /data/data/com.rekoo.pubgm/databases\n" +
                                     "rm -Rf /data/data/com.rekoo.pubgm/shared_prefs/gsdk_prefs.xml\n" +
                                     "rm -Rf /data/data/com.rekoo.pubgm/shared_prefs/APMCfg.xml\n" +
@@ -221,7 +209,7 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
                                     "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;";
 
                             new Thread(() -> {
-                                String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                                String[] lines = s.split("\n");
                                 for (int i = 0; i < lines.length; i++) {
 
                                     //      Log.d("testlines", lines[i]);
@@ -265,7 +253,7 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
                                 "pm install -i com.android.vending /data/app/com.rekoo.pubgm-*/*.apk >/dev/null";
 
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -300,7 +288,7 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
                                 "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;\n" +
                                 "pm install -i com.android.vending /data/app/com.rekoo.pubgm-*/*.apk >/dev/null\n";
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 try {
@@ -337,7 +325,6 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
                             e.printStackTrace();
                         }
                         startPatcher();
-
                     });
 
                 }).start();
@@ -375,9 +362,11 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        getActivity().stopService(new Intent(getActivity(),FloatLogo.class));
                     });
                 }).start();
+                if(FreeFloatLogo.isRunning){
+                    getActivity().stopService(new Intent(getActivity(),FreeFloatLogo.class));
+                }
             }
             @Override
             protected String doInBackground(Void... voids) {
@@ -397,54 +386,36 @@ public class TaiwanFreeFragment extends Fragment implements View.OnClickListener
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" +getActivity().getPackageName ()));
             startActivityForResult(intent, 123);
         } else {
-            startFloater();
+            if(!isServiceRunning()) {
+                startFloater();
+            }else{
+                Toast.makeText(getActivity(),"Service Already Running",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
+    private boolean isServiceRunning() {
+        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        if (manager != null) {
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (FreeFloatLogo.class.getName().equals(service.service.getClassName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     private void startFloater() {
-        getActivity().stopService(new Intent(getActivity(), FloatLogo.class));
-        Intent i = new Intent(getActivity(), FreeFloatLogo.class);
-        i.putExtra("gametype",4);
-        i.putExtra("gamename",gameName);
-        getActivity().startService(i);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
-        if(imgLoad.Load(getActivity()).equals(time)){
-           getActivity().finish();
+        if(!isServiceRunning()){
+            Intent i = new Intent(getActivity(), FreeFloatLogo.class);
+            i.putExtra("gametype",4);
+            i.putExtra("gamename",gameName);
+            getActivity().startService(i);
+        }else{
+            Toast.makeText(getActivity(),"Service Already Runnning",Toast.LENGTH_SHORT).show();
         }
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onClick(View v) {
 
-        switch (v.getId()){
-
-            case R.id.taptoactivatetw:
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-                if(Helper.checkVPN(getActivity())){
-                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                }
-                else {
-                    lottieDialog.show(getActivity().getFragmentManager(), "loo");
-                    lottieDialog.setCancelable(false);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            lottieDialog.dismiss();
-                            startPatcher();
-                        }
-                    }, 2000);
-                }
-                break;
-        }
     }
 }
 

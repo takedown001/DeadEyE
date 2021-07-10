@@ -2,6 +2,8 @@ package mobisocial.arcade;
 
 import android.animation.ArgbEvaluator;
 import android.app.DialogFragment;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,7 +40,7 @@ public class GameActivity extends AppCompatActivity {
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String TAG_SUCCESS = urlref.TAG_SUCCESS;
     private static final String TAG_STORE = urlref.TAG_STORE;
-    private final JSONParser jsonParser = new JSONParser();
+    private final JSONParserString jsonParser = new JSONParserString();
     //plan
     private static final String TAG_TITLE = urlref.TAG_TITLE;
     private static final String TAG_DESC = urlref.TAG_DESC;
@@ -49,7 +51,6 @@ public class GameActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> offersList;
     private int success;
     private List<Model> Model = new ArrayList<>();
-
     Integer[] colors = null;
 
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
@@ -126,10 +127,13 @@ public class GameActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         protected void onPostExecute(String s) {
-            lottieDialog.dismiss();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    if (lottieDialog != null) {
+                        lottieDialog.dismiss();
+                    }
 
                         if (success == 1) {
 
@@ -147,6 +151,7 @@ public class GameActivity extends AppCompatActivity {
 
                         }
                     }
+
             });
         }
 
@@ -158,36 +163,41 @@ public class GameActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            deviceid = AESUtils.DarKnight.getEncrypted(LoginActivity.getDeviceId(GameActivity.this));
+            deviceid =  Helper.getDeviceId(GameActivity.this);
             lottieDialog.show(getFragmentManager(),"lol");
         }
 
         @Override
         protected String doInBackground(String... strings) {
 
-            HashMap<String, String> params = new HashMap<>();
-            params.put(TAG_DEVICEID, deviceid);
-            //   Log.d("All jsonarray: ", TAG_DEVICEID);
-            JSONObject json = jsonParser.makeHttpRequest(url, params);
+         JSONObject params = new JSONObject();
 
-          //     Log.d("All jsonarray: ", json.toString());
+            String s = null;
+
             try {
-                success = Integer.parseInt(AESUtils.DarKnight.getDecrypted(json.getString(TAG_SUCCESS)));
-                // Log.d("test", String.valueOf(success));
-                jsonarray =json.getJSONArray(TAG_STORE);
+                params.put(TAG_DEVICEID, deviceid);
+                s = jsonParser.makeHttpRequest(url, params);
+                JSONObject ack = new JSONObject(s);
+                String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                    Toast.makeText(GameActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                } else {
+                    JSONObject json = new JSONObject(decData);
+                    success = json.getInt(TAG_SUCCESS);
+                  //  Log.d("test", json.toString());
+                    jsonarray = json.getJSONArray(TAG_STORE);
 
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject c = jsonarray.getJSONObject(i);
-                    // creating new HashMap
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put(TAG_IMG, c.getString(TAG_IMG));
-                    map.put(TAG_TITLE, c.getString(TAG_TITLE));
-                    map.put(TAG_DESC, c.getString(TAG_DESC));
-                    offersList.add(map);
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject c = jsonarray.getJSONObject(i);
+                        // creating new HashMap
+                        HashMap<String, String> map = new HashMap<>();
+                        map.put(TAG_IMG, c.getString(TAG_IMG));
+                        map.put(TAG_TITLE, c.getString(TAG_TITLE));
+                        map.put(TAG_DESC, c.getString(TAG_DESC));
+                        offersList.add(map);
+                    }
                 }
-                Logcat.Save(GameActivity.this);
-
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

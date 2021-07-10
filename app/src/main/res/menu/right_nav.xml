@@ -5,16 +5,12 @@
 
     <item android:id="@+id/videosupport"
         android:title="Video Support " />
-    <item android:id="@+id/betaversion"
-        android:title="Beta Version"/>
     <item android:id="@+id/Reseller"
         android:title="Reseller"/>
     <item android:id="@+id/ExtentUpgrade"
-        android:title="Extent / Upgrade Plan"/>
+        android:title="Get A New Key"/>
     <item android:id="@+id/customersupport"
         android:title="Customer Support "/>
     <item android:id="@+id/About"
         android:title="About"/>
-
-
 </menu>

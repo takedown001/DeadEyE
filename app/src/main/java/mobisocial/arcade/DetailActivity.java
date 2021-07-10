@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -64,74 +65,12 @@ public class DetailActivity extends AppCompatActivity {
         Upgraded = findViewById(R.id.Upgraded);
         customtxt = findViewById(R.id.cusomtxt);
         String img = getIntent().getExtras().getString(TAG_IMG);
-        deviceid = LoginActivity.getDeviceId(DetailActivity.this);
+        deviceid = Helper.getDeviceId(DetailActivity.this);
         Glide.with(DetailActivity.this).load(urlref.Image + img).placeholder(R.drawable.logo).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(Img);
         Title = getIntent().getExtras().getString(TAG_TITLE);
         ordernow = findViewById(R.id.ordernow);
         customupgrade = findViewById(R.id.customupgrade);
 
-        if(!key.equals("null")) {
-            if (Title.equals("Premium Plan") && !HomeActivity.safe) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Alert")
-                        .setMessage("If You Are Upgrading Your Remaining Time Will Be Lost, According To Our Policy")
-
-                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                        // The dialog is automatically dismissed when a dialog button is clicked.
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Continue with delete operation
-                            }
-                        })
-                        // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-                // Specifying a listener allows you to take an action before dismissing the dialog.
-                // The dialog is automatically dismissed when a dialog button is clicked.
-            }
-            if (Title.equals("Basic Plan") && HomeActivity.safe || HomeActivity.burtal) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Alert")
-                        .setMessage("If You Are Downgrading Your Time Will Be Extended and Added Features Are Limited To Your Selected Plan")
-
-                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                        // The dialog is automatically dismissed when a dialog button is clicked.
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        })
-
-                        // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-                // Specifying a listener allows you to take an action before dismissing the dialog.
-                // The dialog is automatically dismissed when a dialog button is clicked.
-            } else if (Title.equals("Ultra Premium Plan") && !HomeActivity.burtal) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Alert")
-                        .setMessage("If You Are Upgrading Your Remaining Time Will Be Lost, According To Our Policy")
-
-                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                        // The dialog is automatically dismissed when a dialog button is clicked.
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Continue with delete operation
-                            }
-                        })
-
-                        // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-
-        }
-        Upgraded.setOnClickListener(new View.OnClickListener() {
-       @Override
-       public void onClick(View v) {
-           Toast.makeText(DetailActivity.this," Product Can't Buy ",Toast.LENGTH_LONG).show();
-       }
-   });
 
 
         ordernow.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +81,7 @@ public class DetailActivity extends AppCompatActivity {
                 intent.putExtra("taxid",deviceid);
                 intent.putExtra("amount", price.getText());
                 intent.putExtra("product",Title);
-                intent.putExtra("key",key);
+            //    intent.putExtra("key",key);
                 intent.putExtra("dollar",Dollar);
 
                 if(oneday.isChecked()){
@@ -216,19 +155,16 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             //creating request handler object
-
-
+            JSONObject params = new JSONObject();
             //creating request parameters
-            HashMap<String, String> params = new HashMap<>();
-            params.put(TAG_KEY,AESUtils.DarKnight.getEncrypted(key));
-            params.put("14",AESUtils.DarKnight.getEncrypted(Title)); //store listing title
-            params.put(TAG_DEVICEID,AESUtils.DarKnight.getEncrypted(deviceid));
             String rq = null;
-
                 try {
+                    params.put(TAG_KEY,key);
+                    params.put("14",Title); //store listing title
+                    params.put(TAG_DEVICEID,deviceid);
                     rq = jsonParserString.makeHttpRequest(url, params);
 
-                } catch (KeyStoreException | IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -240,34 +176,36 @@ public class DetailActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            handler.postDelayed(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    lottieDialog.dismiss();
+                    if(lottieDialog !=null){
+                        lottieDialog.dismiss();
+                    }
                     if (s == null || s.isEmpty()) {
                         Toast.makeText(DetailActivity.this, "Server Error", Toast.LENGTH_LONG).show();
                         return;
                     } else {
                         try {
-
-                            JSONObject obj = new JSONObject(s);
-                            //    Log.d("login", obj.toString());
-                            //checking for error to authenticate
-                            if (Helper.checkVPN(DetailActivity.this)) {
-                                Toast.makeText(DetailActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                                finish();
+                            JSONObject ack = new JSONObject(s);
+                            String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                            if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                                Toast.makeText(DetailActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                                return;
                             } else {
+                                JSONObject obj = new JSONObject(decData);
+                          //      Log.d("login", obj.toString());
 
-                                boolean error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
+                                boolean error =(obj.getBoolean(TAG_ERROR));
                                 //      Log.d("asa", Boolean.toString(error));
                                 //    Log.d("asa",AESUtils.DarKnight.getDecrypted(obj.getString(TAG_MSG)));
                                 if (!error) {
 
-                                    FDay = AESUtils.DarKnight.getDecrypted(obj.getString("102"));
-                                    TDay = AESUtils.DarKnight.getDecrypted(obj.getString("103"));
-                                    descrip = AESUtils.DarKnight.getDecrypted(obj.getString("104"));
-                                    OneDay = AESUtils.DarKnight.getDecrypted(obj.getString("105"));
-                                    Dollar = AESUtils.DarKnight.getDecrypted(obj.getString("106"));
+                                    FDay = obj.getString("102");
+                                    TDay =obj.getString("103");
+                                    descrip = obj.getString("104");
+                                    OneDay = obj.getString("105");
+                                    Dollar = obj.getString("106");
                                     price.setText(OneDay);
                                     description.setText(descrip);
                                     if (Title.equals("Premium Plan")) {
@@ -281,12 +219,12 @@ public class DetailActivity extends AppCompatActivity {
                                     finish();
                                 }
                             }
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-            }, 2000);
+            });
         }
     }
 

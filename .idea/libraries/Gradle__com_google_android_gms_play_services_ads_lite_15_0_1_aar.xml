@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.gms:play-services-ads-lite:15.0.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/a4da08d569627048424c36986c8da039/jetified-play-services-ads-lite-15.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/a4da08d569627048424c36986c8da039/jetified-play-services-ads-lite-15.0.1/res" />
-      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/a4da08d569627048424c36986c8da039/jetified-play-services-ads-lite-15.0.1/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/c3f7bf966591d2ab51d4f977e4526546/jetified-play-services-ads-lite-15.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/c3f7bf966591d2ab51d4f977e4526546/jetified-play-services-ads-lite-15.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/c3f7bf966591d2ab51d4f977e4526546/jetified-play-services-ads-lite-15.0.1/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/4c4a2c31ea2f3d64721a0ae967672b8b/jetified-play-services-ads-lite-15.0.1/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/4c4a2c31ea2f3d64721a0ae967672b8b/jetified-play-services-ads-lite-15.0.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/4c4a2c31ea2f3d64721a0ae967672b8b/jetified-play-services-ads-lite-15.0.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

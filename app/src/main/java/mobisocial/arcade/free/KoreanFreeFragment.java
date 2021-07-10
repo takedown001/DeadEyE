@@ -1,6 +1,7 @@
 package mobisocial.arcade.free;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -54,7 +55,7 @@ import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
 
 
-public class KoreanFreeFragment extends Fragment implements View.OnClickListener {
+public class KoreanFreeFragment extends Fragment{
 
     public KoreanFreeFragment() {
         // Required empty public constructor
@@ -93,10 +94,10 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
 
         }
         View rootViewone = inflater.inflate(R.layout.fragment_korean, container, false);
-        SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
+        SharedPreferences shred =getActivity().getSharedPreferences("Freeuserdetails", MODE_PRIVATE);
         version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
-        deviceid = LoginActivity.getDeviceId(getActivity());
+        deviceid = Helper.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
         Context ctx =getActivity();
         Button cleanguest, fixgame, StartCheatKr, StopCheatKr, DeepFixGame;
@@ -137,7 +138,7 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
                             antiban.dismiss();
                             if  (Shell.rootAccess()) {
                                 try {
-                                    Helper.unzip(getActivity());
+                                    Helper.unzip(getActivity(),gameName);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -148,7 +149,7 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
                                 Toast.makeText(getContext(), "Root Access Was Not Granted", Toast.LENGTH_LONG).show();
                             }
                         }
-                    }, 4000);
+                    }, 2000);
                 }
             }
         });
@@ -173,9 +174,8 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
                             ShellUtils.SU("iptables -F");
                             ShellUtils.SU("iptables --flush");
                             betastopcheat();
-                            ctx.stopService(new Intent(ctx,FreeFloatLogo.class));
                         }
-                    }, 4000);
+                    }, 2000);
 
                 }
             }
@@ -204,7 +204,7 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
                                 "rm -Rf /data/media/0/Android/data/com.pubg.krmobile/files/UE4Game/ShadowTrackerExtra/ShadowTrackerExtra/Intermediate/SaveGames/JKGuestRegisterCnt.json\n" +
                                 "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;";
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -248,7 +248,7 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
                                 "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;\n" +
                                 "pm install -i com.android.vending /data/app/com.pubg.krmobile-*/*.apk >/dev/null";
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines =  s.split("\n");
                             for (String line : lines) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -285,7 +285,7 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
                                 "pm install -i com.android.vending /data/app/com.pubg.krmobile-*/*.apk >/dev/null";
 
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -320,10 +320,8 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
                  //      Log.d("data",s);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() +"/scheat.sh");
                         try {
                             givenToFile(getActivity(),s);
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -359,16 +357,17 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
                 //    Log.d("data",data);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
                         try {
                             givenToFile(getActivity(), s);
 
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        getActivity().stopService(new Intent(getActivity(),FloatLogo.class));
                     });
                 }).start();
+                if(FreeFloatLogo.isRunning) {
+                    getActivity().stopService(new Intent(getActivity(), FreeFloatLogo.class));
+                }
             }
             @Override
             protected String doInBackground(Void... voids) {
@@ -389,10 +388,24 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getActivity().getPackageName()));
             startActivityForResult(intent, 123);
         } else {
-            startFloater();
+            if(!isServiceRunning()) {
+                startFloater();
+            }else{
+                Toast.makeText(getActivity(),"Service Already Running",Toast.LENGTH_SHORT).show();
+            }
         }
     }
-
+    private boolean isServiceRunning() {
+        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        if (manager != null) {
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (FreeFloatLogo.class.getName().equals(service.service.getClassName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     private void startFloater() {
         getActivity().stopService(new Intent(getActivity(), FloatLogo.class));
         Intent i = new Intent(getActivity(), FreeFloatLogo.class);
@@ -402,42 +415,7 @@ public class KoreanFreeFragment extends Fragment implements View.OnClickListener
 
 
     }
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
-        if(imgLoad.Load(getActivity()).equals(time)){
-            getActivity().finish();
-        }
-    }
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onClick(View v) {
 
-        switch (v.getId()){
-
-            case R.id.taptoactivatekr:
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-                if(Helper.checkVPN(getActivity())){
-                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                }
-                else {
-                    lottieDialog.show(getActivity().getFragmentManager(), "loo");
-                    lottieDialog.setCancelable(false);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            lottieDialog.dismiss();
-                            startPatcher();
-                        }
-                    }, 2000);
-                }
-                break;
-        }
-    }
 }
 
 

@@ -97,7 +97,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
         SharedPreferences shred =getSharedPreferences("userdetails", MODE_PRIVATE);
         version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
-        deviceid = AESUtils.DarKnight.getEncrypted(LoginActivity.getDeviceId(getApplicationContext()));
+        deviceid = AESUtils.DarKnight.getEncrypted(Helper.getDeviceId(getApplicationContext()));
         windowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         overlayView = new ESPView(Instance);
         SharedPreferences ga = Instance.getSharedPreferences("game", MODE_PRIVATE);
@@ -112,17 +112,17 @@ public class FloatLogo extends Service implements View.OnClickListener {
                         Check();
                         ShellUtils.SU("setenforce 0");
                         gamerun();
-//                        if (gameName.equals("com.pubg.imobile")) {
-//                            hexDaemon = "." + Instance.getFilesDir().toString() + urlref.HexMem;
-//                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.LiteMem;
-//                        }else{
+                        if (gameName.equals("com.pubg.imobile")) {
+                            hexDaemon = "." + Instance.getFilesDir().toString() + urlref.HexMem;
+                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.LiteMem;
+                        }else{
                             hexDaemon = "." + Instance.getFilesDir().toString() + urlref.HexMem;
                             myDaemon = "." + Instance.getFilesDir().toString() + urlref.SafeMem;
-                     //   }
-                     //   Log.d("test",myDaemon);
+                        }
                         ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+urlref.HexMem);
                         ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.SafeMem);
-                    } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException | IOException | InterruptedException e) {
+
+                    } catch (IOException | InterruptedException | NoSuchAlgorithmException | PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
                     }
                 });
@@ -170,16 +170,16 @@ public class FloatLogo extends Service implements View.OnClickListener {
         return START_NOT_STICKY;
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void gamerun() throws IOException, InterruptedException {
         boolean finalCheck = Helper.checkmd5(Instance, gameName);
-        new Thread(() -> {
-      // Log.d("check12312312312", String.valueOf(finalCheck));
-            new Handler(Looper.getMainLooper()).post(() -> {
-                if (Gametype == 1) {
-                       if (finalCheck) {
-                            PremiumValue(599, true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    if (Gametype == 1) {
+
+                        if (finalCheck) {
                             Toast.makeText(Instance, "Daemon Load Successfully", Toast.LENGTH_LONG).show();
                             new Thread(new Runnable() {
                                 @Override
@@ -188,108 +188,76 @@ public class FloatLogo extends Service implements View.OnClickListener {
                                 }
                             }).start();
                         } else {
-                           PremiumValue(599, false);
-                           Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
-                           isRunning = false;
+                            Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
+                            isRunning = false;
                         }
                         //  ShellUtils.SU("rm -rf /data/data/mobisocial.arcade/files/.*");
-                }
+                    }
 
 //        else if (MainActivity.gameType == 1 && MainActivity.is64) {
 //            Start(ctx,1,2);
 //        }
-                else if (Gametype == 2) {
-                    if (finalCheck) {
-                        PremiumValue(599, true);
-                        Toast.makeText(Instance, "Daemon Load Successfully", Toast.LENGTH_LONG).show();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Start(Instance, 2, 1);
-                            }
-                        }).start();
-                    } else {
-                        PremiumValue(599, false);
-                        Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Start(Instance, 2, 1);
-                            }
-                        }).start();
-                    }
-                }
-
-//        else if (MainActivity.gameType == 2 && MainActivity.is64) {
-//            Start(ctx,2,2);
-//        }
-                else if (Gametype == 3) {
-
-                    if (finalCheck) {
-                        PremiumValue(599, true);
-                        Toast.makeText(Instance, "Daemon Load Successfully", Toast.LENGTH_LONG).show();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Start(Instance, 3, 1);
-                            }
-                        }).start();
-                    } else {
-                        PremiumValue(599, false);
-                        Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
-                        Stop();
-                        isRunning = false;
-                        stopSelf();
-                    }
-                }
-
-//        else if (MainActivity.gameType == 3 && MainActivity.is64) {
-//            Start(ctx,3,2);
-//        }
-                else if (Gametype == 4) {
+                    else if (Gametype == 2) {
                         if (finalCheck) {
-                            PremiumValue(599, true);
+
                             Toast.makeText(Instance, "Daemon Load Successfully", Toast.LENGTH_LONG).show();
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Start(Instance, 4, 1);
+                                    Start(Instance, 2, 1);
                                 }
                             }).start();
                         } else {
-                            PremiumValue(599, false);
+                            isRunning = false;
+                            Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+//        else if (MainActivity.gameType == 2 && MainActivity.is64) {
+//            Start(ctx,2,2);
+//        }
+                    else if (Gametype == 3) {
+                        if (finalCheck) {
+                            Toast.makeText(Instance, "Daemon Load Successfully", Toast.LENGTH_LONG).show();
+                            Start(Instance, 3, 1);
+                        } else {
+                            isRunning = false;
+                            Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+//        else if (MainActivity.gameType == 3 && MainActivity.is64) {
+//            Start(ctx,3,2);
+//        }
+                    else if (Gametype == 4) {
+                        if (finalCheck) {
+                            Toast.makeText(Instance, "Daemon Load Successfully", Toast.LENGTH_LONG).show();
+                            Start(Instance, 4, 1);
+
+                        } else {
+                            stopSelf();
                             Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
                             isRunning = false;
-                            stopSelf();
-                            Stop();
+
                         }
-                }
-                else if (Gametype == 5) {
-                    if (finalCheck) {
-                        PremiumValue(599, true);
-                        Toast.makeText(Instance, "Daemon Load Successfully", Toast.LENGTH_LONG).show();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Start(Instance, 5, 1);
-                            }
-                        }).start();
-                    } else {
-                        PremiumValue(599, false);
-                        Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
-                        isRunning = false;
-                        stopSelf();
-                        Stop();
                     }
-                }
-                //        else if (MainActivity.gameType == 4 && MainActivity.is64) {
+                    else if (Gametype == 5) {
+                        if (finalCheck) {
+                            Toast.makeText(Instance, "Daemon Load Successfully", Toast.LENGTH_LONG).show();
+                            Start(Instance, 5, 1);
+
+                        } else {
+                            isRunning = false;
+                            Toast.makeText(Instance, "Daemon Server Error", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    //        else if (MainActivity.gameType == 4 && MainActivity.is64) {
 //            Start(ctx,4,2);
 //        }
-            });
-            //  Log.d("game",ESPMainActivity.gameName);
-            //    ShellUtils.SU("rm -rf " +ctx.getExternalFilesDir(DIRECTORY_PICTURES).getAbsolutePath() );
-        }).start();
+                });
 
+            }
+        }).start();
 
     }
     private void Start(Context ctx,int game ,int bit) {
@@ -302,10 +270,10 @@ public class FloatLogo extends Service implements View.OnClickListener {
                  * PUG VNG = 3
                  * PUG Taiwan = 4
                  */
-                 //    Log.d("game", String.valueOf(game));
+                //    Log.d("game", String.valueOf(game));
                 startDaemon(game);
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -319,16 +287,16 @@ public class FloatLogo extends Service implements View.OnClickListener {
                     //     Rescan(ctx,game,bit);
                 } else {
                     isRunning = true;
-  //                        Log.d("check", String.valueOf(safecheck));
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             new Handler(Looper.getMainLooper()).post(() -> {
-                                ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                                 PremiumValue(608,true);
+                                PremiumValue(599, true);
+                                DrawCanvas();
+                                ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                                 createOver();
                                 CInit();
-                                DrawCanvas();
                             });
                         }
                     }).start();
@@ -340,7 +308,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
     private void startDaemon(int mode){
         new Thread(() -> {
             String cmd = getFilesDir() + "/sysexe " + mode;
-        //    Log.d("test", String.valueOf(mode));
+            //    Log.d("test", String.valueOf(mode));
             if(!Shell.rootAccess()){
                 Shell.sh(cmd).submit();
             } else {
@@ -376,11 +344,12 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 } else {
                     isRunning = true;
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                         PremiumValue(608,true);
+                        PremiumValue(599, true);
+                        DrawCanvas();
+                        ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                         createOver();
                         CInit();
-                        DrawCanvas();
                     });
                 }
             }
@@ -416,11 +385,13 @@ public class FloatLogo extends Service implements View.OnClickListener {
                         @Override
                         public void run() {
                             new Handler(Looper.getMainLooper()).post(() -> {
-                                ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                                 PremiumValue(608,true);
+                                PremiumValue(599, true);
+                                DrawCanvas();
+                                ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                                 createOver();
                                 CInit();
-                                DrawCanvas();
+
                             });
                         }
                     }).start();
@@ -429,12 +400,10 @@ public class FloatLogo extends Service implements View.OnClickListener {
             }
         }).start();
     }
-
     @SuppressLint("InflateParams")
     void createOver(){
         //getting the widget layout from xml using layout inflater
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.float_logo, null);
-
         player = mFloatingView.findViewById(R.id.players);
         logoView = mFloatingView.findViewById(R.id.relativeLayoutParent);
         espView = mFloatingView.findViewById(R.id.espView);
@@ -621,8 +590,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 Special.setBackgroundColor(getResources().getColor((R.color.blueij)));
                 Ammo.setBackgroundColor(getResources().getColor((R.color.blueij)));
                 Scopes.setBackgroundColor(getResources().getColor((R.color.blueij)));
-
-
                 ArmorsTab.setVisibility(View.VISIBLE);
                 WeaponTab.setVisibility(View.GONE);
                 MiscTab.setVisibility(View.GONE);
@@ -721,11 +688,11 @@ public class FloatLogo extends Service implements View.OnClickListener {
             Safefeatures.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   Display.setText("Memory");
-                   safelayout.setVisibility(View.VISIBLE);
+                    Display.setText("Memory");
+                    safelayout.setVisibility(View.VISIBLE);
                     player.setVisibility(View.GONE);
-                   choice.setVisibility(View.GONE);
-                  vehicle.setVisibility(View.GONE);
+                    choice.setVisibility(View.GONE);
+                    vehicle.setVisibility(View.GONE);
                     items.setVisibility(View.GONE);
               }
            });
@@ -770,19 +737,21 @@ public class FloatLogo extends Service implements View.OnClickListener {
 
 
     }
+
     @Override
     public void onDestroy() {
         Stop();
+        stopSelf();
         isRunning = false;
-        if (mFloatingView != null) {
-            windowManager.removeView(mFloatingView);
-            mFloatingView = null;
-        }
         if(overlayView != null){
             windowManager.removeView(overlayView);
             overlayView = null;
         }
-        stopSelf();
+        if (mFloatingView != null) {
+            windowManager.removeView(mFloatingView);
+            mFloatingView = null;
+        }
+
         super.onDestroy();
     }
 
@@ -2947,20 +2916,17 @@ public class FloatLogo extends Service implements View.OnClickListener {
 //        });
 //
 //    }
+    public native int Init();
 
-    public static native void DrawOn(ESPView espView, Canvas canvas);
+    public native void Stop();
 
-    public static native int Init();
+    public native void Size(int setting_code, float value);
 
-    public static  native void Stop();
+    public native void PremiumValue(int setting_code, boolean value);
 
-    public static native void Size(int setting_code, float value);
+    public native void PremiumVehicalValue(int setting_code, boolean value);
 
-    public static native void PremiumValue(int setting_code, boolean value);
-
-    public static native void PremiumVehicalValue(int setting_code, boolean value);
-
-    public static native void PremiumItemValue(int setting_code, boolean value);
+    public native void PremiumItemValue(int setting_code, boolean value);
 
 
     private LinearLayout.LayoutParams setParams() {

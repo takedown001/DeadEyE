@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
+import static mobisocial.arcade.GccConfig.urlref.TAG_RESELLERURL;
 import static mobisocial.arcade.GccConfig.urlref.TAG_RIMG;
 
 public class ResellerActivity extends AppCompatActivity {
@@ -37,7 +39,7 @@ public class ResellerActivity extends AppCompatActivity {
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String TAG_SUCCESS = urlref.TAG_SUCCESS;
     private static final String TAG_RESELLER = urlref.TAG_RESELLER;
-    private final JSONParser jsonParser = new JSONParser();
+    private final JSONParserString jsonParser = new JSONParserString();
     //plan
 
     private static final String TAG_RNAME = urlref.TAG_RNAME;
@@ -80,6 +82,7 @@ public class ResellerActivity extends AppCompatActivity {
 
         Integer[] colors_temp = {
                 getResources().getColor(R.color.color1),
+                getResources().getColor(R.color.white),
                 getResources().getColor(R.color.color4)
         };
 
@@ -123,14 +126,13 @@ public class ResellerActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.P)
         @Override
         protected void onPostExecute(String s) {
-            lottieDialog.dismiss();
+            if (lottieDialog != null) {
+                lottieDialog.dismiss();
+            }
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (s == null || s.isEmpty()) {
-                        Toast.makeText(ResellerActivity.this, "Server Error", Toast.LENGTH_LONG).show();
-                        return;
-                    } else {
+
                         if (success == 1) {
 
                             for (int i = 0; i < offersList.size(); i++) {
@@ -138,7 +140,7 @@ public class ResellerActivity extends AppCompatActivity {
                                 reseller.setTitle(offersList.get(i).get(TAG_RNAME));
                                 reseller.setDesc(offersList.get(i).get(TAG_RDESC));
                                 reseller.setImage(offersList.get(i).get(TAG_RIMG));
-
+                                reseller.setResellerurl(offersList.get(i).get(TAG_RESELLERURL));
                                 ResellerList.add(reseller);
                                 adapter.notifyDataSetChanged();
 
@@ -149,7 +151,6 @@ public class ResellerActivity extends AppCompatActivity {
 
                         }
                     }
-                }
 
 
             });
@@ -163,38 +164,44 @@ public class ResellerActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            deviceid =AESUtils.DarKnight.getEncrypted(LoginActivity.getDeviceId(ResellerActivity.this));
+            deviceid =  Helper.getDeviceId(ResellerActivity.this);
             lottieDialog.show(getFragmentManager(),"lol");
         }
 
         @Override
         protected String doInBackground(String... strings) {
-            HashMap<String, String> params = new HashMap<>();
-            params.put(TAG_DEVICEID,deviceid);
-          //     Log.d("All jsonarray: ", deviceid.toString());
-            //   Log.d("All jsonarray: ", TAG_DEVICEID.toString());
-            JSONObject json = jsonParser.makeHttpRequest(url, params);
-     //       Log.d("All jsonarray: ", json.toString());
+            JSONObject params = new JSONObject();
             try {
+                params.put(TAG_DEVICEID,deviceid);
+                String s=null;
+                s = jsonParser.makeHttpRequest(url, params);
+                JSONObject ack = new JSONObject(s);
+                String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                    Toast.makeText(ResellerActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                    return null;
+                } else {
+                    JSONObject json = new JSONObject(decData);
+                   Log.d("login", json.toString());
 
-                success = Integer.parseInt(AESUtils.DarKnight.getDecrypted(json.getString(TAG_SUCCESS)));
-         //       Log.d("test", String.valueOf(success));
-                jsonarray =json.getJSONArray(TAG_RESELLER);
+                    success = json.getInt(TAG_SUCCESS);
+                    jsonarray = json.getJSONArray(TAG_RESELLER);
 
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject c = jsonarray.getJSONObject(i);
 
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject c = jsonarray.getJSONObject(i);
+                        // creating new HashMap
+                        HashMap<String, String> map = new HashMap<>();
+                        map.put(TAG_RESELLERURL,c.getString(TAG_RESELLERURL));
+                        map.put(TAG_RIMG, c.getString(TAG_RIMG));
+                        map.put(TAG_RNAME, c.getString(TAG_RNAME));
+                        map.put(TAG_RDESC, c.getString(TAG_RDESC));
 
-                    // creating new HashMap
-                    HashMap<String, String> map = new HashMap<>();
-
-                    map.put(TAG_RIMG, c.getString(TAG_RIMG));
-                    map.put(TAG_RNAME, c.getString(TAG_RNAME));
-                    map.put(TAG_RDESC, c.getString(TAG_RDESC));
-
-                    offersList.add(map);
+                        offersList.add(map);
+                    }
                 }
-            } catch (JSONException e) {
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

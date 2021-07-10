@@ -5,10 +5,18 @@ public class Reseller {
     private String image;
     private String title;
     private String desc;
-
+    private String resellerurl;
 
     public String getImage() {
         return image;
+    }
+
+    public String getResellerurl() {
+        return resellerurl;
+    }
+
+    public void setResellerurl(String resellerurl) {
+        this.resellerurl = resellerurl;
     }
 
     public void setImage(String image) {

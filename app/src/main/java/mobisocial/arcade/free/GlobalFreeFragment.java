@@ -55,7 +55,7 @@ import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
 
-public class GlobalFreeFragment extends Fragment implements View.OnClickListener {
+public class GlobalFreeFragment extends Fragment  {
 
     private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
     private String data;
@@ -97,10 +97,10 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
         Context ctx;
         ctx =getActivity();
         View rootViewone = inflater.inflate(R.layout.fragment_global, container, false);
-        SharedPreferences shred = ctx.getSharedPreferences("userdetails", MODE_PRIVATE);
+        SharedPreferences shred =ctx.getSharedPreferences("Freeuserdetails", MODE_PRIVATE);
         version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
-        deviceid = LoginActivity.getDeviceId(getActivity());
+        deviceid = Helper.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
 
         Button cleanguest, fixgame, StartCheatGl, StopCheatGl,DeepFixGame;
@@ -141,7 +141,7 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                             ShellUtils.SU("iptables --flush");
                             if  (Shell.rootAccess()) {
                                 try {
-                                    Helper.unzip(getActivity());
+                                    Helper.unzip(getActivity(),gameName);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -153,7 +153,7 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                             }
 
                         }
-                    }, 4000);
+                    }, 2000);
                 }
             }
         });
@@ -162,11 +162,6 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
         StopCheatGl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -189,7 +184,7 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                                 Toast.makeText(getActivity(),"Root Access Was Not Granted ",Toast.LENGTH_LONG).show();
                             }
                         }
-                    }, 4000);
+                    }, 2000);
                 }
             }
         });
@@ -219,7 +214,7 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                                 "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;";
 
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -260,7 +255,7 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                                 "rm -rf /sdcard/Android/data/com.google.backup\n"+
                                 "pm install -i com.android.vending /data/app/com.tencent.ig-*/*.apk >/dev/null";
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -299,7 +294,7 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                                 "pm install -i com.android.vending /data/app/com.tencent.ig-*/*.apk >/dev/null\n" +
                                 "#svc power reboot";
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -333,7 +328,6 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                 //      Log.d("data",s);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() +"/scheat.sh");
                         try {
                             givenToFile(getActivity(),s);
 
@@ -341,7 +335,6 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                             e.printStackTrace();
                         }
                         startPatcher();
-
                     });
 
                 }).start();
@@ -372,7 +365,6 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                 //    Log.d("data",data);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
                         try {
 
                             givenToFile(getActivity(), s);
@@ -380,9 +372,11 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        getActivity().stopService(new Intent(getActivity(),FloatLogo.class));
                     });
                 }).start();
+                if(FreeFloatLogo.isRunning) {
+                    getActivity().stopService(new Intent(getActivity(), FreeFloatLogo.class));
+                }
             }
             @Override
             protected String doInBackground(Void... voids) {
@@ -414,47 +408,6 @@ public class GlobalFreeFragment extends Fragment implements View.OnClickListener
         i.putExtra("gamename",gameName);
         getActivity().startService(i);
 
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
-        if(imgLoad.Load(getActivity()).equals(time)){
-            getActivity().finish();
-        }
-    }
-
-
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()){
-
-            case R.id.taptoactivategl:
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-                if(Helper.checkVPN(getActivity())){
-                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                }
-                else {
-                    lottieDialog.show(getActivity().getFragmentManager(), "loo");
-                    lottieDialog.setCancelable(false);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            lottieDialog.dismiss();
-                            startPatcher();
-
-                        }
-                    }, 2000);
-                }
-                break;
-        }
     }
 }
 

@@ -111,7 +111,7 @@ public class SettingFragment extends Fragment {
         SharedPreferences.Editor editor = shred.edit();
         version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
-        deviceid = LoginActivity.getDeviceId(getActivity());
+        deviceid = Helper.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
         minview = rootViewone.findViewById(R.id.everymin);
         seekBar = rootViewone.findViewById(R.id.seekBar);

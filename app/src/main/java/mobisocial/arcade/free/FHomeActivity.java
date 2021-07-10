@@ -36,9 +36,11 @@ import mobisocial.arcade.FloatLogo;
 import mobisocial.arcade.Fragment.AboutFragment;
 import mobisocial.arcade.Fragment.DownloadFragment;
 import mobisocial.arcade.Fragment.NewsFragment;
+import mobisocial.arcade.GameActivity;
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.Helper;
 import mobisocial.arcade.HomeActivity;
+import mobisocial.arcade.JSONParserString;
 import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.RequestHandler;
@@ -47,6 +49,8 @@ import mobisocial.arcade.ShellUtils;
 import mobisocial.arcade.StoreActivity;
 import mobisocial.arcade.activityMaintain;
 import mobisocial.arcade.imgLoad;
+import mobisocial.arcade.lite.HomeActivityLite;
+
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.yeyint.customalertdialog.CustomAlertDialog;
@@ -68,7 +72,9 @@ import java.util.HashMap;
 
 import javax.security.auth.callback.CallbackHandler;
 
+import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
 import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
+import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 import static mobisocial.arcade.GccConfig.urlref.time;
 
 public class FHomeActivity extends AppCompatActivity {
@@ -90,7 +96,7 @@ public class FHomeActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     Handler handler = new Handler();
     private String daemonPath;
-    RequestHandler requestHandler = new RequestHandler();
+    JSONParserString jsonParserString = new JSONParserString();
     public static boolean beta = false;
     ImageView rightico, leftico;
     String videourl;
@@ -105,9 +111,6 @@ public class FHomeActivity extends AppCompatActivity {
         rightico = findViewById(R.id.frightico);
         leftico = findViewById(R.id.fleftico);
         Context ctx = this;
-//        Log.d("test", String.valueOf(safe));
-//        Log.d("test", String.valueOf(burtal));
-        // OneSignal Initialization
         if (!isConfigExist()) {
             Init();
         }
@@ -189,15 +192,12 @@ public class FHomeActivity extends AppCompatActivity {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     new FLoadMem(FHomeActivity.this).execute(urlref.MemPathPublic);
                     new FHexLoad(FHomeActivity.this).execute(urlref.HexPublicLib);
-
-
-                try {
-                    Check();
-                    loadAssets();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-            });
+                    try {
+                        loadAssets();
+                    } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         }).start();
 
@@ -279,8 +279,9 @@ public class FHomeActivity extends AppCompatActivity {
 
     };
 
-    public void loadAssets() {
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void loadAssets() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        Check();
         String pathf = getFilesDir().toString() + "/sysexe";
         try {
             OutputStream myOutput = new FileOutputStream(pathf);
@@ -323,7 +324,7 @@ public class FHomeActivity extends AppCompatActivity {
             Androidcheck.setPositiveButton("Yes", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                    startActivity(new Intent(FHomeActivity.this, GameActivity.class));
                     Androidcheck.dismiss();
                 }
             });
@@ -370,7 +371,7 @@ public class FHomeActivity extends AppCompatActivity {
 
     class OneLoadAllProducts extends AsyncTask<Void, Void, String> {
 
-        SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
+        SharedPreferences shred = getSharedPreferences("Freeuserdetails", MODE_PRIVATE);
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -380,10 +381,16 @@ public class FHomeActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             //creating request handler object
-            HashMap<String, String> params = new HashMap<>();
-            params.put(TAG_KEY, AESUtils.DarKnight.getEncrypted(shred.getString(TAG_KEY, "0")));
-
-            return requestHandler.sendPostRequest(urlref.Freeapkupdateurl, params);
+            JSONObject params = new JSONObject();
+            String s = null;
+            try {
+                params.put(TAG_DEVICEID,Helper.getDeviceId(FHomeActivity.this));
+                params.put(TAG_KEY,shred.getString(TAG_KEY,"null"));
+                s= jsonParserString.makeHttpRequest(urlref.Main+"flogin.php", params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return s;
 
 
         }
@@ -391,42 +398,51 @@ public class FHomeActivity extends AppCompatActivity {
 
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            if (s == null || s.isEmpty()) {
+                Toast.makeText(FHomeActivity.this, "Server Error", Toast.LENGTH_LONG).show();
+                return ;
+            }
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-
-                        //converting response to json object
-                        JSONObject obj = new JSONObject(s);
-                        error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-
-                        if (!error) {
-                            newversion = obj.getString(TAG_APP_NEWVERSION);
-                            whatsNewData = obj.getString(data);
-                            ismaintaince = obj.getBoolean("ismain");
-                    //        Log.d("test", String.valueOf(ismaintaince));
-                            videourl = obj.getString("videourl");
-                            String url = obj.getString("updateurl");
-                            // Log.d("main",videourl);
-                            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                            String version = pInfo.versionName;
-                            //    System.out.println("takedown" + "old:" + version + " new:" + newversion);
-                            if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
-                                Intent intent = new Intent(FHomeActivity.this, AppUpdaterActivity.class);
-                                intent.putExtra(TAG_APP_NEWVERSION, newversion);
-                                intent.putExtra(data, whatsNewData);
-                                intent.putExtra("updateurl", url);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                        JSONObject ack = new JSONObject(s);
+                        String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                        if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                            Toast.makeText(FHomeActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                            return;
+                        } else {
+                            JSONObject obj = new JSONObject(decData);
+                            error = obj.getBoolean(TAG_ERROR);
+                        //   Log.d("test",obj.toString());
+//                            Log.d("test",shred.getString(TAG_KEY,"null"));
+                            if (error || shred.getString(TAG_KEY,"null").equals("null")) {
+                                startActivity(new Intent(FHomeActivity.this, GameActivity.class));
+                                Toast.makeText(FHomeActivity.this ,"Integrity Check Failed",Toast.LENGTH_SHORT).show();
                             }
-                            else if (ismaintaince) {
-                                Intent intent = new Intent(FHomeActivity.this, activityMaintain.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                newversion = obj.getString(TAG_APP_NEWVERSION);
+                                whatsNewData = obj.getString(data);
+                                ismaintaince = obj.getBoolean("ismain");
+                                videourl = obj.getString("videourl");
+                                String url = obj.getString("updateurl");
+                                PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                                String version = pInfo.versionName;
+                                //    System.out.println("takedown" + "old:" + version + " new:" + newversion);
+                                if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
+                                    Intent intent = new Intent(FHomeActivity.this, AppUpdaterActivity.class);
+                                    intent.putExtra(TAG_APP_NEWVERSION, newversion);
+                                    intent.putExtra(data, whatsNewData);
+                                    intent.putExtra("updateurl", url);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                } else if (ismaintaince) {
+                                    Intent intent = new Intent(FHomeActivity.this, activityMaintain.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
                             }
-                        }
 
-                    } catch (JSONException | PackageManager.NameNotFoundException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

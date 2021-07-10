@@ -37,10 +37,13 @@ import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.free.FHexLoad;
 import mobisocial.arcade.free.FHomeActivity;
 import mobisocial.arcade.free.FLoadMem;
+import mobisocial.arcade.free.FLoginActivity;
+import mobisocial.arcade.lite.HomeActivityLite;
 
 import com.google.android.gms.common.util.Hex;
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.onesignal.OneSignal;
 import com.topjohnwu.superuser.Shell;
 import com.yeyint.customalertdialog.CustomAlertDialog;
 
@@ -59,7 +62,10 @@ import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
+import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
+import static mobisocial.arcade.GccConfig.urlref.TAG_DURATION;
 import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
+import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 import static mobisocial.arcade.GccConfig.urlref.time;
 
 
@@ -74,16 +80,19 @@ public class HomeActivity extends AppCompatActivity {
     private String data = "data";
     private String whatsNewData;
     private boolean ismaintaince;
+    static{
+        System.loadLibrary("sysload");
+    }
     private static final String TAG_APP_NEWVERSION = "newversion";
     private DrawerLayout drawer;
     Handler handler = new Handler();
     public static boolean safe =false;
     private static int backbackexit = 1;
     public static boolean burtal =false;
-    RequestHandler requestHandler = new RequestHandler();
+    JSONParserString jsonParserString = new JSONParserString();
     public static boolean beta = false;
     ImageView rightico,leftico;
-    private String videourl,url,daemonPath;
+    private String videourl,url,daemonPath,UUID;
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +102,9 @@ public class HomeActivity extends AppCompatActivity {
         chipNavigationBar = findViewById(R.id.leftmenu);
         rightico = findViewById(R.id.rightico);
         leftico = findViewById(R.id.leftico);
-
+        OneSignal.idsAvailable((userId, registrationId) -> {
+            UUID = userId;
+        });
         safe = getIntent().getBooleanExtra("safe", false);
         burtal = getIntent().getBooleanExtra("brutal", false);
 //        Log.d("test", String.valueOf(safe));
@@ -180,30 +191,53 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-          if(safe){
-              new HexLoad(HomeActivity.this).execute(urlref.HexPathSafe);
-              new MemLoad(HomeActivity.this).execute(urlref.MemPathSafe);
-          }
+        if (safe) {
+            new HexLoad(HomeActivity.this).execute(urlref.HexPathSafe);
+            new MemLoad(HomeActivity.this).execute(urlref.MemPathSafe);
+        }
         new Thread(() -> {
-            try {
-
-                Check();
-                loadAssets();
-            } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
+                Switch();
         }).start();
 
 
     }
+    private void Switch(){
+        new Handler(Looper.getMainLooper()).post(() -> {
+        CustomAlertDialog Androidcheck = new CustomAlertDialog(this, CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
+        Androidcheck.setCancelable(false);
+        Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
+        Androidcheck.setAlertTitle("Version Selection");
+        Androidcheck.setImageSize(150,150);
+        Androidcheck.setAlertMessage("Switch Server To Battlegrounds India Or Continue To Global PUBG ?");
+        Androidcheck.create();
+        Androidcheck.show();
+        Androidcheck.setPositiveButton("Continue", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Androidcheck.dismiss();
+                try {
+                    loadAssets();
+                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Androidcheck.setNegativeButton("Switch To BGMI", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Androidcheck.dismiss();
+                startActivity(new Intent(HomeActivity.this, HomeActivityLite.class));
 
+            }
+        });
+        });
+    }
     @RequiresApi(api = Build.VERSION_CODES.N)
     private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
         if (imgLoad.Load(HomeActivity.this).equals(time)) {
             finish();
         } else {
             new OneLoadAllProducts().execute();
-
         }
     }
 
@@ -237,7 +271,7 @@ public class HomeActivity extends AppCompatActivity {
             Androidcheck.setPositiveButton("Yes", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                     Androidcheck.dismiss();
                 }
             });
@@ -288,29 +322,15 @@ public class HomeActivity extends AppCompatActivity {
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.videosupport:
-
                     Intent c = new Intent(Intent.ACTION_VIEW, Uri.parse(videourl));
                     startActivity(c);
                     return true;
-                case R.id.betaversion:
-                    if (!beta) {
-                        item.setTitle("Live Server");
-                        beta = true;
-                        Toast.makeText(HomeActivity.this, "You Are In Beta Testing", Toast.LENGTH_LONG).show();
-
-                    } else {
-                        item.setTitle("Beta Version");
-                        beta =false;
-                        Toast.makeText(HomeActivity.this, "You Are In Live Server", Toast.LENGTH_LONG).show();
-                    }
-                    break;
                 case R.id.ExtentUpgrade:
-                    Intent i = new Intent(HomeActivity.this,StoreActivity.class);
-                    startActivity(i);
-                    return true;
-                case R.id.Reseller:
-                 Intent p = new Intent(HomeActivity.this,ResellerActivity.class);
-                 startActivity(p);
+                    Intent p = new Intent(HomeActivity.this,StoreActivity.class);
+                    startActivity(p);
+                  case R.id.Reseller:
+                     Intent g = new Intent(HomeActivity.this,ResellerActivity.class);
+                     startActivity(g);
                     return true;
                 case R.id.customersupport:
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/DeadEyeTg_Bot"));
@@ -330,9 +350,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    public void loadAssets()
-    {
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void loadAssets() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
+        Check();
         new Thread()
         {
             public void run() {
@@ -392,67 +412,68 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(Void... voids) {
                 //creating request handler object
-                HashMap<String, String> params = new HashMap<>();
-                params.put(TAG_KEY,AESUtils.DarKnight.getEncrypted(shred.getString(TAG_KEY,"0")));
-
-                return requestHandler.sendPostRequest(urlref.apkupdateurl, params);
-
-
+                JSONObject params = new JSONObject();
+                String s = null;
+                try {
+                    params.put(TAG_DEVICEID,Helper.getDeviceId(HomeActivity.this));
+                    params.put(TAG_ONESIGNALID,UUID);
+                    params.put(TAG_KEY,shred.getString(TAG_KEY,"null"));
+                    s= jsonParserString.makeHttpRequest(urlref.Main+"login.php", params);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return s;
             }
 
 
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (s == null || s.isEmpty()) {
-                            Toast.makeText(HomeActivity.this, "Server Error", Toast.LENGTH_LONG).show();
-                            return;
-                        } else {
-                            try {
-                                //converting response to json object
-                                JSONObject obj = new JSONObject(s);
-                                error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-
-                                if (!error) {
-                                    newversion = obj.getString(TAG_APP_NEWVERSION);
-                                    whatsNewData = obj.getString(data);
-                                    ismaintaince = obj.getBoolean("ismain");
-                                    videourl = obj.getString("videourl");
-                                    url = obj.getString("updateurl");
-                                    // Log.d("main",videourl);
-                                    ShellUtils.SU("su");
-                                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                                    String version = pInfo.versionName;
-
-                                    //    System.out.println("takedown" + "old:" + version + " new:" + newversion);
-
-                                    if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
-                                        Intent intent = new Intent(HomeActivity.this, AppUpdaterActivity.class);
-                                        intent.putExtra(TAG_APP_NEWVERSION, newversion);
-                                        intent.putExtra(data, whatsNewData);
-                                        intent.putExtra("updateurl", url);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                    } else if (ismaintaince) {
-                                        Intent intent = new Intent(HomeActivity.this, activityMaintain.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                    }
-                                }
-
-                            } catch (JSONException | PackageManager.NameNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                    if (s == null || s.isEmpty()) {
+                        Toast.makeText(HomeActivity.this, "Server Error", Toast.LENGTH_LONG).show();
+                        return ;
                     }
-                }).start();
+
+                                try {
+                                    JSONObject ack = new JSONObject(s);
+                                    String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                                    if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                                        Toast.makeText(HomeActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                                        return ;
+                                    } else {
+                                        //converting response to json object
+                                        JSONObject obj = new JSONObject(decData);
+                                        error = obj.getBoolean(TAG_ERROR);
+
+                                        if (error || shred.getString(TAG_KEY,"null").equals("null")) {
+                                          startActivity(new Intent(HomeActivity.this,GameActivity.class));
+                                          Toast.makeText(HomeActivity.this ,"Integrity Check Failed",Toast.LENGTH_SHORT).show();
+                                        }
+                                        newversion = obj.getString(TAG_APP_NEWVERSION);
+                                        whatsNewData = obj.getString(data);
+                                        ismaintaince = obj.getBoolean("ismain");
+                                        videourl = obj.getString("videourl");
+                                        url = obj.getString("updateurl");
+                                        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                                        String version = pInfo.versionName;
+                                        //    System.out.println("takedown" + "old:" + version + " new:" + newversion);
+                                        if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
+                                            Intent intent = new Intent(HomeActivity.this, AppUpdaterActivity.class);
+                                            intent.putExtra(TAG_APP_NEWVERSION, newversion);
+                                            intent.putExtra(data, whatsNewData);
+                                            intent.putExtra("updateurl", url);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                        } else if (ismaintaince) {
+                                            Intent intent = new Intent(HomeActivity.this, activityMaintain.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
             }
 
         }
-
-
-}

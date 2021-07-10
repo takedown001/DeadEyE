@@ -2,6 +2,7 @@ package mobisocial.arcade.lite;
 
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,18 +28,24 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.onesignal.OneSignal;
 import com.topjohnwu.superuser.Shell;
+
+import org.json.JSONObject;
 
 import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.FloatLogo;
 import mobisocial.arcade.GameActivity;
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.Helper;
+import mobisocial.arcade.JSONParserString;
 import mobisocial.arcade.JavaUrlConnectionReader;
 import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.ShellUtils;
+import mobisocial.arcade.SplashScreenActivity;
 import mobisocial.arcade.flogo;
+import mobisocial.arcade.free.FreeFloatLogo;
 import mobisocial.arcade.imgLoad;
 
 import java.io.IOException;
@@ -44,11 +53,14 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 import mobisocial.arcade.logo;
 
 import static android.content.Context.MODE_PRIVATE;
+import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
+import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
@@ -64,8 +76,9 @@ public class HomeFragmentlite extends Fragment {
     private static final String TAG_VERSION = "v";
     private TextView txtDay, txtHour, txtMinute, txtSecond;
     private long getduration;
-    private String gameName = "com.pubg.imobile";
+    private String gameName = "com.pubg.imobile",UUID;
     static int GameType = 5;
+    JSONParserString jsonParserString = new JSONParserString();
     long secondsInMilli = 1000;
     long minutesInMilli = secondsInMilli * 60;
     long hoursInMilli = minutesInMilli * 60;
@@ -79,6 +92,9 @@ public class HomeFragmentlite extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ctx = getActivity();
+        OneSignal.idsAvailable((userId, registrationId) -> {
+            UUID = userId;
+        });
     }
 
 
@@ -93,11 +109,21 @@ public class HomeFragmentlite extends Fragment {
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
 //        viewPager = myFragment.findViewById(R.id.viewPager);
 //        tabLayout = myFragment.findViewById(R.id.tabLayout);
         SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
-        Context ctx = getActivity();
+    //    Context ctx = getActivity();
         getduration = shred.getLong(TAG_DURATION,0);
+        deviceid = Helper.getDeviceId(getActivity());
+        deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
         txtDay =  myFragment.findViewById(R.id.viewdays);
         txtHour =  myFragment.findViewById(R.id.viewhours);
         txtMinute =  myFragment.findViewById(R.id.viewminutes);
@@ -110,8 +136,9 @@ public class HomeFragmentlite extends Fragment {
         cleanguest = myFragment.findViewById(R.id.litecleanguest);
         fixgame = myFragment.findViewById(R.id.litefixgame);
         DeepFixGame = myFragment.findViewById(R.id.litedeepfixclean);
-        deviceid = LoginActivity.getDeviceId(getActivity());
-        deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
+
+
+
 
         new CountDownTimer(getduration,1000){
 
@@ -156,12 +183,6 @@ public class HomeFragmentlite extends Fragment {
 
             @Override
             public void onClick(View v) {
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -180,7 +201,7 @@ public class HomeFragmentlite extends Fragment {
                             if(Shell.rootAccess()) {
                                 if (HomeActivityLite.safe) {
                                     try {
-                                        Helper.unzip(getActivity());
+                                        Helper.unzip(getActivity(),gameName);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -189,7 +210,7 @@ public class HomeFragmentlite extends Fragment {
 
                                 } else {
                                     try {
-                                        Helper.unzip(getActivity());
+                                        Helper.unzip(getActivity(),gameName);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -199,7 +220,7 @@ public class HomeFragmentlite extends Fragment {
                             else {
                                 Toast.makeText(getActivity(),"Root Access Was Not Granted ", Toast.LENGTH_LONG).show();                            }
                         }
-                    }, 3000);
+                    }, 2000);
                 }
             }
         });
@@ -208,11 +229,6 @@ public class HomeFragmentlite extends Fragment {
         StopCheat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -237,7 +253,7 @@ public class HomeFragmentlite extends Fragment {
                                 Toast.makeText(getActivity()," Root Access Was Not Granted ",Toast.LENGTH_LONG).show();
                             }
                         }
-                    }, 3000);
+                    }, 2000);
                 }
             }
         });
@@ -248,25 +264,47 @@ public class HomeFragmentlite extends Fragment {
             @SuppressLint("SdCardPath")
             @Override
             public void onClick(View view) {
-                cleanguestani.show(getActivity().getFragmentManager(),"cleanguest");
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        cleanguestani.dismiss();
-                        Shell.su("rm -Rf /data/data/com.pubg.imobile/databases\\n\" +\n" +
-                                "                                \"rm -Rf /data/data/com.pubg.imobile/shared_prefs/gsdk_prefs.xml\\n\" +\n" +
-                                "                                \"rm -Rf /data/data/com.pubg.imobile/shared_prefs/APMCfg.xml\\n\" +\n" +
-                                "                                \"rm -Rf /data/data/com.pubg.imobile/shared_prefs/device_id.xml\\n\" +\n" +
-                                "                                \"echo -n \\\"<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\\\\n<map>\\\\n    <string name=\\\\\\\"random\\\\\\\"></string>\\\\n    <string name=\\\\\\\"install\\\\\\\"></string>\\\\n    <string name=\\\\\\\"uuid\\\\\\\">$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM</string>\\\\n</map>\\\" > /data/data/com.pubg.imobile/shared_prefs/device_id.xml\\n\" +\n" +
-                                "                                \"chmod -R 555 /data/data/com.pubg.imobile/shared_prefs/device_id.xml\\n\" +\n" +
-                                "                                \"rm -Rf /data/media/0/.backups\\n\" +\n" +
-                                "                                \"rm -Rf /data/media/0/Android/data/com.pubg.imobile/cache\\n\" +\n" +
-                                "                                \"rm -Rf /data/media/0/Android/data/com.pubg.imobile/files/login-identifier.txt\\n\" +\n" +
-                                "                                \"rm -Rf /data/media/0/Android/data/com.pubg.imobile/files/UE4Game/ShadowTrackerExtra/ShadowTrackerExtra/Intermediate/SaveGames/JKGuestRegisterCnt.json\\n\" +\n" +
-                                "                                \"find /storage/emulated/0 -type f \\\\( -name \\\".fff\\\" -o -name \\\".zzz\\\" -o -name \\\".system_android_l2\\\" \\\\) -exec rm -Rf {} \\\\;").submit();
-                    }
-                }, 3000);
-                //   new DownloadTask(getActivity(), URL)
+                if(Helper.checkVPN(getActivity())){
+                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                }
+                else {
+                    cleanguestani.show(getActivity().getFragmentManager(), "StopCheatTW");
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            cleanguestani.dismiss();
+
+                            String s = "rm -Rf /data/data/com.pubg.imobile/databases\n" +
+                                    "rm -Rf /data/data/com.pubg.imobile/shared_prefs/gsdk_prefs.xml\n" +
+                                    "rm -Rf /data/data/com.pubg.imobile/shared_prefs/APMCfg.xml\n" +
+                                    "rm -Rf /data/data/com.pubg.imobile/shared_prefs/device_id.xml\n" +
+                                    "echo -n \"<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\\n<map>\\n    <string name=\\\"random\\\"></string>\\n    <string name=\\\"install\\\"></string>\\n    <string name=\\\"uuid\\\">$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM</string>\\n</map>\" > /data/data/com.pubg.imobile/shared_prefs/device_id.xml\n" +
+                                    "chmod -R 555 /data/data/com.pubg.imobile/shared_prefs/device_id.xml\n" +
+                                    "rm -Rf /data/media/0/.backups\n" +
+                                    "rm -Rf /data/media/0/Android/data/com.pubg.imobile/cache\n" +
+                                    "rm -Rf /data/media/0/Android/data/com.pubg.imobile/files/login-identifier.txt\n" +
+                                    "rm -Rf /data/media/0/Android/data/com.pubg.imobile/files/UE4Game/ShadowTrackerExtra/ShadowTrackerExtra/Intermediate/SaveGames/JKGuestRegisterCnt.json\n" +
+                                    "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;";
+
+                            new Thread(() -> {
+                                String[] lines = s.split("\n");
+                                for (int i = 0; i < lines.length; i++) {
+
+                                    //      Log.d("testlines", lines[i]);
+                                    try {
+                                        ShellUtils.SU(lines[i]);
+                                        TimeUnit.MILLISECONDS.sleep(100);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).start();
+                        }
+                    }, 2000);
+                    //   new DownloadTask(getActivity(), URL);
+                }
+
             }
         });
 
@@ -274,27 +312,40 @@ public class HomeFragmentlite extends Fragment {
             @Override
             public void onClick(View v) {
                 fixgameani.show(getActivity().getFragmentManager(),"fixgame");
-
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         fixgameani.dismiss();
-                      ShellUtils.SU("rm -Rf /data/data/com.pubg.imobile/lib\\n\" +\n" +
-                              "                                \"rm -Rf /data/data/com.pubg.imobile/databases__hs_log_store\\n\" +\n" +
-                              "                                \"touch /data/data/com.pubg.imobile/__hs_log_store\\n\" +\n" +
-                              "                                \"chmod 444 /data/data/com.pubg.imobile/__hs_log_store\\n\" +\n" +
-                              "                                \"chmod 555 /data/data/com.pubg.imobile/files/tss*\\n\" +\n" +
-                              "                                \"chmod 555 /data/data/com.pubg.imobile/files/tersafe.update\\n\" +\n" +
-                              "                                \"echo \\\"8192\\\" > /proc/sys/fs/inotify/max_user_watches\\n\" +\n" +
-                              "                                \"echo \\\"8192\\\" > /proc/sys/fs/inotify/max_user_instances\\n\" +\n" +
-                              "                                \"echo \\\"8192\\\" > /proc/sys/fs/inotify/max_queued_events\\n\" +\n" +
-                              "                                \"rm -Rf /storage/emulated/0/Android/data/.um /storage/emulated/0/Android/data/pushSdk /storage/emulated/0/Android/obj /storage/emulated/0/.backups /storage/emulated/0/MidasOversea /storage/emulated/0/tencent\\n\" +\n" +
-                              "                                \"find /storage/emulated/0 -type f \\\\( -name \\\".fff\\\" -o -name \\\".zzz\\\" -o -name \\\".system_android_l2\\\" \\\\) -exec rm -Rf {} \\\\;\\n\" +\n" +
-                              "                                \"rm -rf /sdcard/Android/data/com.google.backup\\n\"+\n" +
-                              "                                \"pm install -i com.android.vending /data/app/com.pubg.imobile-*/*.apk >/dev/null");
+                        //   new DownloadTask(getActivity(), URL);
+                        String s = "rm -Rf /data/data/com.pubg.imobile/lib\n" +
+                                "rm -Rf /data/data/com.pubg.imobile/databases__hs_log_store\n" +
+                                "touch /data/data/com.pubg.imobile/__hs_log_store\n" +
+                                "chmod 444 /data/data/com.pubg.imobile/__hs_log_store\n" +
+                                "chmod 555 /data/data/com.pubg.imobile/files/tss*\n" +
+                                "chmod 555 /data/data/com.pubg.imobile/files/tersafe.update\n" +
+                                "echo \"8192\" > /proc/sys/fs/inotify/max_user_watches\n" +
+                                "echo \"8192\" > /proc/sys/fs/inotify/max_user_instances\n" +
+                                "echo \"8192\" > /proc/sys/fs/inotify/max_queued_events\n" +
+                                "rm -rf /sdcard/Android/data/com.google.backup\n"+
+                                "rm -Rf /data/media/0/Android/data/.um /data/media/0/Android/data/pushSdk /data/media/0/Android/obj /data/media/0/.backups /data/media/0/MidasOversea /data/media/0/tencent\n" +
+                                "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;\n" +
+                                "pm install -i com.android.vending /data/app/com.pubg.imobile-*/*.apk >/dev/null";
+
+                        new Thread(() -> {
+                            String[] lines = s.split("\n");
+                            for (int i = 0; i < lines.length; i++) {
+
+                                //      Log.d("testlines", lines[i]);
+                                try {
+                                    ShellUtils.SU(lines[i]);
+                                    TimeUnit.MILLISECONDS.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
                     }
-                },3000);
-                //   new DownloadTask(getActivity(), URL);
+                },2000);
 
             }
         });
@@ -302,28 +353,37 @@ public class HomeFragmentlite extends Fragment {
         DeepFixGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                fixgameani.show(getActivity().getFragmentManager(),"Deepfixgame");
-
+                antiban.show(getActivity().getFragmentManager(),"StopCheatTW");
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        fixgameani.dismiss();
-                      ShellUtils.SU("rm -Rf /data/data/com.pubg.imobile\\n\" +\n" +
-                              "                                \"rm -Rf /storage/emulated/0/.backups/com.pubg.imobile\\n\" +\n" +
-                              "                                \"rm -Rf /storage/emulated/0/Android/data/com.pubg.imobile/cache\\n\" +\n" +
-                              "                                \"rm -Rf /storage/emulated/0/Android/data/com.pubg.imobile/files\\n\" +\n" +
-                              "                                \"rm -Rf /storage/emulated/0/Android/data/.um /storage/emulated/0/Android/data/pushSdk /storage/emulated/0/Android/obj /storage/emulated/0/.backups /storage/emulated/0/MidasOversea /storage/emulated/0/tencent\\n\" +\n" +
-                              "                                \"find /storage/emulated/0 -type f \\\\( -name \\\".fff\\\" -o -name \\\".zzz\\\" -o -name \\\".system_android_l2\\\" \\\\) -exec rm -Rf {} \\\\;\\n\" +\n" +
-                              "                                \"pm install -i com.android.vending /data/app/com.pubg.imobile-*/*.apk >/dev/null\\n\" +\n" +
-                              "                                \"#svc power reboot");
+                        antiban.dismiss();
+                        //   new DownloadTask(getActivity(), URL);
+                        String s = "rm -Rf /data/data/com.pubg.imobile\n" +
+                                "rm -Rf /data/media/0/.backups/com.pubg.imobile\n" +
+                                "rm -Rf /data/media/0/Android/data/com.pubg.imobile/cache\n" +
+                                "rm -Rf /data/media/0/Android/data/com.pubg.imobile/files\n" +
+                                "rm -Rf /data/media/0/Android/data/.um /data/media/0/Android/data/pushSdk /data/media/0/Android/obj /data/media/0/.backups /data/media/0/MidasOversea /data/media/0/tencent\n" +
+                                "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;\n" +
+                                "pm install -i com.android.vending /data/app/com.pubg.imobile-*/*.apk >/dev/null\n";
+                        new Thread(() -> {
+                            String[] lines = s.split("\n");
+                            for (int i = 0; i < lines.length; i++) {
+
+                                //      Log.d("testlines", lines[i]);
+                                try {
+                                    ShellUtils.SU(lines[i]);
+                                    TimeUnit.MILLISECONDS.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
                     }
-                },3000);
-                //   new DownloadTask(getActivity(), URL);
+                },2000);
 
             }
         });
-
         return myFragment;
     }
 
@@ -333,19 +393,17 @@ public class HomeFragmentlite extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                   // Log.d("data",data);
+             //       Log.d("data",data);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
                         try {
                             givenToFile(getActivity(), s);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     });
-                    startPatcher();
-               //
                 }).start();
+                startPatcher();
                 Toast.makeText(getContext(), "Wait While We Setting Up Things", Toast.LENGTH_LONG).show();
             }
 
@@ -374,7 +432,7 @@ public class HomeFragmentlite extends Fragment {
                 //    Log.d("data",data);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
+                     //   ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
                         try {
                             givenToFile(getActivity(), s);
 
@@ -382,11 +440,12 @@ public class HomeFragmentlite extends Fragment {
                             e.printStackTrace();
                         }
                     });
-
-                    ctx.stopService(new Intent(ctx,FloatLogo.class));
-                    ctx.stopService(new Intent(ctx,flogo.class));
-                    ctx.stopService(new Intent(ctx,logo.class));
                 }).start();
+                if(FloatLogo.isRunning) {
+                    ctx.stopService(new Intent(ctx, FloatLogo.class));
+                    ctx.stopService(new Intent(ctx, flogo.class));
+                    ctx.stopService(new Intent(ctx, logo.class));
+                }
             }
 
             @Override
@@ -417,18 +476,69 @@ public class HomeFragmentlite extends Fragment {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" +getActivity().getPackageName ()));
             startActivityForResult(intent, 123);
         } else {
-            startFloater();
+            if(!isServiceRunning()) {
+                startFloater();
+            }else{
+                Toast.makeText(getActivity(),"Service Already Running",Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+    private boolean isServiceRunning() {
+        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        if (manager != null) {
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (FreeFloatLogo.class.getName().equals(service.service.getClassName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void startFloater() {
-        ctx.stopService(new Intent(ctx, logo.class));
-        ctx.stopService(new Intent(getActivity(), flogo.class));
-       ctx.stopService(new Intent(getActivity(), FloatLogo.class));
-        Intent i = new Intent(getActivity(),FloatLogo.class);
-        i.putExtra("gametype",GameType);
-        i.putExtra("gamename",gameName);
-        getActivity().startService(i);
+        SharedPreferences shred =ctx.getSharedPreferences("userdetails", MODE_PRIVATE);
+        JSONObject params = new JSONObject();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    try {
+                        String s = null;
+                        params.put(TAG_DEVICEID,Helper.getDeviceId(ctx));
+                    //   params.put(TAG_ONESIGNALID,UUID);
+                        params.put(TAG_KEY,shred.getString(TAG_KEY,"null"));
+                        s= jsonParserString.makeHttpRequest(urlref.Main+"login.php", params);
+                        if (s == null || s.isEmpty()) {
+                            Toast.makeText(ctx, "Server Error", Toast.LENGTH_LONG).show();
+                            return ;
+                        }
+                        JSONObject ack = new JSONObject(s);
+                        String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                        if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                            Toast.makeText(ctx, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                            return ;
+                        } else {
+                            //converting response to json object
+                            JSONObject obj = new JSONObject(decData);
+                         //   Log.d("test",decData);
+                            if (obj.getBoolean(urlref.TAG_ERROR) || shred.getString(TAG_KEY,"null").equals("null") ) {
+                                startActivity(new Intent(ctx,LoginActivity.class));
+                                Toast.makeText(ctx ,"Integrity Check Failed",Toast.LENGTH_SHORT).show();
+                            }else{
+                                Intent i = new Intent(getActivity(),FloatLogo.class);
+                                i.putExtra("gametype",GameType);
+                                i.putExtra("gamename",gameName);
+                                getActivity().startService(i);
+
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                });
+            }
+        }).start();
     }
 
 

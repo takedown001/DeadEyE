@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.yeyintkoko1788:AlertDialog:v1.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/3191ecb915e0958010cbbc18070abe44/jetified-AlertDialog-v1.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/3191ecb915e0958010cbbc18070abe44/jetified-AlertDialog-v1.0.0/res" />
-      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/3191ecb915e0958010cbbc18070abe44/jetified-AlertDialog-v1.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/58c065ca17a656d2c494e7080d31f0c9/jetified-AlertDialog-v1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/58c065ca17a656d2c494e7080d31f0c9/jetified-AlertDialog-v1.0.0/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/58c065ca17a656d2c494e7080d31f0c9/jetified-AlertDialog-v1.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

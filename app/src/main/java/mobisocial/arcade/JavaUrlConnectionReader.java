@@ -35,7 +35,6 @@ public class JavaUrlConnectionReader
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
-
                 OutputStream os = urlConnection.getOutputStream();
 
                 BufferedWriter writer = new BufferedWriter(

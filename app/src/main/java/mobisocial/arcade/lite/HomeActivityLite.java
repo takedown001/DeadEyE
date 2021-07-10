@@ -30,6 +30,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.AppUpdaterActivity;
+import mobisocial.arcade.GameActivity;
+import mobisocial.arcade.HomeActivity;
+import mobisocial.arcade.JSONParserString;
 import mobisocial.arcade.ShellUtils;
 import mobisocial.arcade.free.FHexLoad;
 import mobisocial.arcade.free.FHomeActivity;
@@ -51,6 +54,7 @@ import mobisocial.arcade.activityMaintain;
 import mobisocial.arcade.imgLoad;
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,7 +67,9 @@ import java.io.OutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
+import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
 import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
+import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 import static mobisocial.arcade.GccConfig.urlref.time;
 
 public class HomeActivityLite extends AppCompatActivity {
@@ -74,7 +80,6 @@ public class HomeActivityLite extends AppCompatActivity {
     public static int REQUEST_OVERLAY_PERMISSION = 5469;
     // JSON Node names
     private static final String TAG_ERROR = urlref.TAG_ERROR;
-    private static final String TAG_USERID = "userid";
     private String newversion;
     private String data = "data";
     private String whatsNewData;
@@ -82,13 +87,16 @@ public class HomeActivityLite extends AppCompatActivity {
     private static final String TAG_APP_NEWVERSION = "newversion";
     private DrawerLayout drawer;
     Handler handler = new Handler();
-    RequestHandler requestHandler = new RequestHandler();
+    JSONParserString jsonParserString = new JSONParserString();
     public static boolean beta = false;
     ImageView rightico, leftico;
-    String videourl, url;
-    private String memupdate, curentversion;
+    String videourl, url,UUID;
     public static boolean safe =false;
     public static boolean burtal =false;
+    static{
+        System.loadLibrary("sysload");
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +106,9 @@ public class HomeActivityLite extends AppCompatActivity {
         chipNavigationBar = findViewById(R.id.leftmenu);
         rightico = findViewById(R.id.rightico);
         leftico = findViewById(R.id.leftico);
+        OneSignal.idsAvailable((userId, registrationId) -> {
+            UUID = userId;
+        });
 
         safe = getIntent().getBooleanExtra("safe", false);
         burtal = getIntent().getBooleanExtra("brutal", false);
@@ -273,8 +284,6 @@ public class HomeActivityLite extends AppCompatActivity {
 
                 } catch (IOException e) {
                 }
-
-
                 try {
                     Runtime.getRuntime().exec("chmod 777 " +pathf);
                 } catch (IOException e) {
@@ -291,18 +300,18 @@ public class HomeActivityLite extends AppCompatActivity {
                     Intent c = new Intent(Intent.ACTION_VIEW, Uri.parse(videourl));
                     startActivity(c);
                     return true;
-                case R.id.betaversion:
-                    if (!beta) {
-                        item.setTitle("Live Server");
-                        beta = true;
-                        Toast.makeText(HomeActivityLite.this, "You Are In Beta Testing", Toast.LENGTH_LONG).show();
-
-                    } else {
-                        item.setTitle("Beta Version");
-                        beta = false;
-                        Toast.makeText(HomeActivityLite.this, "You Are In Live Server", Toast.LENGTH_LONG).show();
-                    }
-                    break;
+//                case R.id.betaversion:
+//                    if (!beta) {
+//                        item.setTitle("Live Server");
+//                        beta = true;
+//                        Toast.makeText(HomeActivityLite.this, "You Are In Beta Testing", Toast.LENGTH_LONG).show();
+//
+//                    } else {
+//                        item.setTitle("Beta Version");
+//                        beta = false;
+//                        Toast.makeText(HomeActivityLite.this, "You Are In Live Server", Toast.LENGTH_LONG).show();
+//                    }
+//                    break;
                 case R.id.ExtentUpgrade:
                     Intent i = new Intent(HomeActivityLite.this, StoreActivity.class);
                     startActivity(i);
@@ -338,6 +347,7 @@ public class HomeActivityLite extends AppCompatActivity {
         }
     }
 
+
     class OneLoadAllProducts extends AsyncTask<Void, Void, String> {
 
         SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
@@ -349,63 +359,66 @@ public class HomeActivityLite extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             //creating request handler object
-            HashMap<String, String> params = new HashMap<>();
-            params.put(TAG_KEY, AESUtils.DarKnight.getEncrypted(shred.getString(TAG_KEY, "0")));
-
-            return requestHandler.sendPostRequest(urlref.Liteapkupdateurl, params);
-
-
+            JSONObject params = new JSONObject();
+            String s = null;
+            try {
+                params.put(TAG_DEVICEID,Helper.getDeviceId(HomeActivityLite.this));
+                params.put(TAG_ONESIGNALID,UUID);
+                params.put(TAG_KEY,shred.getString(TAG_KEY,"null"));
+                s= jsonParserString.makeHttpRequest(urlref.Main+"login.php", params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return s;
         }
 
 
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-
-                    try {
-                        //converting response to json object
-                        JSONObject obj = new JSONObject(s);
-                        error = Boolean.parseBoolean(AESUtils.DarKnight.getDecrypted(obj.getString(TAG_ERROR)));
-
-                        if (!error) {
-                            newversion = obj.getString(TAG_APP_NEWVERSION);
-                            whatsNewData = obj.getString(data);
-                            ismaintaince = obj.getBoolean("ismain");
-                         //   Log.d("test", String.valueOf(ismaintaince));
-                            videourl = obj.getString("videourl");
-//                            memupdate = obj.getString("memupdate");
-                            url = obj.getString("updateurl");
-                            // Log.d("main",videourl);
-                            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                            String version = pInfo.versionName;
-                                System.out.println("takedown" + "old:" + version + " new:" + newversion);
-                            if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
-                                Intent intent = new Intent(HomeActivityLite.this, AppUpdaterActivity.class);
-                                intent.putExtra(TAG_APP_NEWVERSION, newversion);
-                                intent.putExtra(data, whatsNewData);
-                                intent.putExtra("updateurl", url);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                            else if (ismaintaince) {
-                                Intent intent = new Intent(HomeActivityLite.this, activityMaintain.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                        }
-
-                    } catch (JSONException | PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
+            if (s == null || s.isEmpty()) {
+                Toast.makeText(HomeActivityLite.this, "Server Error", Toast.LENGTH_LONG).show();
+                return ;
+            }
+            try {
+                JSONObject ack = new JSONObject(s);
+                String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                    Toast.makeText(HomeActivityLite.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                    return ;
+                } else {
+                    //converting response to json object
+                    JSONObject obj = new JSONObject(decData);
+                    error = obj.getBoolean(TAG_ERROR);
+               //      Log.d("test",obj.toString());
+                    if (error || shred.getString(TAG_KEY,"null").equals("null")) {
+                        startActivity(new Intent(HomeActivityLite.this, GameActivity.class));
+                        Toast.makeText(HomeActivityLite.this ,"Integrity Check Failed",Toast.LENGTH_SHORT).show();
+                    }
+                    newversion = obj.getString(TAG_APP_NEWVERSION);
+                    whatsNewData = obj.getString(data);
+                    ismaintaince = obj.getBoolean("ismain");
+                    videourl = obj.getString("videourl");
+                    url = obj.getString("updateurl");
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String version = pInfo.versionName;
+                    //    System.out.println("takedown" + "old:" + version + " new:" + newversion);
+                    if (Float.parseFloat(version) < Float.parseFloat(newversion)) {
+                        Intent intent = new Intent(HomeActivityLite.this, AppUpdaterActivity.class);
+                        intent.putExtra(TAG_APP_NEWVERSION, newversion);
+                        intent.putExtra(data, whatsNewData);
+                        intent.putExtra("updateurl", url);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else if (ismaintaince) {
+                        Intent intent = new Intent(HomeActivityLite.this, activityMaintain.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                     }
                 }
-
-            }).start();
-
-
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
 
     }
 }

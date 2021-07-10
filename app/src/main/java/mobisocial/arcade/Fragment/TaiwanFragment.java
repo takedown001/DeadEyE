@@ -1,6 +1,7 @@
 package mobisocial.arcade.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +26,10 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.onesignal.OneSignal;
 import com.topjohnwu.superuser.Shell;
+
+import org.json.JSONObject;
 
 import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.ESPView;
@@ -33,6 +37,7 @@ import mobisocial.arcade.FloatLogo;
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.Helper;
 import mobisocial.arcade.HomeActivity;
+import mobisocial.arcade.JSONParserString;
 import mobisocial.arcade.JavaUrlConnectionReader;
 import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
@@ -53,33 +58,39 @@ import mobisocial.arcade.logo;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.os.Environment.DIRECTORY_PICTURES;
+import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
+import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
 
 
-public class TaiwanFragment extends Fragment implements View.OnClickListener {
+public class TaiwanFragment extends Fragment {
 
     public TaiwanFragment() {
         // Required empty public constructor
     }
     private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
     private String data;
-
+    JSONParserString jsonParserString = new JSONParserString();
     String CheatL = urlref.Liveserver + "cheat.php";
     String CheatB = urlref.Betaserver + "cheat.php";
     private String gameName = "com.rekoo.pubgm";
-    private String version, deviceid;
+    private String version, deviceid,UUID;
     Handler handler = new Handler();
     private static final String TAG_DEVICEID =urlref.TAG_DEVICEID;
     private static final String TAG_VERSION = "v";
     ImageView taptoactivatetw;
+    private int GameType = 4;
     Context ctx;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         ctx = getActivity();
+        OneSignal.idsAvailable((userId, registrationId) -> {
+            UUID = userId;
+        });
     }
 
 
@@ -102,7 +113,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
         version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
         final File daemon = new File(urlref.pathoflib+urlref.SafeMem);
-        deviceid = LoginActivity.getDeviceId(getActivity());
+        deviceid = Helper.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
 
         Button cleanguest, fixgame, StartCheatTw, StopCheatTw,DeepFixGame;
@@ -112,7 +123,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
         fixgame = rootViewone.findViewById(R.id.taiwanfixgame);
         DeepFixGame = rootViewone.findViewById(R.id.taiwandeepfixgame);
         taptoactivatetw = rootViewone.findViewById(R.id.taptoactivatetw);
-        taptoactivatetw.setOnClickListener(this);
+     //   taptoactivatetw.setOnClickListener(this);
 
 
         SharedPreferences getserver = getActivity().getSharedPreferences("server",MODE_PRIVATE);
@@ -152,7 +163,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                             if(Shell.rootAccess()) {
                                 if (HomeActivity.safe) {
                                     try {
-                                        Helper.unzip(getActivity());
+                                        Helper.unzip(getActivity(),gameName);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -162,7 +173,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
 
                                 } else {
                                     try {
-                                        Helper.unzip(getActivity());
+                                        Helper.unzip(getActivity(),gameName);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -173,7 +184,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                                 Toast.makeText(getActivity(),"Root Access Was Not Granted ", Toast.LENGTH_LONG).show();
                             }
                         }
-                    }, 4000);
+                    }, 2000);
                 }
             }
         });
@@ -217,8 +228,8 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        cleanguest.setOnClickListener(new View.OnClickListener() {
 
+        cleanguest.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SdCardPath")
             @Override
             public void onClick(View view) {
@@ -246,7 +257,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                     "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;";
 
                             new Thread(() -> {
-                                String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                                String[] lines = s.split("\n");
                                 for (int i = 0; i < lines.length; i++) {
 
                                     //      Log.d("testlines", lines[i]);
@@ -290,7 +301,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                            "pm install -i com.android.vending /data/app/com.rekoo.pubgm-*/*.apk >/dev/null";
 
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -325,7 +336,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                              "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;\n" +
                              "pm install -i com.android.vending /data/app/com.rekoo.pubgm-*/*.apk >/dev/null\n";
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -403,7 +414,7 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                              Log.d("data",data);
+                          //    Log.d("data",data);
                 if (Helper.checkVPN(getActivity())) {
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -451,18 +462,18 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
                 //    Log.d("data",data);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
                         try {
                             givenToFile(getActivity(), s);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     });
-
-                    ctx.stopService(new Intent(ctx,FloatLogo.class));
+                }).start();
+                if(FloatLogo.isRunning) {
+                    ctx.stopService(new Intent(ctx, FloatLogo.class));
                     ctx.stopService(new Intent(ctx, flogo.class));
                     ctx.stopService(new Intent(ctx, logo.class));
-                }).start();
+                }
             }
             @Override
             protected String doInBackground(Void... voids) {
@@ -534,50 +545,69 @@ public class TaiwanFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" +getActivity().getPackageName ()));
             startActivityForResult(intent, 123);
         } else {
-            startFloater();
+            if(!isServiceRunning()) {
+                startFloater();
+            }else{
+                Toast.makeText(getActivity(),"Service Already Running",Toast.LENGTH_SHORT).show();
+            }
         }
     }
-
+    private boolean isServiceRunning() {
+        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        if (manager != null) {
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (FloatLogo.class.getName().equals(service.service.getClassName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     private void startFloater() {
-        getActivity().stopService(new Intent(getActivity(), logo.class));
-        getActivity().stopService(new Intent(getActivity(), flogo.class));
-        getActivity().stopService(new Intent(getActivity(), FloatLogo.class));
-        Intent i = new Intent(getActivity(), FloatLogo.class);
-        i.putExtra("gametype",4);
-        i.putExtra("gamename",gameName);
-        getActivity().startService(i);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()){
-
-            case R.id.taptoactivatetw:
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-                if(Helper.checkVPN(getActivity())){
-                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                }
-                else {
-                    lottieDialog.show(getActivity().getFragmentManager(), "loo");
-                    lottieDialog.setCancelable(false);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            lottieDialog.dismiss();
-                            startPatcher();
+        SharedPreferences shred =ctx.getSharedPreferences("userdetails", MODE_PRIVATE);
+        JSONObject params = new JSONObject();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    try {
+                        String s = null;
+                        params.put(TAG_DEVICEID,Helper.getDeviceId(ctx));
+                      //  params.put(TAG_ONESIGNALID,UUID);
+                        params.put(TAG_KEY,shred.getString(TAG_KEY,"null"));
+                        s= jsonParserString.makeHttpRequest(urlref.Main+"login.php", params);
+                        if (s == null || s.isEmpty()) {
+                            Toast.makeText(ctx, "Server Error", Toast.LENGTH_LONG).show();
+                            return ;
                         }
-                    }, 2000);
-                }
-                break;
-        }
+                        JSONObject ack = new JSONObject(s);
+                        String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                        if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                            Toast.makeText(ctx, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                            return ;
+                        } else {
+                            //converting response to json object
+                            JSONObject obj = new JSONObject(decData);
+
+                            if (obj.getBoolean(urlref.TAG_ERROR) || shred.getString(TAG_KEY,"null").equals("null")) {
+                                startActivity(new Intent(ctx,LoginActivity.class));
+                                Toast.makeText(ctx ,"Integrity Check Failed",Toast.LENGTH_SHORT).show();
+                            }else{
+                                Intent i = new Intent(getActivity(),FloatLogo.class);
+                                i.putExtra("gametype",GameType);
+                                i.putExtra("gamename",gameName);
+                                getActivity().startService(i);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                });
+            }
+        }).start();
     }
+
 }
 
 

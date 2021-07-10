@@ -52,7 +52,7 @@ import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
 
-public class VeitnamFreeFragment extends Fragment implements View.OnClickListener {
+public class VeitnamFreeFragment extends Fragment{
     private String version, deviceid;
     Handler handler = new Handler();
     private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
@@ -87,13 +87,13 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
 
         }
         View rootViewone = inflater.inflate(R.layout.fragment_veitnam, container, false);
-        SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
+        SharedPreferences shred = getActivity().getSharedPreferences("Freeuserdetails", MODE_PRIVATE);
         Context ctx=getActivity();
         version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
         final File daemon = new File(urlref.pathoflib+urlref.SafeMem);
 
-        deviceid = LoginActivity.getDeviceId(getActivity());
+        deviceid = Helper.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
 
         Button cleanguest, fixgame, StartCheatVn, StopCheatVn,DeepFixGame;
@@ -119,11 +119,6 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 if (Helper.checkVPN(getActivity())) {
-                    try {
-                        Check();
-                    } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    }
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
                 }
@@ -138,7 +133,7 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
                             antiban.dismiss();
                             if  (Shell.rootAccess()) {
                                 try {
-                                    Helper.unzip(getActivity());
+                                    Helper.unzip(getActivity(),gameName);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -160,11 +155,6 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {   if(Helper.checkVPN(getActivity())){
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
                 Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                 getActivity().finish();
             }
@@ -182,11 +172,9 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
                         ShellUtils.SU("iptables --flush");
                         if (Shell.rootAccess()) {
                             betastopcheat();
-                            ctx.stopService(new Intent(ctx, FreeFloatLogo.class));
                         }else {
                             Toast.makeText(getActivity(),"Root Access Was Not Granted ",Toast.LENGTH_LONG).show();
                         }
-
                     }
                 }, 4000);
             }
@@ -219,7 +207,7 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
                                 "                          \"find /storage/emulated/0 -type f \\\\( -name \\\".fff\\\" -o -name \\\".zzz\\\" -o -name \\\".system_android_l2\\\" \\\\) -exec rm -Rf {} \\\\;";
 
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -232,9 +220,6 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
                             }
                         }).start();
                     }
-
-
-
                 },2000);
                 //   new DownloadTask(getActivity(), URL);
 
@@ -264,7 +249,7 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
                                 "pm install -i com.android.vending /data/app/com.vng.pubgmobile-*/*.apk >/dev/null";
 
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -298,7 +283,7 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
                                 "find /storage/emulated/0 -type f \\( -name \".fff\" -o -name \".zzz\" -o -name \".system_android_l2\" \\) -exec rm -Rf {} \\;\n" +
                                 "pm install -i com.android.vending /data/app/com.vng.pubgmobile-*/*.apk >/dev/null";
                         new Thread(() -> {
-                            String[] lines = s.split(Objects.requireNonNull(System.getProperty("line.separator")));
+                            String[] lines = s.split("\n");
                             for (int i = 0; i < lines.length; i++) {
 
                                 //      Log.d("testlines", lines[i]);
@@ -330,7 +315,6 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
                 //      Log.d("data",s);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() +"/scheat.sh");
                         try {
                             givenToFile(getActivity(),s);
 
@@ -370,16 +354,17 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
                 //    Log.d("data",data);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        ShellUtils.SU("rm -rf" + getActivity().getFilesDir().toString() + "/scheat.sh");
                         try {
                             givenToFile(getActivity(), s);
 
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        getActivity().stopService(new Intent(getActivity(),FloatLogo.class));
                     });
                 }).start();
+               if(FreeFloatLogo.isRunning) {
+                    getActivity().stopService(new Intent(getActivity(), FreeFloatLogo.class));
+                }
             }
             @Override
             protected String doInBackground(Void... voids) {
@@ -410,44 +395,6 @@ public class VeitnamFreeFragment extends Fragment implements View.OnClickListene
         i.putExtra("gamename",gameName);
         getActivity().startService(i);
 
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
-        if(imgLoad.Load(getActivity()).equals(time)){
-            getActivity().finish();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()){
-
-            case R.id.taptoactivatetw:
-                try {
-                    Check();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-                if(Helper.checkVPN(getActivity())){
-                    Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                }
-                else {
-                    lottieDialog.show(getActivity().getFragmentManager(), "loo");
-                    lottieDialog.setCancelable(false);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            lottieDialog.dismiss();
-                            startPatcher();
-                        }
-                    }, 2000);
-                }
-                break;
-        }
     }
 }
 

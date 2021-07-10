@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -35,7 +36,7 @@ public class StoreActivity extends AppCompatActivity {
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String TAG_SUCCESS = urlref.TAG_SUCCESS;
     private static final String TAG_STORE = urlref.TAG_STORE;
-    private final JSONParser jsonParser = new JSONParser();
+    private final JSONParserString jsonParser = new JSONParserString();
     //plan
     private static final String TAG_TITLE = urlref.TAG_TITLE;
     private static final String TAG_DESC = urlref.TAG_DESC;
@@ -131,8 +132,6 @@ public class StoreActivity extends AppCompatActivity {
                             store.setTitle(offersList.get(i).get(TAG_TITLE));
                             store.setDesc(offersList.get(i).get(TAG_DESC));
                             store.setImage(offersList.get(i).get(TAG_IMG));
-
-
                             Model.add(store);
                             adapter.notifyDataSetChanged();
                         }
@@ -155,38 +154,45 @@ public class StoreActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            deviceid = AESUtils.DarKnight.getEncrypted(LoginActivity.getDeviceId(StoreActivity.this));
+            deviceid = Helper.getDeviceId(StoreActivity.this);
             lottieDialog.show(getFragmentManager(),"lol");
         }
 
         @Override
         protected String doInBackground(String... strings) {
 
-            HashMap<String, String> params = new HashMap<>();
-            params.put(TAG_DEVICEID, deviceid);
-         //   Log.d("All jsonarray: ", TAG_DEVICEID);
-            JSONObject json = jsonParser.makeHttpRequest(url, params);
+        JSONObject params = new JSONObject();
 
-        //   Log.d("All jsonarray: ", json.toString());
             try {
-                success = Integer.parseInt(AESUtils.DarKnight.getDecrypted(json.getString(TAG_SUCCESS)));
-             // Log.d("test", String.valueOf(success));
-                jsonarray =json.getJSONArray(TAG_STORE);
+                String rq = null;
+                params.put(TAG_DEVICEID, deviceid);
+                rq = jsonParser.makeHttpRequest(url, params);
+                JSONObject ack = new JSONObject(rq);
+                String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                    Toast.makeText(StoreActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                    return null;
+                } else {
+                    JSONObject json = new JSONObject(decData);
+                    success = json.getInt(TAG_SUCCESS);
+                    // Log.d("test", String.valueOf(success));
+                    jsonarray = json.getJSONArray(TAG_STORE);
+                //    Log.d("All jsonarray: ", String.valueOf(jsonarray));
 
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject c = jsonarray.getJSONObject(i);
 
-                for (int i = 0; i < jsonarray.length(); i++) {
-                    JSONObject c = jsonarray.getJSONObject(i);
+                        // creating new HashMap
+                        HashMap<String, String> map = new HashMap<>();
 
-                    // creating new HashMap
-                    HashMap<String, String> map = new HashMap<>();
+                        map.put(TAG_IMG, c.getString(TAG_IMG));
+                        map.put(TAG_TITLE, c.getString(TAG_TITLE));
+                        map.put(TAG_DESC, c.getString(TAG_DESC));
 
-                    map.put(TAG_IMG, c.getString(TAG_IMG));
-                    map.put(TAG_TITLE, c.getString(TAG_TITLE));
-                    map.put(TAG_DESC, c.getString(TAG_DESC));
-
-                    offersList.add(map);
+                        offersList.add(map);
+                    }
                 }
-            } catch (JSONException e) {
+            }catch (Exception e) {
                 e.printStackTrace();
             }
 

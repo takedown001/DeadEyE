@@ -87,7 +87,7 @@ public class FSettingFragment extends Fragment {
 
 
         View rootViewone = inflater.inflate(R.layout.fragment_setting, container, false);
-        SharedPreferences shred = getActivity().getSharedPreferences("userdetails", MODE_PRIVATE);
+        SharedPreferences shred = getActivity().getSharedPreferences("Freeuserdetails", MODE_PRIVATE);
 
         SharedPreferences.Editor editor = shred.edit();
         minview = rootViewone.findViewById(R.id.everymin);
