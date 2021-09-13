@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="Gradle: com.onesignal:OneSignal:3.15.4@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ec6f0c2b62b31aaf65c7a665edb055d1/jetified-OneSignal-3.15.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ec6f0c2b62b31aaf65c7a665edb055d1/jetified-OneSignal-3.15.4/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ec6f0c2b62b31aaf65c7a665edb055d1/jetified-OneSignal-3.15.4/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/5f342836dad0c0ad30481baa6799c5e2/jetified-OneSignal-3.15.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/5f342836dad0c0ad30481baa6799c5e2/jetified-OneSignal-3.15.4/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/5f342836dad0c0ad30481baa6799c5e2/jetified-OneSignal-3.15.4/res" />
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ca69a0044b9d7e50248cc0afc68f0b68/jetified-OneSignal-3.15.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ca69a0044b9d7e50248cc0afc68f0b68/jetified-OneSignal-3.15.4/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ca69a0044b9d7e50248cc0afc68f0b68/jetified-OneSignal-3.15.4/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/com.onesignal/OneSignal/3.15.4/f7183c39468acfdf29143323c6bae81a6740dbff/OneSignal-3.15.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -8,7 +8,7 @@ using namespace std;
 template<class T>
 struct TArray {
 	kaddr Data;
-    int Count;
+	int Count;
 
 	inline kaddr operator[](int i)
 	{
@@ -36,7 +36,7 @@ struct TArray {
 
 struct FString {
 	kaddr Data;
-    int Count;
+	int Count;
 
 	static int is_surrogate(UTF16 uc) {
 		return (uc - 0xd800u) < 2048u;
@@ -73,7 +73,7 @@ struct FString {
 
 		output[Count] = L'\0';
 		return output;
-    }
+	}
 };
 
 struct PMVector3 {
@@ -290,12 +290,12 @@ struct PMRect {
 
 	bool operator==(const PMRect& src) const {
 		return (src.x == this->x && src.y == this->y && src.height == this->height &&
-			src.width == this->width);
+				src.width == this->width);
 	}
 
 	bool operator!=(const PMRect& src) const {
 		return (src.x != this->x && src.y != this->y && src.height != this->height &&
-			src.width != this->width);
+				src.width != this->width);
 	}
 
 	bool isZero() const {
@@ -473,8 +473,8 @@ PMVector2 WorldToScreen(PMVector3 worldLocation, MinimalViewInfo camViewInfo, in
 	float screenCenterY = (height / 2.0f);
 
 	return PMVector2(
-		(screenCenterX + vTransformed.X * (screenCenterX / tanf(fov * ((float)M_PI / 360.0f))) / vTransformed.Z),
-		(screenCenterY - vTransformed.Y * (screenCenterX / tanf(fov * ((float)M_PI / 360.0f))) / vTransformed.Z)
+			(screenCenterX + vTransformed.X * (screenCenterX / tanf(fov * ((float)M_PI / 360.0f))) / vTransformed.Z),
+			(screenCenterY - vTransformed.Y * (screenCenterX / tanf(fov * ((float)M_PI / 360.0f))) / vTransformed.Z)
 	);
 }
 

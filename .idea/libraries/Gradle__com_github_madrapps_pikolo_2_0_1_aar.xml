@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.madrapps:pikolo:2.0.1@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/0299a3322577a5ac263ed6b177b33898/jetified-pikolo-2.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/0299a3322577a5ac263ed6b177b33898/jetified-pikolo-2.0.1/res" />
       <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/0299a3322577a5ac263ed6b177b33898/jetified-pikolo-2.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/0299a3322577a5ac263ed6b177b33898/jetified-pikolo-2.0.1/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/0299a3322577a5ac263ed6b177b33898/jetified-pikolo-2.0.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/com.github.madrapps/pikolo/2.0.1/ad6d75d402deff69866ca8d7968dde08daacc975/pikolo-2.0.1-javadoc.jar!/" />

@@ -31,7 +31,7 @@ public class ShellUtils {
 						su.waitFor();
 
 					} catch (IOException | InterruptedException e) {
-						throw new RuntimeException(e);
+
 					}
 				}
 			}).start();

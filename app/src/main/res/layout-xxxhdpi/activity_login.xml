@@ -117,7 +117,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/montserrat_bold"
-        android:text="In Association With Gcc-org.com"
+        android:text="In Association With GameSploit.com"
         android:textColor="@color/white"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"

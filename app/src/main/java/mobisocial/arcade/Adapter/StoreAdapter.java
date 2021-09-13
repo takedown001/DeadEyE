@@ -16,7 +16,6 @@ import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.data.Model;
-import mobisocial.arcade.free.FHomeActivity;
 import mobisocial.arcade.free.FLoginActivity;
 
 import com.bumptech.glide.Glide;

@@ -26,6 +26,7 @@ struct Request {
 
 struct PlayerData {
     wchar_t PlayerName[30];
+	wchar_t PlayerUID[10];
     bool isBot;
     int TeamID;
 //    int PlayerID;
@@ -117,89 +118,88 @@ bool FindVehicleName(const string& object, string& res) {
 }
 
 static const char* impitems[][2] = {
-		{"FirstAidbox_Pickup", "MedKit"},
-		{"Firstaid_Pickup", "FirstAid"},
-		{"Injection_Pickup", "Injection"},
-		{"Pills_Pickup", "Painkiller"},
-		{"Drink_Pickup", "Drink"},
-		{"Bandage_Pickup", "Bandage"},
-		{"PickUp_BP_Armor_Lv3", "Armor L3"}, //C
-		{"PickUp_BP_Helmet_Lv3", "Helmet L3"}, //C
-		{"PickUp_BP_Bag_Lv3", "Bag L3"}, //C
-		{"BP_MZJ_QX_Pickup_C", "HoloSignt"},
-		{"BP_MZJ_HD_Pickup", "RedDot"},
-		{"BP_MZJ_8X_Pickup", "8x"},
-		{"BP_MZJ_6X_Pickup", "6x"},
-		{"BP_MZJ_4X_Pickup", "4x"},
+		{"FirstAidbox_Pickup",                "MedKit"},
+		{"Firstaid_Pickup",                   "FirstAid"},
+		{"Injection_Pickup",                  "Injection"},
+		{"Pills_Pickup",                      "Painkiller"},
+		{"Drink_Pickup",                      "Drink"},
+		{"Bandage_Pickup",                    "Bandage"},
+		{"PickUp_BP_Armor_Lv3",               "Armor L3"}, //C
+		{"PickUp_BP_Helmet_Lv3",              "Helmet L3"}, //C
+		{"PickUp_BP_Bag_Lv3",                 "Bag L3"}, //C
+		{"BP_MZJ_QX_Pickup_C",                "HoloSignt"},
+		{"BP_MZJ_HD_Pickup",                  "RedDot"},
+		{"BP_MZJ_8X_Pickup",                  "8x"},
+		{"BP_MZJ_6X_Pickup",                  "6x"},
+		{"BP_MZJ_4X_Pickup",                  "4x"},
 		{"BP_Grenade_Shoulei_Weapon_Wrapper", "Grenade"}, //C
-		{"BP_Grenade_Burn_Weapon_Wrapper", "Molotov"},
-		{"BP_Grenade_Smoke_Weapon_Wrapper", "Smoke"},
-		{"GasCan", "GasCan"},
-		{"BP_Ghillie_", "Ghillie"},
-
+		{"BP_Grenade_Burn_Weapon_Wrapper",    "Molotov"},
+		{"BP_Grenade_Smoke_Weapon_Wrapper",   "Smoke"},
+		{"GasCan",                            "GasCan"},
+		{"BP_Ghillie_",                       "Ghillie"},
 		// NEW ITEMS
-		{"BP_MZJ_SideRMR_Pickup", "Canted Sight"},
-		{"BP_Rifle_FAMAS_Wrapper_C", "FAMAS"},
-		{"BP_Sniper_Mosin_Wrapper_C", "Mosin Nagant"},
-//Location
-		{"BP_Grenade_Sticky_Bomb_C", "Sticky Bomb"},
-// Warning
-		{"Skill_Grenade_Sticky_Bomb_C", "Sticky BombW"},
-
-//Location
-		{"BP_ProjSpikeTrap_BP_C", "Spike Trap"},
-// Warning
-		{"Skill_ProjSpikeTrap_BP_C", "Spike TrapW"},
-
-		{"PlayerDeadInventoryBox_C", "Crate"},
-		{"BP_Sniper_AWM_Wrapper_C", "AWM"},
-		{"BP_Rifle_AKM_Wrapper_C", "AKM"},
-		{"BP_Sniper_M24_Wrapper_C", "M24"},
-		{"BP_MZJ_3X_Pickup", "3x"},
-		{"BP_Pistol_Flaregun_Wrapper_C", "FlareGun"},
-		{"BP_Rifle_M416_Wrapper_C", "M416"},
-		{"BP_Rifle_QBZ_Wrapper_C", "QBZ"},
-		{"BP_AirDropBox_C", "AirDrop"},
-		{"BP_AirDropPlane_C", "Plane"},
+		{"BP_MZJ_SideRMR_Pickup",             "Canted Sight"},
+		{"BP_Rifle_FAMAS_Wrapper_C",          "FAMAS"},
+		{"BP_Sniper_Mosin_",         "Mosin Nagant"},
+		//Location & Warning
+		{"_Grenade_Sticky_Bomb_",          "Sticky Bomb"},
+        //Location
+		{"BP_ProjSpikeTrap_BP_C",             "Spike Trap"},
+		// Warning
+		{"Skill_ProjSpikeTrap_BP_C",          "Spike TrapW"},
+		{"PlayerDeadInventoryBox_C",          "Crate"},
+		{"BP_Sniper_AWM_Wrapper_C",           "AWM"},
+		{"BP_Rifle_AKM_Wrapper_C",            "AKM"},
+		{"BP_Sniper_M24_Wrapper_C",           "M24"},
+		{"BP_MZJ_3X_Pickup",                  "3x"},
+		{"BP_Pistol_Flaregun_Wrapper_C",      "FlareGun"},
+		{"BP_Rifle_M416_Wrapper_C",           "M416"},
+		{"BP_Rifle_QBZ_Wrapper_C",            "QBZ"},
+		{"BP_AirDropBox_C",                   "AirDrop"},
+		{"BP_AirDropPlane_C",                 "Plane"},
 		// MORE NEW ITEMS
-        {"BP_Rifle_SCAR_Wrapper_C", "SCAR L"},
-        {"BP_Rifle_M762_Wrapper_C", "M762"},
-        {"BP_Rifle_M16A4_Wrapper_C", "M16A4"},
-        {"BP_Rifle_Mk47_Wrapper_C", "Mk47 Mutant"},
-        {"BP_Rifle_G36_Wrapper_C", "G36C"},
-        {"BP_Rifle_Groza_Wrapper_C", "Groza"},
-        {"BP_Rifle_AUG_Wrapper_C", "AUG A3"},
-        {"BP_Sniper_QBU_Wrapper_C", "QBU"},
-        {"BP_Sniper_SLR_Wrapper_C", "SLR"},
-        {"BP_Sniper_SKS_Wrapper_C", "SKS"},
-        {"BP_Sniper_Mini14_Wrapper_C", "Mini14"},
-        {"BP_Sniper_Kar98k_Wrapper_C", "Kar98k"},
-        {"BP_Sniper_VSS_Wrapper_C", "VSS"},
-        {"BP_Sniper_Win94_Wrapper_C", "Win94"},
-        {"BP_Ammo_762mm_Pickup_C", "7.62mm"},
-        {"BP_Ammo_45ACP_Pickup_C", "45ACP"},
-        {"BP_Ammo_556mm_Pickup_C", "5.56mm"},
-        {"BP_Ammo_9mm_Pickup_C", "9mm"},
-        {"BP_Ammo_300Magnum_Pickup_C", "300Magnum"},
-        {"PickUp_BP_Armor_Lv2", "Armor L2"},
-        {"PickUp_BP_Armor_Lv1", "Armor L1"},
-        {"PickUp_BP_Helmet_Lv2", "Helmet L2"},
-        {"PickUp_BP_Helmet_Lv1", "Helmet L1"},
-        {"PickUp_BP_Bag_Lv2", "Bag L2"},
-        {"PickUp_BP_Bag_Lv1", "Bag L1"},
-        // Grenade Warning Change [ Accordingly ]
-        {"BP_Grenade_Shoulei_C", "Grenadew"},
-        {"BP_Grenade_Burn_C", "Molotovw"},
-        // MORE MORE ITEMS SMG :/
-		{"BP_MachineGun_PP19_Wrapper_C", "PP19Bizon"},
-		{"BP_MachineGun_TommyGun_Wrapper_C", "Tommy Gun"},
-		{"BP_MachineGun_Vector_Wrapper_C", "Vector"},
-		{"BP_MachineGun_Uzi_Wrapper_C", "Uzi"},
-		{"BP_MachineGun_MP5K_Wrapper_C", "MP5K"},
-		{"BP_MachineGun_UMP9_Wrapper_C", "UMP9"},
-		{"BP_Other_DP28_Wrapper_C", "DP28"},
-		{"BP_Other_M249_Wrapper_C", "M249"},
-		{"BP_WEP_Mk14_Pickup_C", "MK14"},
+		{"BP_Rifle_SCAR_Wrapper_C",           "SCAR L"},
+		{"BP_Rifle_M762_Wrapper_C",           "M762"},
+		{"BP_Rifle_M16A4_Wrapper_C",          "M16A4"},
+		{"BP_Rifle_Mk47_Wrapper_C",           "Mk47 Mutant"},
+		{"BP_Rifle_G36_Wrapper_C",            "G36C"},
+		{"BP_Rifle_Groza_Wrapper_C",          "Groza"},
+		{"BP_Rifle_AUG_Wrapper_C",            "AUG A3"},
+		{"BP_Sniper_QBU_Wrapper_C",           "QBU"},
+		{"BP_Sniper_SLR_Wrapper_C",           "SLR"},
+		{"BP_Sniper_SKS_Wrapper_C",           "SKS"},
+		{"BP_Sniper_Mini14_Wrapper_C",        "Mini14"},
+		{"BP_Sniper_Kar98k_Wrapper_C",        "Kar98k"},
+		{"BP_Sniper_VSS_Wrapper_C",           "VSS"},
+		{"BP_Sniper_Win94_Wrapper_C",         "Win94"},
+		{"BP_Ammo_762mm_Pickup_C",            "7.62mm"},
+		{"BP_Ammo_45ACP_Pickup_C",            "45ACP"},
+		{"BP_Ammo_556mm_Pickup_C",            "5.56mm"},
+		{"BP_Ammo_9mm_Pickup_C",              "9mm"},
+		{"BP_Ammo_300Magnum_Pickup_C",        "300Magnum"},
+		{"PickUp_BP_Armor_Lv2",               "Armor L2"},
+		{"PickUp_BP_Armor_Lv1",               "Armor L1"},
+		{"PickUp_BP_Helmet_Lv2",              "Helmet L2"},
+		{"PickUp_BP_Helmet_Lv1",              "Helmet L1"},
+		{"PickUp_BP_Bag_Lv2",                 "Bag L2"},
+		{"PickUp_BP_Bag_Lv1",                 "Bag L1"},
+		// Grenade Warning Change [ Accordingly ]
+		{"BP_Grenade_Shoulei_C",              "Grenadew"},
+		{"BP_Grenade_Burn_C",                 "Molotovw"},
+		// MORE MORE ITEMS SMG :/
+		{"BP_MachineGun_PP19_Wrapper_C",      "PP19Bizon"},
+		{"BP_MachineGun_TommyGun_Wrapper_C",  "Tommy Gun"},
+		{"BP_MachineGun_Vector_Wrapper_C",    "Vector"},
+		{"BP_MachineGun_Uzi_Wrapper_C",       "Uzi"},
+		{"BP_MachineGun_MP5K_Wrapper_C",      "MP5K"},
+		{"BP_MachineGun_UMP9_Wrapper_C",      "UMP9"},
+		{"BP_Other_DP28_Wrapper_C",           "DP28"},
+		{"BP_Other_M249_Wrapper_C",           "M249"},
+		{"BP_WEP_Mk14_Pickup_C",              "MK14"},
+		// MOREEEEE ITEMS !!
+		{"BP_Other_MG3_",                     "MG3 light Machine Gun"},
+		// SMOKE WARNING
+		{"BP_Grenade_Smoke_C",                     "Smoke"}
 };
 
 bool FindItemName(const string& object, string& res) {
@@ -301,8 +301,10 @@ void createUDataList(Response& response) {
 			if (BoneArr == 0) { continue; }
 
 			FString pname = Player::getPlayerName(actor);
+			FString uid = Player::getPlayerUID(actor);
 
 			wmemcpy(data->PlayerName, pname.w_str(), pname.Count);
+			wmemcpy(data->PlayerUID, uid.w_str(),uid.Count);
 			data->isBot = Player::IsAI(actor);
 			data->TeamID = teamID;
 //			data->PlayerID = PlayerID;
@@ -499,8 +501,10 @@ void createDataList(Response& response) {
 			if (BoneArr == 0) { continue; }
 
 			FString pname = Player::getPlayerName(actor);
+			FString uid = Player::getPlayerUID(actor);
 
 			wmemcpy(data->PlayerName, pname.w_str(), pname.Count);
+			wmemcpy(data->PlayerUID, uid.w_str(),uid.Count);
             data->isBot = Player::IsAI(actor);
             data->TeamID = teamID;
 //			data->PlayerID = PlayerID;
@@ -615,8 +619,6 @@ void createDataList(Response& response) {
             }
         }
     }
-
-
 
     response.Success = true;
     response.NearEnemy = nearEnemy;

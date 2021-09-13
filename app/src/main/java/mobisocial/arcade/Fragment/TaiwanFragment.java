@@ -112,7 +112,6 @@ public class TaiwanFragment extends Fragment {
 
         version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
-        final File daemon = new File(urlref.pathoflib+urlref.SafeMem);
         deviceid = Helper.getDeviceId(getActivity());
         deviceid = AESUtils.DarKnight.getEncrypted(deviceid);
 

@@ -21,11 +21,14 @@ public class ESPView extends View implements Runnable {
     Paint mFilledPaint;
     Paint mTextPaint;
     Thread mThread;
-    int FPS = 45;
-    long sleepTime;
+    int FPS = 30;
+    static long sleepTime;
     Date time;
-    private PackageInfo pInfo=null;
     NumberFormat f = new DecimalFormat("00");
+    public static void ChangeFps(int fps) {
+        sleepTime = 1000 / (20 + fps);
+    }
+
     public ESPView(Context context){
         super(context, null, 0);
         InitializePaints();
@@ -36,11 +39,7 @@ public class ESPView extends View implements Runnable {
         sleepTime = 1000 / FPS;
         mThread = new Thread(this);
         mThread.start();
-        try {
-            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+
     }
     public native void DrawOn(ESPView espView, Canvas canvas);
     @Override
@@ -48,7 +47,7 @@ public class ESPView extends View implements Runnable {
         if (canvas != null && getVisibility() == VISIBLE) {
             ClearCanvas(canvas);
             time.setTime(System.currentTimeMillis());
-            DrawText(canvas, 255, 255, 0, 0,"DeadEye ESP v" +pInfo.versionName, 155, 55, 20);
+            DrawText(canvas, 255, 255, 0, 0,"DeadEye ESP v" +BuildConfig.VERSION_NAME, 155, 55, 20);
             DrawOn(this, canvas);
         }
     }

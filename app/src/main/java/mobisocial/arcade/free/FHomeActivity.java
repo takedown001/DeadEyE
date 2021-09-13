@@ -202,6 +202,7 @@ public class FHomeActivity extends AppCompatActivity {
         }).start();
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
         if (imgLoad.Load(FHomeActivity.this).equals(time)) {
@@ -386,7 +387,7 @@ public class FHomeActivity extends AppCompatActivity {
             try {
                 params.put(TAG_DEVICEID,Helper.getDeviceId(FHomeActivity.this));
                 params.put(TAG_KEY,shred.getString(TAG_KEY,"null"));
-                s= jsonParserString.makeHttpRequest(urlref.Main+"flogin.php", params);
+                s= jsonParserString.makeHttpRequest(urlref.Main+"freelogin.php", params);
             } catch (Exception e) {
                 e.printStackTrace();
             }

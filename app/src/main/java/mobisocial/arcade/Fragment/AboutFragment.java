@@ -74,7 +74,7 @@ public class AboutFragment extends Fragment {
 
 
         wb.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://Deadeye.gcc-org.com"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://GameSploit.com"));
             startActivity(browserIntent);
         });
 

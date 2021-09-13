@@ -42,8 +42,6 @@ public class logo  extends Service{
         createOver();
 
     }
-
-
     @Override
     public void onDestroy() {
         if (mFloatingView != null) {

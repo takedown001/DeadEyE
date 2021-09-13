@@ -88,7 +88,6 @@ public class HomeActivityLite extends AppCompatActivity {
     private DrawerLayout drawer;
     Handler handler = new Handler();
     JSONParserString jsonParserString = new JSONParserString();
-    public static boolean beta = false;
     ImageView rightico, leftico;
     String videourl, url,UUID;
     public static boolean safe =false;

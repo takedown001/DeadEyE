@@ -1,5 +1,6 @@
 package mobisocial.arcade;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.DownloadManager;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,37 +41,40 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.TestOnly;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
 import static mobisocial.arcade.GccConfig.urlref.TAG_ERROR;
-import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
 import static mobisocial.arcade.GccConfig.urlref.TAG_MSG;
-import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
+
 
 public class MyActivity extends AppCompatActivity {
 
     String TAG = "test", txnid = "txt12346",
             prodname = "BlueApp Course", dollar,
             merchantId = urlref.MerchantId, merchantkey = urlref.MerchantKey, email = "sregar333@gmail.com";  //   first test key only
-    private String hash, key, time, UUID, gen, phone, firstname, amount;
+    private String hash;
+    private String key;
+    private String time;
+    private String UUID;
+    private String gen;
+    private String phone;
+    private String firstname;
+    private String amount;
+    private boolean method;
     private static final String url = urlref.Main + "done.php";
     Handler handler = new Handler();
     JSONParserString jsonParserString = new JSONParserString();
     Context ctx;
     TextInputEditText editTextname, editTextmobile, editTextemail;
     private Button paynow;
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -83,30 +88,28 @@ public class MyActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         OneSignal.idsAvailable((userId, registrationId) -> {
             //     String text = "OneSignal UserID:\n" + userId + "\n\n";
             UUID = userId;
             //  Log.d("UUID",UUID);
         });
-
+        paynow = findViewById(R.id.paynow);
         editTextmobile = findViewById(R.id.mobile);
         editTextname = findViewById(R.id.fname);
         editTextemail = findViewById(R.id.email);
         txnid = getIntent().getExtras().getString("taxid");
         amount = getIntent().getExtras().getString("amount");
         prodname = getIntent().getExtras().getString("product");
-   //     key = getIntent().getExtras().getString("key", urlref.defalkey);
+        //     key = getIntent().getExtras().getString("key", urlref.defalkey);
         time = getIntent().getExtras().getString("time", urlref.time);
         dollar = getIntent().getExtras().getString("dollar", urlref.dollar);
-        amount = String.valueOf(Float.parseFloat(amount) * Float.parseFloat(dollar));
-        paynow = findViewById(R.id.paynow);
-        //  Log.d("test",UUID);
-        //    Log.d("doll",amount);
+
+        amount = String.valueOf( Float.parseFloat(amount) * Float.parseFloat(dollar));
         final int min = 1000;
         final int max = 10000;
         final int random = new Random().nextInt((max - min) + 1) + min;
         txnid = "txn" + time + random;
+
 
         paynow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,13 +118,16 @@ public class MyActivity extends AppCompatActivity {
                     firstname = editTextname.getText().toString().trim();
                     phone = editTextmobile.getText().toString().trim();
                     email = editTextemail.getText().toString().trim();
-                    //validating inputs
-                    startpay();
+                        startpay();
+                    }
                     Toast.makeText(MyActivity.this, "InVoice And Key Will Be Sent To Email", Toast.LENGTH_SHORT).show();
                 }
 
             }
-        });
+        );
+
+
+        
 
     }
 
@@ -153,46 +159,10 @@ public class MyActivity extends AppCompatActivity {
         return true;
     }
 
-    public void startupi() {
-        PaymentDetail pay = new PaymentDetail("@ybl", prodname, "", txnid, "Premium Plan For deadeye", amount);
-
-
-        new UpiPayment(this)
-                .setPaymentDetail(pay)
-                .setUpiApps(UpiPayment.getExistingUpiApps(MyActivity.this))
-                .setCallBackListener(new UpiPayment.OnUpiPaymentListener() {
-                    @Override
-                    public void onSubmitted(@NotNull TransactionDetails data) {
-                        //transaction pending: use data to get TransactionDetails
-                        Toast.makeText(MyActivity.this, "Wait While We Setup ", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onError(@NotNull String message) {
-                        Toast.makeText(MyActivity.this, "Transaction Cancelled", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onSuccess(@NotNull TransactionDetails data) {
-                        //transaction success: use data to get TransactionDetails
-                        if (Helper.checkVPN(MyActivity.this)) {
-                            Toast.makeText(MyActivity.this, "Vpn Enabled ,No Refund ", Toast.LENGTH_SHORT).show();
-                        } else {
-                            new Oneload().execute();
-                            Toast.makeText(MyActivity.this, "Transaction Successful", Toast.LENGTH_LONG).show();
-                        }
-
-
-                    }
-                }).pay();
-    }
-
-
     PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
     //declare paymentParam object
     PayUmoneySdkInitializer.PaymentParam paymentParam = null;
-
-    public void startpay() {
+    public void startpay(){
         builder.setAmount(amount)                          // Payment amount
                 .setTxnId(txnid)                     // Transaction ID
                 .setPhone(phone)                   // User Phone number
@@ -211,7 +181,7 @@ public class MyActivity extends AppCompatActivity {
                 .setUdf8("")
                 .setUdf9("")
                 .setUdf10("")
-                .setIsDebug(true)                              // Integration environment - true (Debug)/ false(Production)
+                .setIsDebug(false)                              // Integration environment - true (Debug)/ false(Production)
                 .setKey(merchantkey)                        // Merchant key
                 .setMerchantId(merchantId);
 
@@ -226,8 +196,7 @@ public class MyActivity extends AppCompatActivity {
         }
 
     }
-
-    public void getHashkey() {
+    public void getHashkey(){
         ServiceWrapper service = new ServiceWrapper(null);
         Call<String> call = service.newHashCall(merchantkey, txnid, amount, prodname,
                 firstname, email);
@@ -235,10 +204,12 @@ public class MyActivity extends AppCompatActivity {
         call.enqueue(new Callback<String>() {
 
 
+
+
             @Override
             public void onResponse(Call<String> call, retrofit2.Response<String> response) {
                 //    Log.e(TAG, "hash res "+response.body());
-                String merchantHash = response.body();
+                String merchantHash= response.body();
                 if (merchantHash.isEmpty() || merchantHash.equals("")) {
                     Toast.makeText(MyActivity.this, "Could not generate hash", Toast.LENGTH_SHORT).show();
                     //        Log.e(TAG, "hash empty");
@@ -261,22 +232,25 @@ public class MyActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && resultCode == RESULT_OK && data != null) {
-            TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager.INTENT_EXTRA_TRANSACTION_RESPONSE);
+            TransactionResponse transactionResponse = data.getParcelableExtra( PayUmoneyFlowManager.INTENT_EXTRA_TRANSACTION_RESPONSE );
 
             if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
 
-                if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+                if(transactionResponse.getTransactionStatus().equals( TransactionResponse.TransactionStatus.SUCCESSFUL )){
+
                         new Oneload().execute();
                     //Success Transaction
-                    Toast.makeText(MyActivity.this, "Transaction Successful", Toast.LENGTH_LONG).show();
-                } else {
+                    Toast.makeText(MyActivity.this,"Transaction Successful",Toast.LENGTH_LONG).show();
+                } else{
                     //Failure Transaction
-                    Toast.makeText(MyActivity.this, "Transaction failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MyActivity.this,"Transaction failed",Toast.LENGTH_LONG).show();
 
                 }
 
@@ -285,14 +259,11 @@ public class MyActivity extends AppCompatActivity {
 
                 // Response from SURl and FURL
                 String merchantResponse = transactionResponse.getTransactionDetails();
-                //   Log.e(TAG, "tran "+payuResponse+"---"+ merchantResponse);
-            } /* else if (resultModel != null && resultModel.getError() != null) {
-                Log.d(TAG, "Error response : " + resultModel.getError().getTransactionResponse());
-            } else {
-                Log.d(TAG, "Both objects are null!");
-            }*/
+
+            }
         }
     }
+
 
     class Oneload extends AsyncTask<Void, Void, String> {
         final DialogFragment lottieDialog = new LottieDialogFragment().newInstance("loading_state_done.json", true);
@@ -312,11 +283,10 @@ public class MyActivity extends AppCompatActivity {
             JSONObject params = new JSONObject();
             String rq = null;
             try {
-              //  params.put(TAG_KEY, key);
+                //  params.put(TAG_KEY, key);
                 params.put(TAG_DEVICEID, txnid);
                 params.put("20", time);
                 params.put("14", prodname);
-                // params.put(TAG_ONESIGNALID, UUID);
                 params.put("f", firstname);
                 params.put("m", phone);
                 params.put("e", email);
@@ -385,4 +355,5 @@ public class MyActivity extends AppCompatActivity {
 
         }
     }
+
 }

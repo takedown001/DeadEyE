@@ -131,6 +131,25 @@
                 android:textColor="#ffffffff"
                 android:textSize="@dimen/dimen_15dp"
                 android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/LaterButton"
+                android:layout_width="311dp"
+                android:layout_height="49dp"
+                android:layout_marginLeft="15.0dip"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:layout_marginRight="15.0dip"
+                android:background="@drawable/newsbox"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/montserrat_bold"
+                android:shadowRadius="25"
+                android:text="Later"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/dimen_15dp"
+                android:textStyle="bold" />
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

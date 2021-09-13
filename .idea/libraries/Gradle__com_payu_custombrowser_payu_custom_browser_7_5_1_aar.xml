@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="Gradle: com.payu.custombrowser:payu-custom-browser:7.5.1@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/0302a5cbcb2bd610d253500466d5ecb5/jetified-payu-custom-browser-7.5.1/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/7ab8e49cfdc54c9b2571c475c1f7ebef/jetified-payu-custom-browser-7.5.1/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ddb040b7ed768d366eab9306ffee896c/jetified-payu-custom-browser-7.5.1/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/0302a5cbcb2bd610d253500466d5ecb5/jetified-payu-custom-browser-7.5.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/0302a5cbcb2bd610d253500466d5ecb5/jetified-payu-custom-browser-7.5.1/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/0302a5cbcb2bd610d253500466d5ecb5/jetified-payu-custom-browser-7.5.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/7ab8e49cfdc54c9b2571c475c1f7ebef/jetified-payu-custom-browser-7.5.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/7ab8e49cfdc54c9b2571c475c1f7ebef/jetified-payu-custom-browser-7.5.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/7ab8e49cfdc54c9b2571c475c1f7ebef/jetified-payu-custom-browser-7.5.1/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ddb040b7ed768d366eab9306ffee896c/jetified-payu-custom-browser-7.5.1/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ddb040b7ed768d366eab9306ffee896c/jetified-payu-custom-browser-7.5.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/ddb040b7ed768d366eab9306ffee896c/jetified-payu-custom-browser-7.5.1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/com.payu.custombrowser/payu-custom-browser/7.5.1/27a772770546079677f7e824f95d22c9b1c5744b/payu-custom-browser-7.5.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

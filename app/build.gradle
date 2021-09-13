@@ -3,10 +3,11 @@ plugins {
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
     id 'com.chrisney.enigma'
 }
-// Set Enigma options:
 enigma.enabled = false
 enigma.injectFakeKeys = true
 enigma.classes  = ["mobisocial.arcade.GccConfig.urlref.java","mobisocial.arcade.Helper.java","mobisocial.arcade.ESPView.java","mobisocial.arcade.free.FESPView.java","mobisocial.arcade.lite,LiteESPView.java","mobisocial.arcade.Fragment.AboutFragment.java","mobisocial.arcade.PluginActivity.java","mobisocial.arcade.SingleTapConfirm.java","mobisocial.arcade.imgLoad.java","mobisocial.arcade.logo.java","mobisocial.arcade.flogo.java"]
+
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -15,13 +16,16 @@ android {
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
-        versionName "1.90"
+        versionName "1.95"
         manifestPlaceholders = [
                 onesignal_app_id: 'd0827521-a855-456b-a09f-dc25899ac339',
                 // Project number pulled from dashboard, local value is ignored.
                  onesignal_google_project_number: '1040561492356'
         ]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi-v7a"                                                                                                
+        }
     }
 
     buildTypes {
@@ -50,6 +54,7 @@ android {
             }
         }
     }
+
     externalNativeBuild {
         ndkBuild {
             path file('src/main/cpp/Android.mk')
@@ -67,24 +72,21 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'io.github.vvb2060.ndk:xposeddetector:1.1'
     implementation 'com.ramotion.cardslider:card-slider:0.3.1'
-    compile 'org.zeroturnaround:zt-zip:1.14'
     implementation 'com.ramotion.foldingcell:folding-cell:1.2.3'
     implementation 'com.ismaeldivita.chipnavigation:chip-navigation-bar:1.3.3'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.3.72'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     testImplementation 'junit:junit:4.+'
-    implementation 'com.ramotion.circlemenu:circle-menu:0.3.2'
     implementation 'com.github.madrapps:pikolo:2.0.1'
     implementation 'com.github.topjohnwu.libsu:core:2.5.1'
+    implementation 'com.payumoney.core:payumoney-sdk:7.6.0'
     implementation  'com.payumoney.sdkui:plug-n-play:1.6.0'
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
     implementation 'com.scottyab:rootbeer-lib:0.0.8'
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'com.payumoney.core:payumoney-sdk:7.6.0'
-    implementation 'com.ramotion.fluidslider:fluid-slider:0.3.1'
     implementation 'com.airbnb.android:lottie:3.5.0'
     implementation 'com.burakustun:lottieprogressdialog:1.0.2'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
@@ -96,17 +98,15 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-ui:2.3.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    compile 'com.google.android.gms:play-services-ads:8.4.0'
     implementation 'com.wangsun.upi.payment:upi-payment:0.0.5'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.airbnb.android:lottie:2.7.0'
     implementation 'com.github.mayuce:LottieAlertDialog:1.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    // Retrofit API Interceptor for Debuging
-    // compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     implementation 'com.squareup.okhttp3:okhttp:3.4.1'
     implementation 'com.github.yeyintkoko1788:AlertDialog:v1.0.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

@@ -301,11 +301,21 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                     if(player.isBot) {
                         esp.DrawPlayerText(PMColor::White(), bname.c_str(),
                                            PMVector2(Box.x + (Box.width / 2), Box.y -18),
-                                           ((30 * mScale)) / 2);
+                                           playerTextSize);
                     } else {
                         esp.DrawPlayerText(PMColor::White(), pname.c_str(),
                                            PMVector2(Box.x + (Box.width / 2) , Box.y -18),
-                                           ((30 * mScale)) / 2);
+                                           playerTextSize);
+
+                    }
+                }
+                if(isPlayerUID) {
+                    //UID
+                    wstring uid = player.PlayerUID;
+                    if (!player.isBot) {
+                        esp.DrawPlayerText(PMColor::LRed(), uid.c_str(),
+                                           PMVector2(Box.x + (Box.width / 2), Box.y - 40),
+                                           playerTextSize);
 
                     }
                 }
@@ -314,17 +324,8 @@ void DrawESP(PMESP esp, int screenWidth, int screenHeight) {
                     esp.DrawPlayerText(PMColor::Orange(), teamid.c_str(),
                                        PMVector2((Box.x + (Box.width / 2)) - 75,
                                                  Box.y - 30),
-                                       ((35 * mScale)) / 2);
+                                       playerTextSize);
                 }
-
-
-//                if (isplayeruid) {
-//                   wstring playerid = L" " + to_wstring(player.PlayerID);
-//                    esp.DrawPlayerText(PMColor::White(), playerid.c_str(),
-//                                       PMVector2(Box.x + (Box.width / 2) - 70,
-//                                                 Box.y + 22),
-//                                       ((32 * mScale)) / 2);
-    //            }
 
                 if (isPlayerDist) {
                     string dist;

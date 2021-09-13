@@ -183,6 +183,7 @@ public class HomeFragmentlite extends Fragment {
 
             @Override
             public void onClick(View v) {
+
                 if(Helper.checkVPN(getActivity())){
                     Toast.makeText(getActivity(), "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                     getActivity().finish();
@@ -498,47 +499,49 @@ public class HomeFragmentlite extends Fragment {
     private void startFloater() {
         SharedPreferences shred =ctx.getSharedPreferences("userdetails", MODE_PRIVATE);
         JSONObject params = new JSONObject();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    try {
-                        String s = null;
-                        params.put(TAG_DEVICEID,Helper.getDeviceId(ctx));
-                    //   params.put(TAG_ONESIGNALID,UUID);
-                        params.put(TAG_KEY,shred.getString(TAG_KEY,"null"));
-                        s= jsonParserString.makeHttpRequest(urlref.Main+"login.php", params);
-                        if (s == null || s.isEmpty()) {
-                            Toast.makeText(ctx, "Server Error", Toast.LENGTH_LONG).show();
-                            return ;
-                        }
-                        JSONObject ack = new JSONObject(s);
-                        String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
-                        if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
-                            Toast.makeText(ctx, "Something Went Wrong", Toast.LENGTH_LONG).show();
-                            return ;
-                        } else {
-                            //converting response to json object
-                            JSONObject obj = new JSONObject(decData);
-                         //   Log.d("test",decData);
-                            if (obj.getBoolean(urlref.TAG_ERROR) || shred.getString(TAG_KEY,"null").equals("null") ) {
-                                startActivity(new Intent(ctx,LoginActivity.class));
-                                Toast.makeText(ctx ,"Integrity Check Failed",Toast.LENGTH_SHORT).show();
-                            }else{
-                                Intent i = new Intent(getActivity(),FloatLogo.class);
-                                i.putExtra("gametype",GameType);
-                                i.putExtra("gamename",gameName);
-                                getActivity().startService(i);
-
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        try {
+                            String s = null;
+                            params.put(TAG_DEVICEID, Helper.getDeviceId(ctx));
+                            //   params.put(TAG_ONESIGNALID,UUID);
+                            params.put(TAG_KEY, shred.getString(TAG_KEY, "null"));
+                            s = jsonParserString.makeHttpRequest(urlref.Main + "login.php", params);
+                            if (s == null || s.isEmpty()) {
+                                Toast.makeText(ctx, "Server Error", Toast.LENGTH_LONG).show();
+                                return;
                             }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                            JSONObject ack = new JSONObject(s);
+                            String decData = Helper.profileDecrypt(ack.get("Data").toString(), ack.get("Hash").toString());
+                            if (!Helper.verify(decData, ack.get("Sign").toString(), JSONParserString.publickey)) {
+                                Toast.makeText(ctx, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                                return;
+                            } else {
+                                //converting response to json object
+                                JSONObject obj = new JSONObject(decData);
+                                //   Log.d("test",decData);
+                                if (obj.getBoolean(urlref.TAG_ERROR) || shred.getString(TAG_KEY, "null").equals("null")) {
+                                    startActivity(new Intent(ctx, LoginActivity.class));
+                                    Toast.makeText(ctx, "Integrity Check Failed", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Intent i = new Intent(getActivity(), FloatLogo.class);
+                                    i.putExtra("gametype", GameType);
+                                    i.putExtra("gamename", gameName);
+                                    getActivity().startService(i);
 
-                });
-            }
-        }).start();
+
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    });
+                }
+            }).start();
+
     }
 
 

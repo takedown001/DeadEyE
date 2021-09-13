@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.wangsun.upi.payment:upi-payment:0.0.5@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/f861bf40ed181fbcb838b840d42ea963/jetified-upi-payment-0.0.5/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/f861bf40ed181fbcb838b840d42ea963/jetified-upi-payment-0.0.5/res" />
+      <root url="file://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/transforms-2/files-2.1/f861bf40ed181fbcb838b840d42ea963/jetified-upi-payment-0.0.5/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/com.wangsun.upi.payment/upi-payment/0.0.5/95d71cffcabd6ea64fc6e12c7eaf3747b09137c5/upi-payment-0.0.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/com.wangsun.upi.payment/upi-payment/0.0.5/58b6cdcbae2d15f86e7edb7ef7b2d585064477c1/upi-payment-0.0.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

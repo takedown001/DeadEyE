@@ -465,6 +465,9 @@ Java_mobisocial_arcade_FloatLogo_PremiumValue(JNIEnv *env, jobject clazz, jint n
         case 617:
             isverticlhealth =flag;
             break;
+        case 618:
+            isPlayerUID = flag;
+            break;
         default:
             break;
     }

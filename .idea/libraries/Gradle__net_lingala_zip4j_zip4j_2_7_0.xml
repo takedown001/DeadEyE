@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: net.lingala.zip4j:zip4j:2.7.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/net.lingala.zip4j/zip4j/2.7.0/cfaa04aab342a807656ecfc513116f8751b33f68/zip4j-2.7.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/net.lingala.zip4j/zip4j/2.7.0/5a3d38a44236bf8ab0fcb2fd6d3456ebbdee72/zip4j-2.7.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/StudioProjects/AhMyth-Android-RAT/AhMyth-Client/gradle/wrapper/caches/modules-2/files-2.1/net.lingala.zip4j/zip4j/2.7.0/a570858f8ed06b824bbfbcf8cd5f024119c3e3e/zip4j-2.7.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

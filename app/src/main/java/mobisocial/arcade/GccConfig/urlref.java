@@ -13,7 +13,7 @@ public class urlref {
     public static final String Image = "https://gcc-org.com/deadeyeesp/Image/";
     public static final String gen = "https://gcc-org.com/NEWDEADEYE/Keys/";
     public static final String TAG_TIME = "999";
-    public static final String FreeGen = "https://gcc-org.com/NEWDEADEYE/fdone.php";
+    public static final String FreeGen = "https://play.google.com/store/apps/details?id=com.game.sploitkeygen";
     public static final String Phome = "9166253127";
     public static final String TAG_RESELLERURL = "link";
 
@@ -54,12 +54,13 @@ public class urlref {
     public static final String MerchantId = "7396527";
     public static final String MerchantKey = "xVadIpa2";
 
-    //libs
+     //libs
     public static final String SafeMem = "/libxbin.so";
     public static final String HexMem = "/libPNR.so";
     public static final String HexMemArg = " 200021312";
     @SuppressLint("SdCardPath")
-    public static final String pathoflib = "/data/data/com.Gcc.Deadeye/files";
+
+
     public static final String MemPathSafe = "https://gcc-org.com/deadeyeesp/live/Downloads/libxbin.so"; //safe features and Mem Antiban For Both Live And Beta Server
     public static final String HexPathSafe = "https://gcc-org.com/deadeyeesp/live/Downloads/libPNR.so";//HexPatching For Both Live And Beta Server With Diffrent Arugment
 
@@ -88,9 +89,8 @@ public class urlref {
     public static final String canary  = "com.guoshi.httpcanary";
     public static final String pcanary  = "com.guoshi.httpcanary.premium";
 
-
-// public static final String APP_SIGNATURE = "46490ACB753B0D1DF9F14B6F1FEEC3FE32EC8508";  //release
-  public static final String APP_SIGNATURE = "37F760E29CF520940697C165525198B2D9A6D764";  //debug
-//zip pass
+    public static final String APP_SIGNATURE = "46490ACB753B0D1DF9F14B6F1FEEC3FE32EC8508";  //release
+  //  public static final String APP_SIGNATURE = "37F760E29CF520940697C165525198B2D9A6D764";  //debug
+    //zip pass
     public static final String Zippass  = "Takedown@123";
 }

@@ -47,7 +47,6 @@ public class LiteESPView extends View implements Runnable {
             ClearCanvas(canvas);
             time.setTime(System.currentTimeMillis());
             DrawText(canvas, 255, 255, 0, 0, formatter.format(time), 155, 55, 20);
-          LiteFloatLogo.LiteDrawOn(this, canvas);
         }
     }
 

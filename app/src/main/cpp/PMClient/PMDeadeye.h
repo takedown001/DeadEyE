@@ -16,7 +16,7 @@ bool iscrosshair =false;
 bool isPlayerName = false;
 bool isPlayerDist = false;
 bool isteamid = false;
-
+bool isPlayerUID = false;
 bool isPlayerHealth = false;
 bool isTeamMateShow = false;
 bool isPlayerBox = false;

@@ -730,24 +730,6 @@
                             android:orientation="vertical"
                             android:visibility="visible">
 
-
-
-                            <TableLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-
-
-                                <TableRow
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-
-
-
-                                </TableRow>
-                            </TableLayout>
-
                             <TableLayout
                                 android:layout_width="match_parent"
                                 android:fontFamily="@font/montserrat"
@@ -836,7 +818,7 @@
                             android:layout_marginTop="3dp"
                             android:background="@color/bgblue"
                             android:orientation="vertical"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -859,16 +841,24 @@
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/dimen_10dp" />
 
-                            <com.ramotion.fluidslider.FluidSlider
+                            <TextView
+                                android:id="@+id/txtplayer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:fontFamily="@font/montserrat"
+                                android:text="10"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/dimen_12sp"/>
+                            <SeekBar
                                 android:id="@+id/playersize"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:elevation="2dp"
-                                app:bar_color="@color/white"
-                                app:bubble_color="@color/blue"
-                                app:bubble_text_color="@color/white"
-                                app:duration="@android:integer/config_mediumAnimTime"
-                                app:size="small" />
+                                android:layout_weight="1.0"
+                                android:layout_marginRight="10dp"
+                                android:min="10"
+                                android:max="30"
+                                />
                         </LinearLayout>
 
 
@@ -1002,7 +992,7 @@
                                 android:fontFamily="@font/montserrat_bold"
                                 android:text=" Item Esp Size adjustment"
                                 android:textColor="@color/white"
-                                android:visibility="gone"
+                                android:visibility="visible"
                                 android:textSize="@dimen/dimen_14sp" />
 
                             <TextView
@@ -1013,23 +1003,30 @@
                                 android:fontFamily="@font/montserrat"
                                 android:text="Adjust the Size Of Item Esp"
                                 android:textColor="@color/white"
-                                android:visibility="gone"
+                                android:visibility="visible"
                                 android:textSize="@dimen/dimen_10dp" />
+                        <TextView
+                            android:id="@+id/txtitem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:fontFamily="@font/montserrat"
+                            android:text="10"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_12sp"/>
+                        <SeekBar
+                            android:id="@+id/itemsize"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:layout_marginRight="10dp"
+                            android:min="10"
+                            android:max="30"
+                            />
 
-                            <com.ramotion.fluidslider.FluidSlider
-                                android:id="@+id/itemsize"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:elevation="2dp"
-                                android:paddingBottom="@dimen/dimen_20dp"
-                                app:bar_color="@color/white"
-                                app:bubble_color="@color/blue"
-                                android:visibility="gone"
-                                app:bubble_text_color="@color/white"
-                                app:duration="@android:integer/config_mediumAnimTime"
-                                app:size="small" />
 
-                        </LinearLayout>
+
+                    </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -1354,6 +1351,7 @@
                                 </TableRow>M</TableLayout>
                             <TableLayout
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
                                 <TableRow
                                     android:layout_width="match_parent"
@@ -1603,7 +1601,8 @@
                             </TableLayout>
                             <TableLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:visibility="gone">
                                 <TableRow
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent">
@@ -2106,7 +2105,7 @@
                                 android:id="@+id/healthkitTab"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:visibility="visible">
+                                android:visibility="gone">
 
                                 <TableRow
                                     android:layout_width="match_parent"
@@ -2133,6 +2132,7 @@
                             </TableLayout>
                             <TableLayout
                                 android:layout_width="match_parent"
+                                android:visibility="gone"
                                 android:layout_height="match_parent">
                                 <TableRow
                                     android:layout_width="match_parent"

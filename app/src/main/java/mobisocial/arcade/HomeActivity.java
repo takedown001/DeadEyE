@@ -226,7 +226,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Androidcheck.dismiss();
-                startActivity(new Intent(HomeActivity.this, HomeActivityLite.class));
+                Intent i = new Intent (new Intent(HomeActivity.this, HomeActivityLite.class));
+                i.putExtra("free",false);
+                startActivity(i);
 
             }
         });

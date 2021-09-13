@@ -27,13 +27,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.ramotion.fluidslider.FluidSlider;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.IOException;
@@ -761,11 +761,6 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
 
 
 
-
-    private String getType(){
-        SharedPreferences sp=this.getSharedPreferences("espValue",Context.MODE_PRIVATE);
-        return sp.getString("type","1");
-    }
     private void  setValue(String key,boolean b) {
         SharedPreferences sp=this.getSharedPreferences("espValue",Context.MODE_PRIVATE);
         SharedPreferences.Editor ed= sp.edit();
@@ -2685,93 +2680,52 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
         });
 
 
+        final TextView playersize = mFloatingView.findViewById(R.id.txtplayer);
+        final TextView itemsize = mFloatingView.findViewById(R.id.txtitem);
 
-        final int max = 30;
-        final int min = 10;
-        final int total = max - min;
-
-        final FluidSlider slider = mFloatingView.findViewById(R.id.playersize);
-        slider.setBeginTrackingListener(new Function0<Unit>() {
+        final SeekBar slider = mFloatingView.findViewById(R.id.playersize);
+        slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public Unit invoke() {
-                return Unit.INSTANCE;
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                playersize.setText(String.valueOf(progress));
+                Size(999, progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
-        slider.setEndTrackingListener(new Function0<Unit>() {
+
+        final SeekBar itemslider = mFloatingView.findViewById(R.id.itemsize);
+        itemslider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public Unit invoke() {
-                return Unit.INSTANCE;
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                itemsize.setText(String.valueOf(progress));
+                Size(1000, progress);;
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
-
-        // Java 8 lambda
-        slider.setPositionListener(pos -> {
-            final String value = String.valueOf((int) (min + total * pos));
-            slider.setBubbleText(value);
-            Size(999, (min + total * pos) + 4.0f);
-            //    ESPView.ChangeFps(Integer.parseInt(value));
-            //Log.d("slider", value);
-            return Unit.INSTANCE;
-        });
-
-
-        slider.setPosition(0.3f);
-        slider.setStartText(String.valueOf(min));
-        slider.setEndText(String.valueOf(max));
-
-
-        final FluidSlider itemslider = mFloatingView.findViewById(R.id.itemsize);
-        itemslider.setBeginTrackingListener(new Function0<Unit>() {
-            @Override
-            public Unit invoke() {
-                return Unit.INSTANCE;
-            }
-        });
-
-        itemslider.setEndTrackingListener(new Function0<Unit>() {
-            @Override
-            public Unit invoke() {
-                return Unit.INSTANCE;
-            }
-        });
-
-        // Java 8 lambda
-        itemslider.setPositionListener(pos -> {
-            final String value = String.valueOf( (int)(min + total * pos) );
-            slider.setBubbleText(value);
-            Size(1000, (min + total * pos) + 4.0f);
-            //    ESPView.ChangeFps(Integer.parseInt(value));
-            //Log.d("slider", value);
-            return Unit.INSTANCE;
-        });
-
-
-        itemslider.setPosition(0.3f);
-        itemslider.setStartText(String.valueOf(min));
-        itemslider.setEndText(String.valueOf(max));
     }
-//        final SeekBar fps = mFloatingView.findViewById(R.id.fps);
-    // fps.setProgress(getFps());
-//        ESPView.ChangeFps(getFps());
-//        fps.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                int fpsms=fps.getProgress();
-//                setFps(fpsms);
-//                ESPView.ChangeFps(fpsms);
-//            }
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//                //write custom code to on start progress
-//            }
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
-//
-//    }
+
+
     public native int Init();
 
     public native void Stop();

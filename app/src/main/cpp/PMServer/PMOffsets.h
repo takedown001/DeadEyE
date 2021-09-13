@@ -4,13 +4,13 @@
 
 namespace Offsets {
     enum Offsets {
-        //All Versions
-        GWorld = 0x6E208CC,
-        GNames = 0x6E17138,
+        //Others
+        GWorld = 0x70AAE1C,
+        GNames = 0x70A1550,
         PointerSize = 0x4,
-        // BGMI
-        UGWorld = 0x6E2192C,
-        UGNames =  0x70D3994,
+        //BGMI
+        UGWorld = 0x70AB2BC,
+        UGNames =  0x7364D94,
 
         //Struct Size
         FTransformSizeInGame = 0x30,
@@ -19,40 +19,36 @@ namespace Offsets {
         FNameEntryToNameString = 0x8,
         //Class: UObject
         UObjectToInternalIndex = 0x8,
-
         UObjectToFNameIndex = 0x10,
-
         //---------PUBG UEClasses-----------
         //Class: World
         WorldToPersistentLevel = 0x20,
         //Class: Level
         LevelToAActors = 0x70,
         //Class: PlayerController
-        UAEPlayerControllerToPlayerKey = 0x61C,
-
-        UAEPlayerControllerToTeamID = 0x634,
+        UAEPlayerControllerToPlayerKey = 0x62C,
+        UAEPlayerControllerToTeamID = 0x644,
         //Class: PlayerCameraManager
-        PlayerCameraManagerToCameraCacheEntry = 0x340,
+        PlayerCameraManagerToCameraCacheEntry = 0x350,
         //Class: CameraCacheEntry
         CameraCacheEntryToMinimalViewInfo = 0x10,
         //Class: SceneComponent
-        SceneComponentToComponentToWorld = 0x140, //not updated  //0x1AC //0x140
+        SceneComponentToComponentToWorld = 0x150,
         //Class: SkeletalMeshComponent
-        SkeletalMeshComponentToCachedComponentSpaceTransforms = 0x700,
+        SkeletalMeshComponentToCachedComponentSpaceTransforms = 0x710,
         //Class: Actor
-        ActorToRootComponent = 0x140,
+        ActorToRootComponent = 0x14C,
         //Class: Character
-        CharacterToMesh = 0x310,
+        CharacterToMesh = 0x320,
         //Class: UAECharacter
-        UAECharacterToPlayerName = 0x638,
-
-        UAECharacterToPlayerKey = 0x650,
-
-        UAECharacterToTeamID = 0x660,
-
-        UAECharacterTobIsAI = 0x6D8,
+        UAECharacterToPlayerName = 0x648,
+        UAECharacterToPlayerKey = 0x660,
+        UAECharacterToTeamID = 0x670,
+        UAECharacterTobIsAI = 0x6E8,
+        UAECharacterPlayerUID = 0x664,
         //Class: STExtraCharacter
-        STExtraCharacterToHealth = 0x918,
+        STExtraCharacterToHealth = 0x928,
+
 
     };
 }

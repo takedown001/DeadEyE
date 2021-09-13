@@ -188,6 +188,10 @@ public:
         return PMColor(255, 0, 0,100);
     }
 
+    static PMColor LRed(){
+        return PMColor(200, 0, 0,220);
+    }
+
     static PMColor YellowLight(){
         return PMColor(255, 255, 0,100);
     }

@@ -123,64 +123,42 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        checkandroid();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            a11();
+        }else {
+            checkandroid();
+        }
+    }
+
+    public void a11()
+    {
+
+        if(!new RootBeer(LoginActivity.this).isRooted() && !Shell.rootAccess()){
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setTitle("Warning")
+                    .setMessage("You Are Non-root ,We Don't Support Right Now")
+                    .setCancelable(false)
+                    .setPositiveButton("ok", (dialog, which) -> finish()).show();
+        }
+        if(new RootBeer(LoginActivity.this).isRooted()  && !Shell.rootAccess()){
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setTitle("Warning")
+                    .setMessage("Root Access Was Not Granted")
+                    .setCancelable(false)
+                    .setPositiveButton("ok", (dialog, which) -> finish()).show();
+
+        }
+        else{
+            ShellUtils.SU("su");
+        }
     }
 
     private void checkandroid(){
         CustomAlertDialog Androidcheck = new CustomAlertDialog(this,  CustomAlertDialog.DialogStyle.FILL_STYLE);
         Androidcheck.setCancelable(false);
         isStoragePermissionGranted();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-            Androidcheck.setDialogType(CustomAlertDialog.DialogType.WARNING);
-            Androidcheck.setDialogImage(getDrawable(R.drawable.alert),0); // no tint
-            Androidcheck.setImageSize(150,150);
-            Androidcheck.setAlertMessage("Android 7 Detected.App Support Might Be Unstable");
-            Androidcheck.create();
-            Androidcheck.show();
-            Androidcheck.setPositiveButton("Continue", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        finalize();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                    Androidcheck.dismiss();
-                }
-            });
-            Androidcheck.setNegativeButton("Exit", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                    Androidcheck.cancel();
-                }
-            });
-        }
-        else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-            Androidcheck.setAlertTitle("Warning");
-            Androidcheck.setDialogType(CustomAlertDialog.DialogType.WARNING);
-            Androidcheck.setAlertMessage("Greater Than Android 10 Detected.App Support Might Be Unstable");
-            Androidcheck.create();
-            Androidcheck.show();
-            Androidcheck.setPositiveButton("Continue", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        finalize();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                    Androidcheck.dismiss();
-                }
-            });
-            Androidcheck.setNegativeButton("Exit", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                    Androidcheck.cancel();
-                }
-            });
-        }else if(!new RootBeer(LoginActivity.this).isRooted() && !Shell.rootAccess()){
+
+        if(!new RootBeer(LoginActivity.this).isRooted() && !Shell.rootAccess()){
             Androidcheck.setDialogType(CustomAlertDialog.DialogType.WARNING);
             Androidcheck.setDialogImage(getDrawable(R.drawable.alert),0); // no tint
             Androidcheck.setImageSize(150,150);

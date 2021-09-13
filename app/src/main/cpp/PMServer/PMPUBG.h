@@ -108,6 +108,10 @@ struct Player {
         return Read<FString>(uae + Offsets::UAECharacterToPlayerName);
     }
 
+    static FString getPlayerUID(kaddr uae){
+        return Read<FString>(uae + Offsets::UAECharacterPlayerUID);
+    }
+
     static int getTeamID(kaddr uae){
         return Read<int>(uae + Offsets::UAECharacterToTeamID);
     }

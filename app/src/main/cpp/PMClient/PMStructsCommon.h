@@ -25,6 +25,7 @@ struct Request {
 
 struct PlayerData {
 	wchar_t PlayerName[30];
+	wchar_t PlayerUID[10];
 	bool isBot;
 	int TeamID;
 //	int PlayerID;

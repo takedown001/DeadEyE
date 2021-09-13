@@ -27,7 +27,7 @@ public class AnimationLoad extends AsyncTask<String, Integer, String>
     public AnimationLoad(Context context) {
         this.instance = context;
 //        mProgressDialog = new ProgressDialog(instance);
-//       mProgressDialog.setMessage("Downloading Requirements...");
+//        mProgressDialog.setMessage("Downloading Requirements...");
 //        mProgressDialog.setIndeterminate(true);
 //        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 //        mProgressDialog.setCancelable(false);
