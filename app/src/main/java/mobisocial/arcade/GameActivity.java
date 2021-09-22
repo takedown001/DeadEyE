@@ -1,9 +1,9 @@
 package mobisocial.arcade;
 
+import static android.os.Environment.DIRECTORY_PICTURES;
+
 import android.animation.ArgbEvaluator;
 import android.app.DialogFragment;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +21,6 @@ import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.data.Model;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -109,7 +108,8 @@ public class GameActivity extends AppCompatActivity {
 
         new Thread(() -> {
             new Handler(Looper.getMainLooper()).post(() -> {
-                new AnimationLoad(this).execute(urlref.AnimationLoad);
+                new GetFile(this).execute(urlref.AnimationLoad,getFilesDir().toString()+"/animation.zip");
+              //  Log.d("tes",getFilesDir().toString()+"/animation.zip");
             });
         }).start();
 

@@ -178,13 +178,6 @@ public class FSettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+urlref.FreeMem);
-                ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+urlref.FreeHexMem);
-                //Log.d("check","rm -rf "+ getActivity().getFilesDir().toString()+urlref.livelib);
-                new FLoadMem(getActivity()).execute(urlref.MemPathPublic);
-                new FHexLoad(getActivity()).execute(urlref.HexPublicLib);
-                ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.FreeHexMem);
-                ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.FreeMem);
             }
         });
 

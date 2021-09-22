@@ -5,16 +5,13 @@ import android.annotation.SuppressLint;
 public class urlref {
 
 
-    public static final String Main = "https://gcc-org.com/NEWDEADEYE/";
+    public static final String Main =  "https://gamesploit.com/project/deadeye/Api/";
 
-    public static final String Betaserver = "https://gcc-org.com/NEWDEADEYE/beta/";
-    public static final String Liveserver = "https://gcc-org.com/NEWDEADEYE/live/";
+    public static final String freeserver = "https://gamesploit.com/project/deadeye/server/free/";
+    public static final String Donatorserver = "https://gamesploit.com/project/deadeye/server/donator/";
 
-    public static final String Image = "https://gcc-org.com/deadeyeesp/Image/";
-    public static final String gen = "https://gcc-org.com/NEWDEADEYE/Keys/";
-    public static final String TAG_TIME = "999";
+    public static final String Image = "https://gamesploit.com/project/Image/";
     public static final String FreeGen = "https://play.google.com/store/apps/details?id=com.game.sploitkeygen";
-    public static final String Phome = "9166253127";
     public static final String TAG_RESELLERURL = "link";
 
     //auth
@@ -29,15 +26,16 @@ public class urlref {
 
     //Reseller
     public static final String TAG_RESELLER = "reseller";
-    public static final String TAG_RNAME = "rname";
-    public static final String TAG_RDESC = "rdesc";
-    public static final String TAG_RIMG = "rimg";
+    public static final String TAG_RNAME = "uname";
+    public static final String TAG_RDESC = "description";
+    public static final String TAG_RIMG = "img";
 
     //official
     public static final String TAG_STORE = "store";
     public static final String TAG_TITLE = "name";
     public static final String TAG_DESC = "sdesc";
     public static final String TAG_IMG = "img";
+
 
   //News
     public static final String TAG_NTITLE = "title";
@@ -50,40 +48,17 @@ public class urlref {
     public static final String TAG_DIMG = "img";
     public static final String TAG_DURL = "downurl";
 
-    // Paumoney Salt
-    public static final String MerchantId = "7396527";
-    public static final String MerchantKey = "xVadIpa2";
-
      //libs
-    public static final String SafeMem = "/libxbin.so";
-    public static final String HexMem = "/libPNR.so";
-    public static final String HexMemArg = " 200021312";
+    public static final String GlobalMem = "/libxbin.so";
+    public static final String IndiaMem = "/libibin.so";
     @SuppressLint("SdCardPath")
 
 
-    public static final String MemPathSafe = "https://gcc-org.com/deadeyeesp/live/Downloads/libxbin.so"; //safe features and Mem Antiban For Both Live And Beta Server
-    public static final String HexPathSafe = "https://gcc-org.com/deadeyeesp/live/Downloads/libPNR.so";//HexPatching For Both Live And Beta Server With Diffrent Arugment
+    public static final String Downloads = "https://gamesploit.com/project/deadeye/downloads"; //Global Path
+    public static final String AnimationLoad = "https://gamesploit.com/project/deadeye/downloads/animation.zip";//safe memory beta premium antiban
+     public static final String time = "1";
 
-    //free
-    public static final String MemPathPublic = "https://gcc-org.com/deadeyeesp/beta/Downloads/libsys.so";//public Memory and Memory antiban
-    public static final String HexPublicLib = "https://gcc-org.com/deadeyeesp/beta/Downloads/libCNR.so";//safe memory beta premium antiban
-    public static final String AnimationLoad = "https://gcc-org.com/deadeyeesp/beta/Downloads/animation.zip";//safe memory beta premium antiban
-    public static final String FreeMem = "/libsys.so";
-    public static final String FreeHexMem = "/libCNR.so";
-    public static final String FreeHexMemArg = " 131222002";
-    public static final String Freeapkupdateurl = "https://gcc-org.com/deadeyeesp/freeappupdater.php";
-    public static final String dollar = "75";
-    public static final String time = "1";
-    public static final String defalkey = "null";
     public static final String defaltversion = "32";
-
-    //lite
-    public static final String LiteMem = "/libsu.so";
-    public static final String Liteapkupdateurl = "https://gcc-org.com/deadeyeesp/app_updater.php";
-    public static final String IndiaMem = "https://gcc-org.com/deadeyeesp/live/Downloads/libsu.so";
-
-    public static final String remove = "rm -rf /";
-
     // ban app
     public static final String netgaurd  = "eu.faircode.netguard";
     public static final String canary  = "com.guoshi.httpcanary";

@@ -1,22 +1,19 @@
 package mobisocial.arcade;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -28,11 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 
-import mobisocial.arcade.free.FHomeActivity;
 import mobisocial.arcade.GccConfig.urlref;
-import mobisocial.arcade.free.FLoginActivity;
-import mobisocial.arcade.lite.HomeActivityLite;
-import com.airbnb.lottie.LottieAnimationView;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.onesignal.OneSignal;
 import com.scottyab.rootbeer.RootBeer;
@@ -41,13 +35,7 @@ import com.yeyint.customalertdialog.CustomAlertDialog;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
@@ -56,7 +44,6 @@ import static mobisocial.arcade.GccConfig.urlref.TAG_ERROR;
 import static mobisocial.arcade.GccConfig.urlref.TAG_LITE;
 import static mobisocial.arcade.GccConfig.urlref.TAG_MSG;
 import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
-import static mobisocial.arcade.GccConfig.urlref.TAG_TIME;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -65,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
          System.loadLibrary("sysload");
      }
     private static final String TAG_KEY = urlref.TAG_KEY;
-    private boolean error,safe,brutal;
+    private boolean error,safe;
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String url = Main+"login.php";
     private static final String TAG_DURATION =urlref.TAG_DURATION;
@@ -117,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.GetkeyButton).setOnClickListener(v -> {
-            Intent i = new Intent(LoginActivity.this,StoreActivity.class);
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://shop.gamesploit.com"));
             startActivity(i);
         });
 
@@ -154,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkandroid(){
+
         CustomAlertDialog Androidcheck = new CustomAlertDialog(this,  CustomAlertDialog.DialogStyle.FILL_STYLE);
         Androidcheck.setCancelable(false);
         isStoragePermissionGranted();
@@ -343,52 +331,32 @@ public class LoginActivity extends AppCompatActivity {
                                     return;
                                 } else {
                                     JSONObject obj = new JSONObject(decData);
-
+                                  //  Log.d("test",obj.toString());
                                     error = obj.getBoolean(TAG_ERROR);
-                                    brutal = false;
 
                                     if (Helper.checkVPN(LoginActivity.this)) {
                                         Toast.makeText(LoginActivity.this, "Turn Off Your Vpn", Toast.LENGTH_LONG).show();
                                         finish();
                                     } else {
                                         if (!error) {
-                                            islite = obj.getBoolean(TAG_LITE);
-
+                                            safe = obj.getBoolean("5");
                                             getduration = obj.getLong(TAG_DURATION);
-
                                           //  Log.d("test", String.valueOf(getduration));
                                             if (getduration == 0) {
                                                 Toast.makeText(getApplicationContext(), obj.getString(TAG_MSG), Toast.LENGTH_LONG).show();
                                             } else {
-                                                if (islite) {
                                                     //saving to prefrences m
                                                     editor.putBoolean(TAG_ISFIRSTSTART, false).apply();
                                                     editor.putLong(TAG_DURATION, getduration).apply();
                                                     editor.putString(TAG_KEY, key);
                                                     editor.apply();
                                                     Toast.makeText(getApplicationContext(), obj.getString(TAG_MSG), Toast.LENGTH_LONG).show();
-                                                    Intent intent = new Intent(LoginActivity.this, HomeActivityLite.class);
-                                                    intent.putExtra("safe", safe);
-                                                    intent.putExtra("brutal", brutal);
-                                                    startActivity(intent);
-                                                } else {
-                                                    editor.putBoolean(TAG_ISFIRSTSTART, false).apply();
-                                                    editor.putLong(TAG_DURATION, getduration).apply();
-                                                    editor.putString(TAG_KEY, key);
-                                                    editor.apply();
-                                                    safe = obj.getBoolean("5");
-                                               //     brutal = obj.getBoolean("6");
-
-
-                                                    Toast.makeText(getApplicationContext(), obj.getString(TAG_MSG), Toast.LENGTH_LONG).show();
                                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                                     intent.putExtra("safe", safe);
-                                                    intent.putExtra("brutal", brutal);
                                                     startActivity(intent);
-                                                }
-                                                finish();
-                                                finalize();
                                             }
+                                            finish();
+                                            finalize();
                                         } else {
                                             Toast.makeText(getApplicationContext(), obj.getString(TAG_MSG), Toast.LENGTH_SHORT).show();
                                         }
@@ -404,6 +372,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         UserLogin ul = new UserLogin();
+
         ul.execute();
     }
 }

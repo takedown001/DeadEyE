@@ -13,10 +13,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -30,51 +28,38 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.AppUpdaterActivity;
-import mobisocial.arcade.FloatLogo;
 import mobisocial.arcade.Fragment.AboutFragment;
 import mobisocial.arcade.Fragment.DownloadFragment;
 import mobisocial.arcade.Fragment.NewsFragment;
 import mobisocial.arcade.GameActivity;
 import mobisocial.arcade.GccConfig.urlref;
+import mobisocial.arcade.GetFile;
 import mobisocial.arcade.Helper;
 import mobisocial.arcade.HomeActivity;
 import mobisocial.arcade.JSONParserString;
 import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
-import mobisocial.arcade.RequestHandler;
 import mobisocial.arcade.ResellerActivity;
-import mobisocial.arcade.ShellUtils;
-import mobisocial.arcade.StoreActivity;
 import mobisocial.arcade.activityMaintain;
+import mobisocial.arcade.freebgmi.BHomeActivity;
 import mobisocial.arcade.imgLoad;
-import mobisocial.arcade.lite.HomeActivityLite;
 
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.yeyint.customalertdialog.CustomAlertDialog;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 
-import javax.security.auth.callback.CallbackHandler;
-
+import static mobisocial.arcade.GccConfig.urlref.Downloads;
 import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
 import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
-import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 import static mobisocial.arcade.GccConfig.urlref.time;
 
 public class FHomeActivity extends AppCompatActivity {
@@ -97,7 +82,6 @@ public class FHomeActivity extends AppCompatActivity {
     Handler handler = new Handler();
     private String daemonPath;
     JSONParserString jsonParserString = new JSONParserString();
-    public static boolean beta = false;
     ImageView rightico, leftico;
     String videourl;
 
@@ -127,9 +111,7 @@ public class FHomeActivity extends AppCompatActivity {
                     new HomeFreeFragment()).commit();
             chipNavigationBar.setItemSelected(R.id.home, true);
         }
-        //startDaemon();
 
-        //		stopService(new Intent(ctx, BrutalService.class));
 
         leftico.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,11 +158,11 @@ public class FHomeActivity extends AppCompatActivity {
                         loadFragment(fragment);
                         break;
                     case R.id.logout:
-                        SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
+                        SharedPreferences shred = getSharedPreferences("Freeuserdetails", MODE_PRIVATE);
                         shred.edit().clear().apply();
                         finish();
                         Toast.makeText(FHomeActivity.this, "Logged Out Successfully!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(FHomeActivity.this, LoginActivity.class));
+                        startActivity(new Intent(FHomeActivity.this, FLoginActivity.class));
                         break;
                 }
 
@@ -190,19 +172,52 @@ public class FHomeActivity extends AppCompatActivity {
             @Override
             public void run() {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    new FLoadMem(FHomeActivity.this).execute(urlref.MemPathPublic);
-                    new FHexLoad(FHomeActivity.this).execute(urlref.HexPublicLib);
                     try {
+                        new GetFile(FHomeActivity. this).execute(Downloads+urlref.GlobalMem,getFilesDir().toString()+urlref.GlobalMem);
+                        new GetFile(FHomeActivity.this).execute(Downloads+urlref.IndiaMem,getFilesDir().toString()+urlref.IndiaMem);
                         loadAssets();
+                        Switch();
                     } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     }
                 });
             }
-        }).start();
+       }).start();
 
     }
+    private void Switch(){
+        new Handler(Looper.getMainLooper()).post(() -> {
+            CustomAlertDialog Androidcheck = new CustomAlertDialog(this, CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
+            Androidcheck.setCancelable(false);
+            Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
+            Androidcheck.setAlertTitle("Version Selection");
+            Androidcheck.setImageSize(150,150);
+            Androidcheck.setAlertMessage("Switch Server To Battlegrounds India Or Continue To Global PUBG ?");
+            Androidcheck.create();
+            Androidcheck.show();
+            Androidcheck.setPositiveButton("Continue", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Androidcheck.dismiss();
+                    try {
+                        finalize();
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                }
+            });
+            Androidcheck.setNegativeButton("Switch To BGMI", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Androidcheck.dismiss();
+                    Intent i = new Intent (new Intent(FHomeActivity.this, BHomeActivity.class));
+                    i.putExtra("free",false);
+                    startActivity(i);
 
+                }
+            });
+        });
+    }
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
         if (imgLoad.Load(FHomeActivity.this).equals(time)) {
@@ -262,8 +277,8 @@ public class FHomeActivity extends AppCompatActivity {
                     startActivity(c);
                     return true;
                 case R.id.ExtentUpgrade:
-                    Intent i = new Intent(FHomeActivity.this, StoreActivity.class);
-                    startActivity(i);
+                    Intent q = new Intent(Intent.ACTION_VIEW,Uri.parse("https://shop.Gamesploit.com"));
+                    startActivity(q);
                     return true;
                 case R.id.Reseller:
                     Intent p = new Intent(FHomeActivity.this, ResellerActivity.class);
@@ -313,37 +328,49 @@ public class FHomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        CustomAlertDialog Androidcheck = new CustomAlertDialog(this,  CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
-        if (backbackexit >= 2) {
-            Androidcheck.setCancelable(false);
-            Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
-            Androidcheck.setAlertTitle("Exit");
-            Androidcheck.setImageSize(150,150);
-            Androidcheck.setAlertMessage("Are you sure you want to exit back ?");
-            Androidcheck.create();
-            Androidcheck.show();
-            Androidcheck.setPositiveButton("Yes", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(FHomeActivity.this, GameActivity.class));
-                    Androidcheck.dismiss();
-                }
-            });
-            Androidcheck.setNegativeButton("NO", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        finalize();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+
+            new android.app.AlertDialog.Builder(FHomeActivity.this)
+                    .setTitle("Exit")
+                    .setMessage("Are you sure you want to exit back ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> startActivity(new Intent(FHomeActivity.this, LoginActivity.class)))
+                    .setNegativeButton("No",((dialog, which) -> finishAffinity()))
+                    .show();
+        }else {
+            CustomAlertDialog Androidcheck = new CustomAlertDialog(this, CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
+            if (backbackexit >= 2) {
+                Androidcheck.setCancelable(false);
+                Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
+                Androidcheck.setAlertTitle("Exit");
+                Androidcheck.setImageSize(150, 150);
+                Androidcheck.setAlertMessage("Are you sure you want to exit back ?");
+                Androidcheck.create();
+                Androidcheck.show();
+                Androidcheck.setPositiveButton("Yes", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(FHomeActivity.this, LoginActivity.class));
+                        Androidcheck.dismiss();
                     }
-                    Androidcheck.cancel();
-                }
-            });
+                });
+                Androidcheck.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            finalize();
+                        } catch (Throwable throwable) {
+                            throwable.printStackTrace();
+                        }
+                        Androidcheck.cancel();
+                    }
+                });
 //					super.onBackPressed();
-        } else {
-            backbackexit++;
-            Toast.makeText(getBaseContext(), "Press again to Exit", Toast.LENGTH_SHORT).show();
+            } else {
+                backbackexit++;
+                Toast.makeText(getBaseContext(), "Press again to Exit", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -433,6 +460,7 @@ public class FHomeActivity extends AppCompatActivity {
                                     Intent intent = new Intent(FHomeActivity.this, AppUpdaterActivity.class);
                                     intent.putExtra(TAG_APP_NEWVERSION, newversion);
                                     intent.putExtra(data, whatsNewData);
+                                    intent.putExtra("force",obj.getBoolean("force"));
                                     intent.putExtra("updateurl", url);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);

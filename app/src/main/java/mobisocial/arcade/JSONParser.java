@@ -105,8 +105,6 @@ public class JSONParser {
                 conn.connect();
                 is = conn.getInputStream();
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

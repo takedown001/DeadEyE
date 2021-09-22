@@ -7,8 +7,8 @@
         android:title="Video Support " />
     <item android:id="@+id/Reseller"
         android:title="Reseller"/>
-    <item android:id="@+id/ExtentUpgrade"
-        android:title="Store"/>
+   <item android:id="@+id/ExtentUpgrade"
+        android:title="Store" />
     <item android:id="@+id/About"
         android:title="About"/>
 

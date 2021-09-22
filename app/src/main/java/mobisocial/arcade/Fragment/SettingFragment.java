@@ -3,17 +3,12 @@ package mobisocial.arcade.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.os.Looper;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,22 +24,12 @@ import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.Helper;
 import mobisocial.arcade.JavaUrlConnectionReader;
-import mobisocial.arcade.LoginActivity;
-import mobisocial.arcade.MemLoad;
-import mobisocial.arcade.HexLoad;
+import mobisocial.arcade.GetFile;
 import mobisocial.arcade.R;
 import mobisocial.arcade.ShellUtils;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 
 import static android.content.Context.MODE_PRIVATE;
-import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
 import static mobisocial.arcade.GccConfig.urlref.defaltversion;
-import static mobisocial.arcade.Helper.givenToFile;
 import static mobisocial.arcade.HomeActivity.safe;
 
 /**
@@ -63,14 +48,8 @@ public class SettingFragment extends Fragment {
     private TextView minview;
     private ImageView i;
     private Button logout,play32bit,play64bit;
-    private Handler handler = new Handler();
-    private static final String TAG_VERSION = "v";
-    private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
-    private String data;
-    private boolean safecheck;
     private String version, deviceid;
-    private Switch srcpatch;
-    String CheatL = urlref.Liveserver + "cheat.php";
+
     // TODO: Rename and change types and number of parameters
     public static SettingFragment newInstance(String param1, String param2) {
         SettingFragment fragment = new SettingFragment();
@@ -86,9 +65,7 @@ public class SettingFragment extends Fragment {
         if (getArguments() != null) {
 
         }
-
         SharedPreferences ga = getActivity().getSharedPreferences("game", MODE_PRIVATE);
-        safecheck = ga.getBoolean("safecheck",false);
     }
 
     @Override
@@ -204,13 +181,6 @@ public class SettingFragment extends Fragment {
             public void onClick(View v) {
                 if(safe){
 
-                ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+urlref.SafeMem);
-                ShellUtils.SU("rm -rf "+ getActivity().getFilesDir().toString()+urlref.HexMem);
-                //Log.d("check","rm -rf "+ getActivity().getFilesDir().toString()+urlref.livelib);
-                    new MemLoad(getActivity()).execute(urlref.MemPathSafe);
-                    new HexLoad(getActivity()).execute(urlref.HexPathSafe);
-                ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.HexMem);
-                ShellUtils.SU("chmod 777 "+ getActivity().getFilesDir().toString()+urlref.SafeMem);
 
                 }else{
                     Toast.makeText(getContext(),"You are A Basic Plan User",Toast.LENGTH_SHORT).show();
@@ -224,7 +194,7 @@ public class SettingFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://Deadeye.Gcc-org.com"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://GameSploit.com"));
                 startActivity(browserIntent);
             }
         });

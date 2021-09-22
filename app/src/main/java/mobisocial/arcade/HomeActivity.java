@@ -1,6 +1,5 @@
 package mobisocial.arcade;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -34,36 +33,22 @@ import mobisocial.arcade.Fragment.HomeFragment;
 import mobisocial.arcade.Fragment.NewsFragment;
 import mobisocial.arcade.Fragment.SettingFragment;
 import mobisocial.arcade.GccConfig.urlref;
-import mobisocial.arcade.free.FHexLoad;
-import mobisocial.arcade.free.FHomeActivity;
-import mobisocial.arcade.free.FLoadMem;
-import mobisocial.arcade.free.FLoginActivity;
-import mobisocial.arcade.lite.HomeActivityLite;
 
-import com.google.android.gms.common.util.Hex;
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.onesignal.OneSignal;
-import com.topjohnwu.superuser.Shell;
 import com.yeyint.customalertdialog.CustomAlertDialog;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 
+import static mobisocial.arcade.GccConfig.urlref.Downloads;
 import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
-import static mobisocial.arcade.GccConfig.urlref.TAG_DURATION;
 import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
 import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 import static mobisocial.arcade.GccConfig.urlref.time;
@@ -88,9 +73,8 @@ public class HomeActivity extends AppCompatActivity {
     Handler handler = new Handler();
     public static boolean safe =false;
     private static int backbackexit = 1;
-    public static boolean burtal =false;
     JSONParserString jsonParserString = new JSONParserString();
-    public static boolean beta = false;
+
     ImageView rightico,leftico;
     private String videourl,url,daemonPath,UUID;
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -102,14 +86,10 @@ public class HomeActivity extends AppCompatActivity {
         chipNavigationBar = findViewById(R.id.leftmenu);
         rightico = findViewById(R.id.rightico);
         leftico = findViewById(R.id.leftico);
-        OneSignal.idsAvailable((userId, registrationId) -> {
-            UUID = userId;
-        });
+
         safe = getIntent().getBooleanExtra("safe", false);
-        burtal = getIntent().getBooleanExtra("brutal", false);
-//        Log.d("test", String.valueOf(safe));
-//        Log.d("test", String.valueOf(burtal));
-        // OneSignal Initialization
+
+ //       Log.d("safe", String.valueOf(safe));
         if (!isConfigExist()) {
             Init();
         }
@@ -176,7 +156,6 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.plugin:
                         Intent intent = new Intent(HomeActivity.this, PluginActivity.class);
                         intent.putExtra("safe", safe);
-                        intent.putExtra("brutal", burtal);
                         startActivity(intent);
                         break;
                     case R.id.logout:
@@ -192,47 +171,67 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         if (safe) {
-            new HexLoad(HomeActivity.this).execute(urlref.HexPathSafe);
-            new MemLoad(HomeActivity.this).execute(urlref.MemPathSafe);
+        new GetFile(this).execute(Downloads+urlref.GlobalMem,getFilesDir().toString()+urlref.GlobalMem);
+        new GetFile(this).execute(Downloads+urlref.IndiaMem,getFilesDir().toString()+urlref.IndiaMem);
         }
         new Thread(() -> {
                 Switch();
+            try {
+                loadAssets();
+            } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
         }).start();
 
 
     }
     private void Switch(){
         new Handler(Looper.getMainLooper()).post(() -> {
-        CustomAlertDialog Androidcheck = new CustomAlertDialog(this, CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
-        Androidcheck.setCancelable(false);
-        Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
-        Androidcheck.setAlertTitle("Version Selection");
-        Androidcheck.setImageSize(150,150);
-        Androidcheck.setAlertMessage("Switch Server To Battlegrounds India Or Continue To Global PUBG ?");
-        Androidcheck.create();
-        Androidcheck.show();
-        Androidcheck.setPositiveButton("Continue", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Androidcheck.dismiss();
-                try {
-                    loadAssets();
-                } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        Androidcheck.setNegativeButton("Switch To BGMI", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Androidcheck.dismiss();
-                Intent i = new Intent (new Intent(HomeActivity.this, HomeActivityLite.class));
-                i.putExtra("free",false);
-                startActivity(i);
+            Intent i = new Intent(new Intent(HomeActivity.this, mobisocial.arcade.bgmi.HomeActivity.class));
+            i.putExtra("safe", safe);
 
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+                new android.app.AlertDialog.Builder(HomeActivity.this)
+                        .setTitle("Version Selection")
+                        .setMessage("Switch Server To Battlegrounds India Or Continue To Global PUBG ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Continue", (dialog, which) -> {
+                            try {
+                                finalize();
+                            } catch (Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+                        })
+                        .setNegativeButton("Switch To BGMI", ((dialog, which) -> startActivity(i)
+                        )).show();
+
+            }else {
+                CustomAlertDialog Androidcheck = new CustomAlertDialog(this, CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
+                Androidcheck.setCancelable(false);
+                Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
+                Androidcheck.setAlertTitle("Version Selection");
+                Androidcheck.setImageSize(150, 150);
+                Androidcheck.setAlertMessage("Switch Server To Battlegrounds India Or Continue To Global PUBG ?");
+                Androidcheck.create();
+                Androidcheck.show();
+                Androidcheck.setPositiveButton("Continue", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Androidcheck.dismiss();
+
+                    }
+                });
+                Androidcheck.setNegativeButton("Switch To BGMI", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Androidcheck.dismiss();
+                        startActivity(i);
+                    }
+                });
             }
         });
-        });
+
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     private  void Check() throws PackageManager.NameNotFoundException, NoSuchAlgorithmException {
@@ -261,37 +260,48 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        CustomAlertDialog Androidcheck = new CustomAlertDialog(this,  CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
-        if (backbackexit >= 2) {
-            Androidcheck.setCancelable(false);
-            Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
-            Androidcheck.setAlertTitle("Exit");
-            Androidcheck.setImageSize(150,150);
-            Androidcheck.setAlertMessage("Are you sure you want to exit back ?");
-            Androidcheck.create();
-            Androidcheck.show();
-            Androidcheck.setPositiveButton("Yes", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-                    Androidcheck.dismiss();
-                }
-            });
-            Androidcheck.setNegativeButton("NO", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        finalize();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            new android.app.AlertDialog.Builder(HomeActivity.this)
+                    .setTitle("Exit")
+                    .setMessage("Are you sure you want to exit back ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> startActivity(new Intent(HomeActivity.this, LoginActivity.class)))
+                    .setNegativeButton("No",((dialog, which) -> finishAffinity()))
+                    .show();
+        }else {
+            CustomAlertDialog Androidcheck = new CustomAlertDialog(this, CustomAlertDialog.DialogStyle.NO_ACTION_BAR);
+            if (backbackexit >= 2) {
+                Androidcheck.setCancelable(false);
+                Androidcheck.setDialogType(CustomAlertDialog.DialogType.INFO);
+                Androidcheck.setAlertTitle("Exit");
+                Androidcheck.setImageSize(150, 150);
+                Androidcheck.setAlertMessage("Are you sure you want to exit back ?");
+                Androidcheck.create();
+                Androidcheck.show();
+                Androidcheck.setPositiveButton("Yes", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                        Androidcheck.dismiss();
                     }
-                    Androidcheck.cancel();
-                }
-            });
+                });
+                Androidcheck.setNegativeButton("NO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            finalize();
+                        } catch (Throwable throwable) {
+                            throwable.printStackTrace();
+                        }
+                        Androidcheck.cancel();
+                    }
+                });
 //					super.onBackPressed();
-        } else {
-            backbackexit++;
-            Toast.makeText(getBaseContext(), "Press again to Exit", Toast.LENGTH_SHORT).show();
+            } else {
+                backbackexit++;
+                Toast.makeText(getBaseContext(), "Press again to Exit", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -328,8 +338,9 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(c);
                     return true;
                 case R.id.ExtentUpgrade:
-                    Intent p = new Intent(HomeActivity.this,StoreActivity.class);
+                    Intent p = new Intent(Intent.ACTION_VIEW,Uri.parse("https://shop.Gamesploit.com"));
                     startActivity(p);
+                    return true;
                   case R.id.Reseller:
                      Intent g = new Intent(HomeActivity.this,ResellerActivity.class);
                      startActivity(g);
@@ -463,6 +474,7 @@ public class HomeActivity extends AppCompatActivity {
                                             intent.putExtra(TAG_APP_NEWVERSION, newversion);
                                             intent.putExtra(data, whatsNewData);
                                             intent.putExtra("updateurl", url);
+                                            intent.putExtra("force",obj.getBoolean("force"));
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
                                         } else if (ismaintaince) {

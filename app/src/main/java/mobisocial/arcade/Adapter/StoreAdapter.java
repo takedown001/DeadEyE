@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import mobisocial.arcade.DetailActivity;
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
@@ -75,19 +74,8 @@ public class StoreAdapter extends PagerAdapter {
                     case "Free Access":
                         context.startActivity(new Intent(context, FLoginActivity.class));
                         break;
-                    case "Premium Access":
+                    case "Donator Access":
                         context.startActivity(new Intent(context, LoginActivity.class));
-                        break;
-                    case "BGMI":
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                        break;
-                    default:
-                        Intent intent = new Intent(context, DetailActivity.class);
-                        intent.putExtra(TAG_TITLE, models.get(position).getTitle());
-                        intent.putExtra(TAG_IMG, models.get(position).getImage());
-                        context.startActivity(intent);
-                        // finish();
-                        // finish();
                         break;
                 }
             }

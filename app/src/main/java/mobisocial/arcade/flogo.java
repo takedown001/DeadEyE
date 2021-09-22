@@ -1,5 +1,7 @@
 package mobisocial.arcade;
 
+import static mobisocial.arcade.FloatLogo.myDaemon;
+
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
@@ -31,12 +33,10 @@ public class flogo extends Service{
    private  int Chech=0;
     private View mFloatingView;
     private ImageView flash;
-    private String myDaemon;
     @Override
     public void onCreate() {
         super.onCreate();
         Instance = this;
-        myDaemon =  "."+Instance.getFilesDir().toString()+ urlref.SafeMem;
         createOver();
 
     }

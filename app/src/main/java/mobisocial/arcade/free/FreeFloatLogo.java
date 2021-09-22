@@ -7,14 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,29 +35,20 @@ import androidx.annotation.RequiresApi;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.IOException;
-import java.nio.channels.ShutdownChannelGroupException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 import mobisocial.arcade.AESUtils;
 import mobisocial.arcade.ESPView;
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.Helper;
 import mobisocial.arcade.JavaUrlConnectionReader;
-import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.ShellUtils;
 import mobisocial.arcade.imgLoad;
 
 import static java.lang.System.exit;
-import static java.lang.System.in;
-import static mobisocial.arcade.GccConfig.urlref.FreeHexMemArg;
 import static mobisocial.arcade.GccConfig.urlref.defaltversion;
-import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
 
 public class FreeFloatLogo extends Service implements View.OnClickListener {
@@ -89,7 +78,7 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
     private int Gametype;
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String TAG_VERSION = "v";
-    String CheatB = urlref.Betaserver + "cheat.php";
+    String CheatB = urlref.freeserver + "cheat.php";
     private String data;
     @SuppressLint("CutPasteId")
     @Override
@@ -103,6 +92,7 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
         windowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         overlayView = new ESPView(Instance);
         SharedPreferences ga = Instance.getSharedPreferences("game", MODE_PRIVATE);
+
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -112,31 +102,24 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
                         Check();
                         ShellUtils.SU("setenforce 0");
                         gamerun();
-//                        if (gameName.equals("com.pubg.imobile")) {
-//                            hexDaemon = "." + Instance.getFilesDir().toString() + urlref.HexMem;
-//                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.LiteMem;
-//                        }else{
-                            hexDaemon = "." + Instance.getFilesDir().toString() + urlref.FreeHexMem;
-                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.FreeMem;
-                    //    }
-                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+urlref.FreeHexMem);
-                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.FreeMem);
-
+                        if (gameName.equals("com.pubg.imobile")) {
+                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.IndiaMem;
+                        }else{
+                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.GlobalMem;
+                        }
+                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.IndiaMem);
+                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.GlobalMem);
                     } catch (IOException | InterruptedException | NoSuchAlgorithmException | PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
                     }
                 });
             }
         }).start();
-
     }
+
     private int getLayoutType() {
         int LAYOUT_FLAG;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        } else {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
-        }
+        LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         return LAYOUT_FLAG;
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -160,9 +143,10 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
         }
-
         windowManager.addView(overlayView, params);
+
     }
+
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
         gameName = intent.getStringExtra("gamename");
@@ -173,11 +157,13 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void gamerun() throws IOException, InterruptedException {
-        boolean finalCheck = Helper.checkmd5(Instance, gameName);
+        boolean finalCheck ;
+        finalCheck = Helper.checkmd5(Instance, gameName);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 new Handler(Looper.getMainLooper()).post(() -> {
+
                     if (Gametype == 1) {
 
                         if (finalCheck) {
@@ -256,10 +242,8 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
 //            Start(ctx,4,2);
 //        }
                 });
-
             }
         }).start();
-
     }
     private void Start(Context ctx,int game ,int bit) {
 
@@ -295,7 +279,6 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
                                 PremiumValue(608,true);
                                 PremiumValue(599, true);
                                 DrawCanvas();
-                                ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                                 createOver();
                                 CInit();
                             });
@@ -309,13 +292,11 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
     private void startDaemon(int mode){
         new Thread(() -> {
             String cmd = getFilesDir() + "/sysexe " + mode;
-            //    Log.d("test", String.valueOf(mode));
             if(!Shell.rootAccess()){
                 Shell.sh(cmd).submit();
             } else {
                 ShellUtils.SU("setenforce 0");
                 ShellUtils.SU(cmd);
-
             }
         }).start();
     }
@@ -348,7 +329,6 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
                         PremiumValue(608,true);
                         PremiumValue(599, true);
                         DrawCanvas();
-                        ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                         createOver();
                         CInit();
                     });
@@ -357,7 +337,6 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
         }).start();
     }
     private void Rescan2(Context ctx,int game ,int bit) {
-
         new Thread(() -> {
             if (!isRunning) {
                 /*
@@ -389,14 +368,12 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
                                 PremiumValue(608,true);
                                 PremiumValue(599, true);
                                 DrawCanvas();
-                                ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                                 createOver();
                                 CInit();
 
                             });
                         }
                     }).start();
-
                 }
             }
         }).start();
@@ -686,9 +663,6 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
             }
         });
 
-
-
-
         //floating window setting
         mFloatingView.findViewById(R.id.relativeLayoutParent).setOnTouchListener(new View.OnTouchListener() {
             private int initialX;
@@ -729,7 +703,6 @@ public class FreeFloatLogo extends Service implements View.OnClickListener {
     @Override
     public void onDestroy() {
       Stop();
-      stopSelf();
       isRunning = false;
         if(overlayView != null){
             windowManager.removeView(overlayView);

@@ -1,5 +1,7 @@
 package mobisocial.arcade;
 
+import static mobisocial.arcade.FloatLogo.myDaemon;
+
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
@@ -31,14 +33,12 @@ public class logo  extends Service{
         return null;
     }
     private  int Chech=0;
-    private String myDaemon;
     private View mFloatingView;
     private ImageView carfly;
     @Override
     public void onCreate() {
         super.onCreate();
         Instance = this;
-        myDaemon =  "."+Instance.getFilesDir().toString()+ urlref.SafeMem;
         createOver();
 
     }

@@ -143,7 +143,6 @@ public class ResellerActivity extends AppCompatActivity {
                                 reseller.setResellerurl(offersList.get(i).get(TAG_RESELLERURL));
                                 ResellerList.add(reseller);
                                 adapter.notifyDataSetChanged();
-
                             }
                         } else {
 
@@ -182,7 +181,7 @@ public class ResellerActivity extends AppCompatActivity {
                     return null;
                 } else {
                     JSONObject json = new JSONObject(decData);
-                   Log.d("login", json.toString());
+                 //  Log.d("login", json.toString());
 
                     success = json.getInt(TAG_SUCCESS);
                     jsonarray = json.getJSONArray(TAG_RESELLER);

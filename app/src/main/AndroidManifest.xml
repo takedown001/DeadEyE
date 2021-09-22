@@ -32,8 +32,6 @@
         </activity>
         <service android:name="mobisocial.arcade.FloatLogo" android:exported="false" android:enabled="true"/>
         <activity android:name="mobisocial.arcade.GameActivity"/>
-        <activity android:name="mobisocial.arcade.DetailActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name="mobisocial.arcade.StoreActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name="mobisocial.arcade.RDetailActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name="mobisocial.arcade.LoginActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name="mobisocial.arcade.ResellerActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
@@ -41,16 +39,15 @@
         <activity android:name="mobisocial.arcade.HomeActivity"/>
         <activity android:name="mobisocial.arcade.activityMaintain"/>
         <activity android:name="mobisocial.arcade.PluginActivity"/>
-        <activity android:name="mobisocial.arcade.MyActivity"/>
         <activity android:name="mobisocial.arcade.free.FLoginActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-        <activity android:name="mobisocial.arcade.free.FHomeActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".free.FHomeActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <service android:name="mobisocial.arcade.free.FreeFloatLogo" android:exported="false" android:enabled="true"/>
 
-        <activity android:name="mobisocial.arcade.lite.HomeActivityLite" android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <service android:name="mobisocial.arcade.lite.LiteFloatLogo" android:exported="false" android:enabled="true"/>
+        <activity android:name="mobisocial.arcade.bgmi.HomeActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <service android:name="mobisocial.arcade.logo" android:exported="false" android:enabled="true"/>
         <service android:name="mobisocial.arcade.flogo" android:exported="false" android:enabled="true"/>
 
+        <activity android:name=".freebgmi.BHomeActivity" />
     </application>
 </manifest>

@@ -7,16 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
 import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.telephony.VisualVoicemailService;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,17 +38,10 @@ import com.topjohnwu.superuser.Shell;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 import mobisocial.arcade.GccConfig.urlref;
-import mobisocial.arcade.lite.HomeActivityLite;
 
-import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
 import static java.lang.System.exit;
-import static mobisocial.arcade.GccConfig.urlref.canary;
 import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.Helper.givenToFile;
 
@@ -78,13 +67,13 @@ public class FloatLogo extends Service implements View.OnClickListener {
         System.loadLibrary("sysload");
     }
     private ESPView overlayView;
-    private String hexDaemon, myDaemon;
+    public static String myDaemon;
     private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String TAG_VERSION = "v";
-    String CheatL = urlref.Liveserver + "cheat.php";
+    String CheatL = urlref.Donatorserver + "cheat.php";
 //  String CheatB = urlref.Betaserver + "cheat.php";
-    private boolean safecheck,brutalcheck;
+    private boolean safecheck;
     private String data,gameName;
     private   int stickyvalue;
     private int Gametype;
@@ -101,7 +90,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
         overlayView = new ESPView(Instance);
         SharedPreferences ga = Instance.getSharedPreferences("game", MODE_PRIVATE);
         safecheck = ga.getBoolean("safecheck",false);
-        brutalcheck = ga.getBoolean("brutalcheck",false);
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -112,14 +100,12 @@ public class FloatLogo extends Service implements View.OnClickListener {
                         ShellUtils.SU("setenforce 0");
                         gamerun();
                         if (gameName.equals("com.pubg.imobile")) {
-                            hexDaemon = "." + Instance.getFilesDir().toString() + urlref.HexMem;
-                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.LiteMem;
+                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.IndiaMem;
                         }else{
-                            hexDaemon = "." + Instance.getFilesDir().toString() + urlref.HexMem;
-                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.SafeMem;
+                            myDaemon = "." + Instance.getFilesDir().toString() + urlref.GlobalMem;
                         }
-                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+urlref.HexMem);
-                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.SafeMem);
+                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.IndiaMem);
+                        ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.GlobalMem);
 
                     } catch (IOException | InterruptedException | NoSuchAlgorithmException | PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
@@ -127,7 +113,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 });
             }
         }).start();
-
     }
     private int getLayoutType() {
         int LAYOUT_FLAG;
@@ -293,8 +278,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
                                 PremiumValue(608,true);
                                 PremiumValue(599, true);
                                 DrawCanvas();
-                                ShellUtils.SU(hexDaemon + urlref.HexMemArg);
-                                createOver();
+                                                              createOver();
                                 CInit();
                             });
                         }
@@ -346,7 +330,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
                         PremiumValue(608,true);
                         PremiumValue(599, true);
                         DrawCanvas();
-                        ShellUtils.SU(hexDaemon + urlref.HexMemArg);
                         createOver();
                         CInit();
                     });
@@ -387,8 +370,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
                                 PremiumValue(608,true);
                                 PremiumValue(599, true);
                                 DrawCanvas();
-                                ShellUtils.SU(hexDaemon + urlref.HexMemArg);
-                                createOver();
+                                                                createOver();
                                 CInit();
 
                             });
@@ -740,7 +722,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
     @Override
     public void onDestroy() {
         Stop();
-        stopSelf();
         isRunning = false;
         if(overlayView != null){
             windowManager.removeView(overlayView);
@@ -750,7 +731,6 @@ public class FloatLogo extends Service implements View.OnClickListener {
             windowManager.removeView(mFloatingView);
             mFloatingView = null;
         }
-
         super.onDestroy();
     }
 
@@ -838,10 +818,8 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 //   Log.d("data",data);
                 new Thread(() -> {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                    //    ShellUtils.SU("rm -rf" + Instance.getFilesDir().toString() + "/scheat.sh");
-                        try {
+                     try {
                             givenToFile(Instance, s);
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -980,9 +958,8 @@ public class FloatLogo extends Service implements View.OnClickListener {
             public void onClick(View v) {
                 if(Recoil.isChecked()) {
                     ShellUtils.SU(myDaemon+" 20009");
-                Toast.makeText(Instance," Vertical Recoil Compensation Activated",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Instance," Vertical Recoil Compensation Activated",Toast.LENGTH_SHORT).show();
 
-                  //  Log.d("tets",myDaemon+" 20009");
 
                 }else{
                     ShellUtils.SU(myDaemon+" 200010");
@@ -1149,9 +1126,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
                     new Thread(() -> {
                         new Handler(Looper.getMainLooper()).post(() -> {
                             ipstartcheat();
-                            Toast.makeText(Instance,"Make Sure To Disable After Chicken Or Match End",Toast.LENGTH_LONG).show();
-
-                        });
+                    });
                     }).start();
 
                 }else{

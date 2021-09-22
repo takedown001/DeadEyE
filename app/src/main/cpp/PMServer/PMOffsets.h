@@ -1,3 +1,7 @@
+//
+// Created by XCODE on 9/14/2021.
+//
+
 #ifndef OFFSETS_H
 #define OFFSETS_H
 
@@ -5,12 +9,12 @@
 namespace Offsets {
     enum Offsets {
         //Others
-        GWorld = 0x70AAE1C,
-        GNames = 0x70A1550,
+        GWorld = 0x7172AFC,
+        GNames = 0x742D894,
         PointerSize = 0x4,
         //BGMI
-        UGWorld = 0x70AB2BC,
-        UGNames =  0x7364D94,
+        UGWorld = 0x7172AFC,
+        UGNames =  0x742D894,
 
         //Struct Size
         FTransformSizeInGame = 0x30,
@@ -35,7 +39,7 @@ namespace Offsets {
         //Class: SceneComponent
         SceneComponentToComponentToWorld = 0x150,
         //Class: SkeletalMeshComponent
-        SkeletalMeshComponentToCachedComponentSpaceTransforms = 0x710,
+        SkeletalMeshComponentToCachedComponentSpaceTransforms = 0x724,
         //Class: Actor
         ActorToRootComponent = 0x14C,
         //Class: Character

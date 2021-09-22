@@ -31,7 +31,6 @@ import com.topjohnwu.superuser.Shell;
 import org.json.JSONObject;
 
 import mobisocial.arcade.AESUtils;
-import mobisocial.arcade.ESPView;
 import mobisocial.arcade.FloatLogo;
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.Helper;
@@ -42,16 +41,12 @@ import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.ShellUtils;
 import mobisocial.arcade.flogo;
-import mobisocial.arcade.free.FreeFloatLogo;
 import mobisocial.arcade.imgLoad;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
@@ -59,9 +54,7 @@ import mobisocial.arcade.logo;
 
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.os.Environment.DIRECTORY_PICTURES;
 import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
-import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
@@ -73,8 +66,8 @@ public class VeitnamFragment extends Fragment  {
 
 
 
-    String CheatL = urlref.Liveserver + "cheat.php";
-    String CheatB = urlref.Betaserver + "cheat.php";
+    String CheatL = urlref.Donatorserver + "cheat.php";
+    String CheatB = urlref.freeserver + "cheat.php";
     private String gameName = "com.vng.pubgmobile";
 
 

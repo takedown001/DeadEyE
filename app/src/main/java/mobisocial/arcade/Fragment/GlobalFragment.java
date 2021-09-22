@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,28 +40,21 @@ import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.ShellUtils;
 import mobisocial.arcade.flogo;
-import mobisocial.arcade.free.FreeFloatLogo;
 import mobisocial.arcade.imgLoad;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
-import mobisocial.arcade.lite.HomeActivityLite;
 import mobisocial.arcade.logo;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.os.Environment.DIRECTORY_PICTURES;
-import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
 import static mobisocial.arcade.GccConfig.urlref.TAG_KEY;
-import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
@@ -73,8 +65,8 @@ public class GlobalFragment extends Fragment{
     private final JavaUrlConnectionReader reader = new JavaUrlConnectionReader();
     private String data;
 
-    String CheatL = urlref.Liveserver + "cheat.php";
-    String CheatB = urlref.Betaserver + "cheat.php";
+    String CheatL = urlref.Donatorserver + "cheat.php";
+    String CheatB = urlref.freeserver + "cheat.php";
     private String version, deviceid,UUID;
     Handler handler = new Handler();
     private static final String TAG_DEVICEID =urlref.TAG_DEVICEID;

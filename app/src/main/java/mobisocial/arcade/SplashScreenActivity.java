@@ -2,25 +2,16 @@ package mobisocial.arcade;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -29,24 +20,17 @@ import androidx.core.app.ActivityCompat;
 
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.free.FreeFloatLogo;
-import mobisocial.arcade.lite.HomeActivityLite;
 
 import com.onesignal.OSSubscriptionObserver;
 import com.onesignal.OSSubscriptionStateChanges;
 import com.onesignal.OneSignal;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.HashMap;
 
 import static mobisocial.arcade.GccConfig.urlref.TAG_LITE;
 import static mobisocial.arcade.GccConfig.urlref.TAG_MSG;
-import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 
 
 public class SplashScreenActivity extends Activity  implements OSSubscriptionObserver{
@@ -210,11 +194,8 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
                             error = obj.getBoolean(TAG_ERROR);
                             if (!error) {
                                 getduration = obj.getLong(TAG_DURATION);
-                                islite = obj.getBoolean(TAG_LITE);
                                 msg = obj.getString(TAG_MSG);
                                 safe = obj.getBoolean("5");
-//                                  brutal = obj.getBoolean("6");
-                                brutal = false;
                                 editor.putLong(TAG_DURATION, getduration);
                                 editor.apply();
                                 //    Log.d("splash", String.valueOf(getduration));
@@ -230,6 +211,7 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
                                     Intent intent = new Intent(SplashScreenActivity.this, AppUpdaterActivity.class);
                                     intent.putExtra(TAG_APP_NEWVERSION, newversion);
                                     intent.putExtra(data, whatsNewData);
+                                    intent.putExtra("force",obj.getBoolean("force"));
                                     intent.putExtra("updateurl", updateurl);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
@@ -249,22 +231,14 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
 
                                 if (!isSignedin.equals("null")) {
                                     if (!(getduration == 0)) {
-                                        if (islite) {
-                                            //saving to prefrences m
+                                                                                    //saving to prefrences m
                                             editor.putLong(TAG_DURATION, getduration).apply();
                                             editor.putString(TAG_KEY, key);
                                             editor.apply();
-                                            Intent intent = new Intent(SplashScreenActivity.this, HomeActivityLite.class);
+                                            Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
                                             intent.putExtra("safe", safe);
-                                            intent.putExtra("brutal", brutal);
                                             startActivity(intent);
-                                        } else {
-                                            //user signedin
-                                            Intent i = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                                            i.putExtra("safe", safe);
-                                            i.putExtra("brutal", brutal);
-                                            startActivity(i);
-                                        }
+
                                     } else {
                                         //   Log.d("duration", String.valueOf(getduration));
                                         Toast.makeText(SplashScreenActivity.this, "Subscription Expired ", Toast.LENGTH_LONG).show();
@@ -278,6 +252,7 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
                                         Intent intent = new Intent(SplashScreenActivity.this, AppUpdaterActivity.class);
                                         intent.putExtra(TAG_APP_NEWVERSION, newversion);
                                         intent.putExtra(data, whatsNewData);
+                                        intent.putExtra("force",obj.getBoolean("force"));
                                         intent.putExtra("updateurl", updateurl);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);

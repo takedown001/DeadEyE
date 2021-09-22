@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,12 +14,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -29,29 +26,20 @@ import androidx.fragment.app.Fragment;
 import com.topjohnwu.superuser.Shell;
 
 import mobisocial.arcade.AESUtils;
-import mobisocial.arcade.ESPView;
-import mobisocial.arcade.FloatLogo;
 import mobisocial.arcade.GccConfig.urlref;
 import mobisocial.arcade.Helper;
 import mobisocial.arcade.JavaUrlConnectionReader;
-import mobisocial.arcade.LoginActivity;
 import mobisocial.arcade.R;
 import mobisocial.arcade.ShellUtils;
-import mobisocial.arcade.imgLoad;
 
-import java.io.File;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
 import static android.content.Context.MODE_PRIVATE;
-import static mobisocial.arcade.GccConfig.urlref.TAG_DEVICEID;
 import static mobisocial.arcade.GccConfig.urlref.defaltversion;
-import static mobisocial.arcade.GccConfig.urlref.time;
 import static mobisocial.arcade.Helper.givenToFile;
 
 
@@ -66,7 +54,7 @@ public class TaiwanFreeFragment extends Fragment {
     private String data;
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String TAG_VERSION = "v";
-    String CheatB = urlref.Betaserver + "cheat.php";
+    String CheatB = urlref.freeserver + "cheat.php";
     @Override
     public void onCreate(Bundle savedInstanceState) {
 

@@ -56,7 +56,6 @@ public class RDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rdetail);
-        SharedPreferences shred = getSharedPreferences("userdetails", MODE_PRIVATE);
         Img = findViewById(R.id.image);
         String img = getIntent().getExtras().getString(TAG_RIMG);
         Glide.with(RDetailActivity.this).load(urlref.Image + img).placeholder(R.drawable.logo).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(Img);

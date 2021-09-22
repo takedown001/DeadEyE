@@ -77,7 +77,7 @@ public class JSONParserString {
         String postParameters = "auth=" + Helper.toBase64(token.toString());
         urlConnection.setFixedLengthStreamingMode(postParameters.getBytes().length);
         PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
-        Log.d("auth",postParameters);
+       // Log.d("auth",postParameters);
         out.print(postParameters);
         out.close();
         return Helper.fromBase64String(Helper.readStream(urlConnection.getInputStream()));
