@@ -143,6 +143,7 @@ public class flogo extends Service{
             flash.setImageDrawable(getResources().getDrawable((R.drawable.flash)));
             ShellUtils.SU(myDaemon+" 200020");
             ShellUtils.SU(myDaemon+" 200017");
+            ShellUtils.SU(myDaemon + " 600");
             Toast.makeText(Instance," Player Speed Increased To 20M/s",Toast.LENGTH_SHORT).show();
             Chech=1;
             break;
@@ -163,6 +164,7 @@ public class flogo extends Service{
                 flash.setImageDrawable(getResources().getDrawable((R.drawable.stopflash)));
                 ShellUtils.SU(myDaemon+" 200018");
                 ShellUtils.SU(myDaemon+" 200019");
+                ShellUtils.SU(myDaemon + " 500");
                 Toast.makeText(Instance,"Player Speed Increased To 60M/s",Toast.LENGTH_SHORT).show();
                 Chech=1;
                 break;

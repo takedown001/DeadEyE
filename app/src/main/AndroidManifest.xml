@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"/>
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
 
     <application
@@ -19,6 +22,7 @@
         android:icon="@drawable/apkicon"
         tools:replace="android:allowBackup"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:hardwareAccelerated="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -41,7 +45,7 @@
         <activity android:name="mobisocial.arcade.PluginActivity"/>
         <activity android:name="mobisocial.arcade.free.FLoginActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-        <activity android:name=".free.FHomeActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name="mobisocial.arcade.free.FHomeActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <service android:name="mobisocial.arcade.free.FreeFloatLogo" android:exported="false" android:enabled="true"/>
 
         <activity android:name="mobisocial.arcade.bgmi.HomeActivity" android:theme="@style/Theme.AppCompat.NoActionBar"/>

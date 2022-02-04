@@ -23,6 +23,7 @@ import mobisocial.arcade.data.Model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,19 +106,21 @@ public class GameActivity extends AppCompatActivity {
 
             }
         });
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+            if (!new File(getExternalFilesDir(DIRECTORY_PICTURES).getAbsolutePath() + "/animation.json").exists()) {
+                new Thread(() -> {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        new GetFile(this).execute(urlref.AnimationLoad, getExternalFilesDir(DIRECTORY_PICTURES).getAbsolutePath() + "/animation.json");
+                    });
+                }).start();
+            }
+        }
+            new Thread(() -> {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    new OneLoadAllProducts().execute();
+                });
+            }).start();
 
-        new Thread(() -> {
-            new Handler(Looper.getMainLooper()).post(() -> {
-                new GetFile(this).execute(urlref.AnimationLoad,getFilesDir().toString()+"/animation.zip");
-              //  Log.d("tes",getFilesDir().toString()+"/animation.zip");
-            });
-        }).start();
-
-       new Thread(()->{
-           new Handler(Looper.getMainLooper()).post(() -> {
-               new OneLoadAllProducts().execute();
-           });
-       }).start();
     }
 
 

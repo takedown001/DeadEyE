@@ -12,6 +12,8 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -31,9 +33,10 @@ import java.security.NoSuchAlgorithmException;
 
 import static mobisocial.arcade.GccConfig.urlref.TAG_LITE;
 import static mobisocial.arcade.GccConfig.urlref.TAG_MSG;
+import static mobisocial.arcade.GccConfig.urlref.TAG_ONESIGNALID;
 
 
-public class SplashScreenActivity extends Activity  implements OSSubscriptionObserver{
+public class SplashScreenActivity extends Activity implements OSSubscriptionObserver {
 
     private static final int SPLASH_SHOW_TIME = 2000;
     private static final String TAG_KEY = urlref.TAG_KEY;
@@ -41,23 +44,27 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
     private static final String TAG_DEVICEID = urlref.TAG_DEVICEID;
     private static final String url = urlref.Main + "login.php";
     private static final String TAG_DURATION = urlref.TAG_DURATION;
-    private  boolean error,safe,brutal;
+    private boolean error, safe;
+
     //Prefrance
-    static{
+    static {
         System.loadLibrary("sysload");
     }
+
     private String newversion;
     private String data = "data";
 
 
     private String updateurl;
-    private String whatsNewData,msg;
+    private String whatsNewData, msg;
     private boolean ismaintaince;
     private static final String TAG_APP_NEWVERSION = "newversion";
     private Boolean islite;
     JSONParserString jsonParserString = new JSONParserString();
-    private String key, deviceid="null",version,UUID="null";
+    private String key, deviceid = "null", version;
+    public static String UUID = "null";
     private long getduration;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,22 +79,26 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
         key = shred.getString(TAG_KEY, "null");
 
 
-       // Logcat.Save(SplashScreenActivity.this);
+        // Logcat.Save(SplashScreenActivity.this);
         // OneSignal Initialization
-        deviceid =Helper.getDeviceId(SplashScreenActivity.this);
+        deviceid = Helper.getDeviceId(SplashScreenActivity.this);
         OneSignal.idsAvailable((userId, registrationId) -> {
             //     String text = "OneSignal UserID:\n" + userId + "\n\n";
             UUID = userId;
             //    Log.d("UUID",UUID);
             UUID = AESUtils.DarKnight.getEncrypted(UUID);
+
+
         });
         try {
             Check();
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-    }
+        S();
 
+    }
+    public native void S();
     public  boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
@@ -131,11 +142,6 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
      //   Log.i("Debug", "onOSPermissionChanged: " + stateChanges);
     }
 
-    private boolean checkVPN() {
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-    //    return cm.getNetworkInfo(ConnectivityManager.TYPE_VPN).isConnectedOrConnecting();
-        return false;
-    }
 
     /**
      * Async Task: can be used to load DB, images during which the splash screen
@@ -160,7 +166,7 @@ public class SplashScreenActivity extends Activity  implements OSSubscriptionObs
             try {
                 params.put(TAG_KEY, key);
                 params.put(TAG_DEVICEID, deviceid);
-            //    params.put(TAG_ONESIGNALID, UUID);
+                params.put(TAG_ONESIGNALID, UUID);
                 rq = jsonParserString.makeHttpRequest(url, params);
                 //converting response to json object
             } catch (Exception e) {

@@ -1,11 +1,16 @@
 package mobisocial.arcade;
 
+import static android.provider.DocumentsContract.EXTRA_INITIAL_URI;
+
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.UriPermission;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,12 +19,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.storage.StorageManager;
+import android.os.storage.StorageVolume;
+import android.provider.DocumentsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -27,6 +36,7 @@ import androidx.core.app.ActivityCompat;
 
 import mobisocial.arcade.GccConfig.urlref;
 
+import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.material.textfield.TextInputEditText;
 import com.onesignal.OneSignal;
 import com.scottyab.rootbeer.RootBeer;
@@ -35,7 +45,9 @@ import com.yeyint.customalertdialog.CustomAlertDialog;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import burakustun.com.lottieprogressdialog.LottieDialogFragment;
 
@@ -108,8 +120,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
             a11();
         }else {
@@ -120,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
     public void a11()
     {
 
-        if(!new RootBeer(LoginActivity.this).isRooted() && !Shell.rootAccess()){
+        if(new RootBeer(LoginActivity.this).isRooted() && !Shell.rootAccess()){
             new AlertDialog.Builder(LoginActivity.this)
                     .setTitle("Warning")
                     .setMessage("You Are Non-root ,We Don't Support Right Now")
@@ -139,6 +149,8 @@ public class LoginActivity extends AppCompatActivity {
             ShellUtils.SU("su");
         }
     }
+
+
 
     private void checkandroid(){
 
@@ -204,24 +216,43 @@ public class LoginActivity extends AppCompatActivity {
 
 
      public  boolean isStoragePermissionGranted() {
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
              if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                     == PackageManager.PERMISSION_GRANTED) {
+                     == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                  //  Log.v(TAG,"Permission is granted");
                  return true;
              } else {
                  // Log.v(TAG,"Permission is revoked");
-                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, 1);
+                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                  return false;
              }
          }
-         else { //permission is automatically granted on sdk<23 upon installation
+         else {
+
+             //permission is automatically granted on sdk<23 upon installation
              // Log.v(TAG,"Permission is granted");
-             return true;
+             if (checkSelfPermission(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+                     == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) { ;
+                 return true;
+             } else {
+                 // Log.v(TAG,"Permission is revoked");
+                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                 return false;
+             }
          }
+
      }
 
 
+
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private StorageVolume getPrimaryVolume() {
+        StorageManager sm = (StorageManager) getSystemService(STORAGE_SERVICE);
+        return sm.getPrimaryStorageVolume();
+    }
 
     @Override
     public void onBackPressed() {

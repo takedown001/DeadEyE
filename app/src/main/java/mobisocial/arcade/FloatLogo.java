@@ -29,12 +29,8 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import androidx.annotation.RequiresApi;
-
 import com.topjohnwu.superuser.Shell;
-
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -44,6 +40,7 @@ import mobisocial.arcade.GccConfig.urlref;
 import static java.lang.System.exit;
 import static mobisocial.arcade.GccConfig.urlref.defaltversion;
 import static mobisocial.arcade.Helper.givenToFile;
+
 
 public class FloatLogo extends Service implements View.OnClickListener {
 
@@ -82,6 +79,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
     public void onCreate() {
         super.onCreate();
         Instance = this;
+        ShellUtils.SU("setenforce 0");
         SharedPreferences shred =getSharedPreferences("userdetails", MODE_PRIVATE);
         version = shred.getString("version", defaltversion);
         version = AESUtils.DarKnight.getEncrypted(version);
@@ -97,8 +95,8 @@ public class FloatLogo extends Service implements View.OnClickListener {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     try {
                         Check();
-                        ShellUtils.SU("setenforce 0");
                         gamerun();
+
                         if (gameName.equals("com.pubg.imobile")) {
                             myDaemon = "." + Instance.getFilesDir().toString() + urlref.IndiaMem;
                         }else{
@@ -106,21 +104,19 @@ public class FloatLogo extends Service implements View.OnClickListener {
                         }
                         ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.IndiaMem);
                         ShellUtils.SU("chmod 777 "+ Instance.getFilesDir().toString()+ urlref.GlobalMem);
-
                     } catch (IOException | InterruptedException | NoSuchAlgorithmException | PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
                     }
                 });
             }
         }).start();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            ShellUtils.SU(myDaemon + " 1337");
+        }
     }
     private int getLayoutType() {
         int LAYOUT_FLAG;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        } else {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
-        }
+        LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         return LAYOUT_FLAG;
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -153,6 +149,10 @@ public class FloatLogo extends Service implements View.OnClickListener {
         Gametype = intent.getIntExtra("gametype",1);
         return START_NOT_STICKY;
     }
+
+
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void gamerun() throws IOException, InterruptedException {
@@ -278,7 +278,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
                                 PremiumValue(608,true);
                                 PremiumValue(599, true);
                                 DrawCanvas();
-                                                              createOver();
+                             createOver();
                                 CInit();
                             });
                         }
@@ -370,7 +370,7 @@ public class FloatLogo extends Service implements View.OnClickListener {
                                 PremiumValue(608,true);
                                 PremiumValue(599, true);
                                 DrawCanvas();
-                                                                createOver();
+                                createOver();
                                 CInit();
 
                             });
@@ -1122,19 +1122,18 @@ public class FloatLogo extends Service implements View.OnClickListener {
             public void onClick(View v) {
 
                 if(Ip.isChecked()){
-                    ShellUtils.SU(myDaemon+" 20001");
+                    ShellUtils.SU(myDaemon+" 1312");
                     new Thread(() -> {
                         new Handler(Looper.getMainLooper()).post(() -> {
                             ipstartcheat();
                     });
                     }).start();
-
                 }else{
                     new Thread(() -> {
                         new Handler(Looper.getMainLooper()).post(() -> {
                             PremiumValue(597,false); // fov off
                             PremiumValue(598,false); //cross off
-                            ShellUtils.SU(myDaemon+" 404404"); // memcross off
+                            ShellUtils.SU(myDaemon+" 1213"); // memcross off
                             Recoil.setChecked(false);
                             HRecoil.setChecked(false);
                             magicbullet.setChecked(false);
@@ -1142,9 +1141,13 @@ public class FloatLogo extends Service implements View.OnClickListener {
                             crossoff.setChecked(true);
                             aimoff.setChecked(true);
                             goff.setChecked(true);
+                            new Thread(() -> {
+                                new Handler(Looper.getMainLooper()).post(() -> {
+                                    ipstopcheat();
+                                });
+                            }).start();
                             ShellUtils.SU("iptables -F");
                             ShellUtils.SU("iptables --flush");
-                            ipstopcheat();
                             Toast.makeText(Instance,"Make Sure To Enable MTP Protection Again In Spawn Island",Toast.LENGTH_LONG).show();
                         });
                     }).start();

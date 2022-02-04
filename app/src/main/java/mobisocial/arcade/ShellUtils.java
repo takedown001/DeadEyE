@@ -27,6 +27,7 @@ public class ShellUtils {
 						outputStream.flush();
 						BufferedReader reader = new BufferedReader(
                             new InputStreamReader(su.getInputStream()));
+
 						reader.close();
 						su.waitFor();
 

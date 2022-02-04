@@ -7,7 +7,6 @@ enigma.enabled = false
 enigma.injectFakeKeys = true
 enigma.classes  = ["mobisocial.arcade.GccConfig.urlref.java","mobisocial.arcade.Helper.java","mobisocial.arcade.ESPView.java","mobisocial.arcade.free.FESPView.java","mobisocial.arcade.lite,LiteESPView.java","mobisocial.arcade.Fragment.AboutFragment.java","mobisocial.arcade.PluginActivity.java","mobisocial.arcade.SingleTapConfirm.java","mobisocial.arcade.imgLoad.java","mobisocial.arcade.logo.java","mobisocial.arcade.flogo.java"]
 
-
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -16,7 +15,7 @@ android {
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 2
-        versionName "1.97"
+        versionName "2.0"
         manifestPlaceholders = [
                 onesignal_app_id: 'd0827521-a855-456b-a09f-dc25899ac339',
                 // Project number pulled from dashboard, local value is ignored.
@@ -55,11 +54,7 @@ android {
         }
     }
 
-    externalNativeBuild {
-        ndkBuild {
-            path file('src/main/cpp/Android.mk')
-        }
-    }
+
     ndkVersion '21.1.6352462'
 }
 

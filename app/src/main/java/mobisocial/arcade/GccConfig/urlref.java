@@ -55,7 +55,7 @@ public class urlref {
 
 
     public static final String Downloads = "https://gamesploit.com/project/deadeye/downloads"; //Global Path
-    public static final String AnimationLoad = "https://gamesploit.com/project/deadeye/downloads/animation.zip";//safe memory beta premium antiban
+    public static final String AnimationLoad = "https://gamesploit.com/project/deadeye/downloads/animation.json";//safe memory beta premium antiban
      public static final String time = "1";
 
     public static final String defaltversion = "32";
